@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vuelo OYR · Estudio para Pía</title>
+<style>
+:root{
+  --ground:#EDF0F4; --card:#FFFFFF; --ink:#17233B; --muted:#5A6A85;
+  --line:#D6DCE6; --accent:#E8590C; --accent-soft:#FCE8DC;
+  --ok:#1F9D61; --ok-soft:#DFF3E8; --bad:#D64550; --bad-soft:#FBE4E6;
+  --c0:#4A7FC1; --c1:#2E9E8F; --c2:#7D6BC6; --c3:#E8590C; --c4:#C05572;
+  --shadow:0 1px 2px rgba(23,35,59,.06),0 8px 24px rgba(23,35,59,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0E1521; --card:#18212F; --ink:#E9EDF4; --muted:#93A0B4;
+    --line:#2A3547; --accent:#FF7E3D; --accent-soft:#3A2417;
+    --ok:#3DBE7F; --ok-soft:#15301F; --bad:#F06A74; --bad-soft:#3A1B1E;
+    --c0:#6E9FD8; --c1:#46B5A6; --c2:#9C8CE0; --c3:#FF7E3D; --c4:#D97490;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1521; --card:#18212F; --ink:#E9EDF4; --muted:#93A0B4;
+  --line:#2A3547; --accent:#FF7E3D; --accent-soft:#3A2417;
+  --ok:#3DBE7F; --ok-soft:#15301F; --bad:#F06A74; --bad-soft:#3A1B1E;
+  --c0:#6E9FD8; --c1:#46B5A6; --c2:#9C8CE0; --c3:#FF7E3D; --c4:#D97490;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+}
+:root[data-theme="light"]{
+  --ground:#EDF0F4; --card:#FFFFFF; --ink:#17233B; --muted:#5A6A85;
+  --line:#D6DCE6; --accent:#E8590C; --accent-soft:#FCE8DC;
+  --ok:#1F9D61; --ok-soft:#DFF3E8; --bad:#D64550; --bad-soft:#FBE4E6;
+  --c0:#4A7FC1; --c1:#2E9E8F; --c2:#7D6BC6; --c3:#E8590C; --c4:#C05572;
+  --shadow:0 1px 2px rgba(23,35,59,.06),0 8px 24px rgba(23,35,59,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ground); color:var(--ink);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  min-height:100vh;
+}
+.mono{font-family:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace}
+.app{max-width:640px;margin:0 auto;padding:16px 16px 48px}
+
+/* ---------- departure-board header ---------- */
+.board{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--ink);color:var(--ground);
+  border-radius:14px;padding:14px 18px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+:root[data-theme="dark"] .board{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .board{background:var(--card);color:var(--ink);border:1px solid var(--line)} }
+.board-title{font-weight:800;letter-spacing:.18em;font-size:15px;text-transform:uppercase}
+.board-sub{font-size:11.5px;opacity:.72;letter-spacing:.04em}
+.board .plane{font-size:22px;transform:rotate(-45deg);display:inline-block;margin-right:10px;color:var(--accent)}
+.ticket-code{font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.12em;opacity:.8;text-align:right;text-transform:uppercase}
+
+/* ---------- generic ---------- */
+.screen{animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+}
+.eyebrow{font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:26px;line-height:1.2;letter-spacing:-.01em;text-wrap:balance;margin:4px 0 2px}
+h2{font-size:19px;margin:2px 0 4px;text-wrap:balance}
+.sub{color:var(--muted);font-size:14.5px}
+.backbtn{
+  background:none;border:none;color:var(--muted);font:inherit;font-size:14px;
+  cursor:pointer;padding:6px 0;margin-bottom:6px;display:inline-flex;align-items:center;gap:6px;
+}
+.backbtn:hover{color:var(--ink)}
+button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
+
+/* ---------- boarding-pass mode cards ---------- */
+.pass{
+  position:relative;display:flex;width:100%;text-align:left;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:var(--shadow);cursor:pointer;color:inherit;font:inherit;
+  overflow:hidden;transition:transform .15s ease,box-shadow .15s ease;
+}
+.pass:hover{transform:translateY(-2px)}
+.pass-main{flex:1;padding:15px 16px;min-width:0}
+.pass-stub{
+  width:86px;flex:none;border-left:2px dashed var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-family:ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;padding:10px 6px;text-align:center;
+}
+.pass-stub .big{font-size:21px;color:var(--accent);letter-spacing:0}
+.pass::before,.pass::after{
+  content:"";position:absolute;width:16px;height:16px;border-radius:50%;
+  background:var(--ground);border:1px solid var(--line);right:78px;
+}
+.pass::before{top:-9px}.pass::after{bottom:-9px}
+.pass h3{font-size:16.5px;margin-bottom:2px}
+.pass p{font-size:13.5px;color:var(--muted)}
+.pass .tagline{margin-top:7px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.modes{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+
+.hero{margin:6px 0 18px}
+.hero .stats-strip{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat b{font-size:20px;font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;font-family:ui-monospace,Consolas,monospace}
+
+/* ---------- category chips & bars ---------- */
+.catgrid{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.card-btn{
+  display:block;width:100%;text-align:left;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:13px 15px;
+  cursor:pointer;color:inherit;font:inherit;box-shadow:var(--shadow);
+  transition:transform .15s ease;
+}
+.card-btn:hover{transform:translateY(-1px)}
+.cat-row{display:flex;align-items:center;gap:10px}
+.cat-dot{width:11px;height:11px;border-radius:3px;flex:none}
+.cat-name{font-weight:650;font-size:15px;flex:1}
+.cat-pct{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:99px;background:var(--line);margin-top:9px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .4s ease}
+.cat-sub{font-size:12.5px;color:var(--muted);margin-top:5px}
+
+/* ---------- wheel ---------- */
+.wheelwrap{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:10px}
+.wheelbox{position:relative;width:min(320px,84vw)}
+.wheelbox svg{width:100%;height:auto;display:block}
+.pointer{
+  position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;
+  border-top:20px solid var(--accent);filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));z-index:2;
+}
+#wheelG{transition:transform 3.4s cubic-bezier(.12,.67,.14,.99);transform-box:view-box;transform-origin:50% 50%}
+.spin-btn{
+  background:var(--accent);color:#fff;border:none;border-radius:99px;
+  font:700 16px/1 system-ui,sans-serif;letter-spacing:.06em;
+  padding:15px 42px;cursor:pointer;box-shadow:var(--shadow);
+  text-transform:uppercase;
+}
+.spin-btn:disabled{opacity:.55;cursor:default}
+.hud{display:flex;gap:22px;justify-content:center}
+.hud .stat{align-items:center}
+
+/* ---------- question ---------- */
+.q-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;font-family:ui-monospace,Consolas,monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 11px;border-radius:99px;color:#fff;font-weight:600;
+}
+.q-count{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.q-text{font-size:17.5px;font-weight:650;line-height:1.45;text-wrap:balance}
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:15px}
+.opt{
+  display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--ground);border:1.5px solid var(--line);border-radius:11px;
+  padding:11px 13px;cursor:pointer;color:inherit;font:inherit;font-size:15px;line-height:1.4;
+  transition:border-color .12s ease;
+}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt .key{
+  flex:none;width:22px;height:22px;border-radius:6px;background:var(--line);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:700;margin-top:1px;
+}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok)}
+.opt.correct .key{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.wrong .key{background:var(--bad);color:#fff}
+.opt.dim{opacity:.55}
+.verdict{font-weight:800;font-size:15px;margin-top:15px;display:flex;align-items:center;gap:8px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.why{
+  margin-top:9px;background:var(--ground);border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0;padding:11px 13px;font-size:14.5px;color:var(--ink);
+}
+.why .src{display:block;margin-top:7px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.next-btn{
+  margin-top:15px;width:100%;background:var(--ink);color:var(--ground);border:none;
+  border-radius:11px;padding:13px;font:650 15px system-ui,sans-serif;cursor:pointer;letter-spacing:.03em;
+}
+:root[data-theme="dark"] .next-btn{background:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .next-btn{background:var(--accent);color:#fff} }
+
+/* ---------- flashcards ---------- */
+.chips-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.fchip{
+  border:1.5px solid var(--line);background:var(--card);color:var(--muted);
+  border-radius:99px;padding:6px 13px;font:600 12.5px system-ui,sans-serif;cursor:pointer;
+}
+.fchip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.flash{
+  perspective:1200px;cursor:pointer;margin-top:6px;
+}
+.flash-inner{
+  position:relative;width:100%;min-height:240px;transition:transform .5s;
+  transform-style:preserve-3d;
+}
+.flash.flipped .flash-inner{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  padding:22px;text-align:center;
+}
+.face.back{transform:rotateY(180deg)}
+.face .fq{font-size:18px;font-weight:700;text-wrap:balance}
+.face .fa{font-size:15.5px;line-height:1.55}
+.face .hint{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.flash-nav{display:flex;gap:10px;margin-top:14px}
+.flash-nav button{
+  flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:11px;
+  padding:12px;font:650 14.5px system-ui,sans-serif;color:var(--ink);cursor:pointer;
+}
+.flash-nav button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ---------- exam / results ---------- */
+.timer{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.result-hero{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+  padding:26px 20px;text-align:center;margin-top:12px;position:relative;overflow:hidden;
+}
+.result-hero .score{font-size:46px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stamp{
+  display:inline-block;margin-top:10px;padding:7px 18px;border:2.5px solid;border-radius:8px;
+  font-family:ui-monospace,Consolas,monospace;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:13px;
+  transform:rotate(-4deg);
+}
+.stamp.ok{color:var(--ok);border-color:var(--ok)}
+.stamp.bad{color:var(--bad);border-color:var(--bad)}
+.review-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.review-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow)}
+.review-item .rq{font-weight:650;font-size:14.5px}
+.review-item .ra{font-size:13.5px;margin-top:6px}
+.review-item .ra b.good{color:var(--ok)} .review-item .ra b.badtxt{color:var(--bad)}
+
+/* ---------- passport ---------- */
+.passport{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.pp-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+.pp-stamp{
+  float:right;font-family:ui-monospace,Consolas,monospace;font-size:10px;letter-spacing:.14em;
+  border:2px solid var(--ok);color:var(--ok);border-radius:6px;padding:3px 8px;
+  transform:rotate(3deg);text-transform:uppercase;font-weight:700;
+}
+.exam-history{margin-top:8px;font-size:13.5px;color:var(--muted)}
+.exam-history li{margin-left:18px;font-variant-numeric:tabular-nums}
+.danger{
+  margin-top:22px;background:none;border:none;color:var(--muted);font:13px system-ui,sans-serif;
+  text-decoration:underline;cursor:pointer;
+}
+footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--muted)}
+footer .heart{color:var(--accent)}
+
+/* confetti */
+.confetti{position:fixed;top:-12px;border-radius:2px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="board">
+    <div style="display:flex;align-items:center">
+      <span class="plane" aria-hidden="true">✈</span>
+      <div>
+        <div class="board-title">Vuelo OYR</div>
+        <div class="board-sub">Obligaciones y Responsabilidades · Operación Normal</div>
+      </div>
+    </div>
+    <div class="ticket-code">PAX: PÍA<br>GATE 1L · DÍAS 1–4</div>
+  </header>
+  <main id="view"></main>
+  <footer>Hecho con <span class="heart">♥</span> para la futura tripulante favorita · Basado en el material OYR de ALAS (Días 1–4)</footer>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   VUELO OYR — herramienta de estudio tipo preguntados
+   Para cambiar el nombre, edita la constante NOMBRE.
+   ============================================================ */
+const NOMBRE = "Pía";
+
+const CATS = [
+  {name:"Fundamentos y Jerarquía", short:"Fundamentos", code:"D1A", color:"var(--c0)", raw:0, sub:"Roles, TAC mínima, documentos, marco normativo"},
+  {name:"Pre-vuelo y Briefing",    short:"Pre-vuelo",   code:"D1B", color:"var(--c1)", raw:1, sub:"Briefings, chequeos, CLB, comunicaciones"},
+  {name:"Embarque y Pasajeros",    short:"Embarque",    code:"D2",  color:"var(--c2)", raw:2, sub:"CBBG, ABP, salidas EGA, sillas de ruedas, Medif"},
+  {name:"Puertas y Despegue",      short:"Puertas",     code:"D3",  color:"var(--c3)", raw:3, sub:"Toboganes, cabina estéril, DEMO, cabina libre"},
+  {name:"En Vuelo y Eventos",      short:"En vuelo",    code:"D4",  color:"var(--c4)", raw:4, sub:"Área crítica, chequeos, turbulencia, disruptivos"}
+];
+
+/* Preguntas: c=categoría, q=pregunta, o=opciones, a=índice correcta, w=explicación, s=fuente */
+const QS = [
+/* ---------- CAT 0 · FUNDAMENTOS Y JERARQUÍA ---------- */
+{c:0,q:"¿Cuándo comienza la «ejecución normal del vuelo»?",o:["Al cierre de puertas del avión","Con la presentación de la TAC en la puerta de embarque, una hora antes del vuelo","Cuando el avión inicia el rodaje","En el briefing operacional con el Comandante"],a:1,w:"La ejecución normal comienza con la presentación de la TAC en la puerta de embarque, 1 hora antes del vuelo, y finaliza cuando se completan las acciones de post vuelo.",s:"Día 1"},
+{c:0,q:"¿Cuál es el orden jerárquico correcto a bordo?",o:["Comandante → TAC 1 → Primer Oficial → TAC auxiliares","Comandante → Primer Oficial → TAC 1 → TAC auxiliares (TAC2, TAC3, TAC4)","Primer Oficial → Comandante → TAC 1 → TAC auxiliares","Comandante → Primer Oficial → TAC 4 → TAC 1"],a:1,w:"Jerarquía a bordo: 1) Comandante de la Aeronave, 2) Primer Oficial, 3) TAC 1, 4) tripulantes auxiliares de cabina en orden jerárquico (TAC2, TAC3 y TAC4).",s:"Día 1"},
+{c:0,q:"¿Desde y hasta cuándo es el Piloto al Mando responsable de la operación y seguridad de la aeronave?",o:["Desde el embarque hasta el desembarque de pasajeros","Desde que el avión se mueve para el despegue hasta que se apagan los motores después del aterrizaje","Desde el encendido de luces de cabina hasta la apertura de puertas","Solo durante el vuelo crucero"],a:1,w:"Es responsable de la operación y seguridad desde que el avión se mueve para el despegue hasta que se apagan los motores después del aterrizaje. Además, es responsable de tripulación y carga desde el cierre de puertas.",s:"Día 1"},
+{c:0,q:"Verdadero o falso: el Tripulante de Cabina puede actuar como miembro de la tripulación de vuelo si el Comandante lo autoriza.",o:["Verdadero","Falso"],a:1,w:"Falso. Por definición, el TAC cumple las obligaciones que le asigne el explotador o el piloto al mando, pero NO actuará como miembro de la tripulación de vuelo.",s:"Día 1"},
+{c:0,q:"¿Cuál es la función primaria del Tripulante Auxiliar de Cabina?",o:["Entregar un servicio de excelencia a los pasajeros","Brindar SEGURIDAD a los pasajeros","Apoyar a la tripulación de mando en la navegación","Administrar el catering y las ventas a bordo"],a:1,w:"La función primaria del TAC es brindar SEGURIDAD a los pasajeros. El servicio es una función complementaria.",s:"Día 1"},
+{c:0,q:"La función de seguridad del TAC involucra tres pilares. ¿Cuáles?",o:["Prevención, atención de situaciones especiales y actuación ante una emergencia","Puntualidad, presentación personal y cortesía","Chequeo, servicio y desembarque","Vigilancia, reporte y sanción"],a:0,w:"La función de seguridad involucra: Prevención, Atención de Situaciones Especiales y Actuación ante una emergencia.",s:"Día 1"},
+{c:0,q:"«Conocer las leyes, normas, regulaciones y disposiciones que regulan la actividad» corresponde a…",o:["Una responsabilidad del TAC","Una obligación del TAC","Una recomendación de la empresa","Una función exclusiva del TAC 1"],a:1,w:"Eso es la OBLIGACIÓN. La RESPONSABILIDAD es aplicar los conocimientos y el entrenamiento adquirido para actuar en sus funciones de seguridad y servicio a bordo.",s:"Día 1"},
+{c:0,q:"¿Quién administra a la tripulación de cabina, asigna cargos, chequea el CLB y lidera el briefing?",o:["El Comandante","El Primer Oficial","El TAC 1","El TAC adicional"],a:2,w:"El TAC 1 está calificado para liderar a la tripulación de cabina: administra, reporta al Comandante, supervisa estándares, asigna cargos, coordina, lidera, maneja el CLB y el briefing.",s:"Día 1"},
+{c:0,q:"¿Qué define a la «TAC mínima»?",o:["La dotación que exige el sindicato","La que permite evacuar el avión en 90 segundos","La cantidad de TAC que caben en los jumpseats","El mínimo para entregar el servicio completo"],a:1,w:"La TAC mínima es la dotación que permite evacuar el avión en 90 segundos.",s:"Día 1"},
+{c:0,q:"Un avión con 20 a 50 asientos habilitados requiere una TAC mínima de…",o:["1 TAC","2 TAC","3 TAC","No requiere TAC"],a:0,w:"20 a 50 asientos → 1 TAC. 51 a 100 → 2 TAC. Más de 100 → 2 más 1 TAC adicional por cada unidad o parte de unidad de 50 asientos habilitados.",s:"Día 1"},
+{c:0,q:"Desafío de cálculo: un A320 con 174 asientos habilitados, ¿qué TAC mínima requiere?",o:["3 TAC","4 TAC","5 TAC","6 TAC"],a:1,w:"Más de 100 asientos: 2 TAC + 1 por cada unidad o parte de unidad de 50 sobre 100. Sobran 74 asientos = 2 unidades (50 + parte de 24) → 2 + 2 = 4 TAC.",s:"Día 1"},
+{c:0,q:"Verdadero o falso: el TAC en funciones extra tripulante forma parte de la tripulación mínima requerida.",o:["Verdadero","Falso"],a:1,w:"Falso. Cumple funciones específicas (auditorías, evaluaciones, entrenamiento) SIN formar parte de la tripulación mínima, y debe presentarse al TAC1 al asumir sus funciones.",s:"Día 1"},
+{c:0,q:"El TAC adicional (jornada especial), ¿qué jumpseat ocupa y como qué número participa del briefing?",o:["Jumpseat 1L, como TAC N°1","Jumpseat 4R, como TAC N°5","Jumpseat 2L, como TAC N°3","No participa del briefing"],a:1,w:"El TAC adicional participa del briefing como TAC N°5, chequea y ocupa el jumpseat de la Puerta 4R, y NO tiene puerta/salida asignada. En evacuación controla el flujo de pasajeros y asiste al resto.",s:"Día 1"},
+{c:0,q:"Verdadero o falso: el TAC adicional tiene una puerta/salida asignada.",o:["Verdadero","Falso"],a:1,w:"Falso. No tiene puerta/salida asignada; en evacuación controla el flujo de pasajeros y asiste al resto de la tripulación.",s:"Día 1"},
+{c:0,q:"¿Cuál de estos NO es un documento de vuelo que el TCP debe portar vigente?",o:["Bitácora de vuelo","Licencia de vuelo con su habilitación","CMA (Certificación Médica Aeronáutica)","Licencia de conducir"],a:3,w:"Los documentos son: bitácora de vuelo, licencia con habilitación, CMA vigente, credencial de la empresa, cédula de identidad y pasaporte vigente (vuelos internacionales y regionales).",s:"Día 1"},
+{c:0,q:"¿Para qué sirve la bitácora de vuelo del TCP?",o:["Para registrar fallas del avión","Para demostrar experiencia reciente","Para anotar los servicios entregados","Para el control de asistencia"],a:1,w:"La bitácora de vuelo sirve para demostrar experiencia reciente.",s:"Día 1"},
+{c:0,q:"¿En qué vuelos se exige pasaporte vigente al TCP?",o:["En todos los vuelos","Solo en vuelos de carga","En vuelos internacionales y regionales","Solo cuando lo pide el Comandante"],a:2,w:"El pasaporte vigente se exige para vuelos internacionales y regionales.",s:"Día 1"},
+{c:0,q:"Sobre condiciones psicofísicas, ¿qué normativa regula el tema de alcohol, drogas y aptitud?",o:["DAN 63 y Ley de Drogas N° 20.000, con MAE vigente","Solo el reglamento interno de la empresa","La ley de tránsito","El código del trabajo"],a:0,w:"Las condiciones psicofísicas del TAC se enmarcan en la DAN 63, la Ley de Drogas N° 20.000 y el MAE vigente; el TAC debe reportar el uso de alcohol y psicofármacos.",s:"Día 1"},
+{c:0,q:"En emergencia, si hay tiempo, el Piloto al Mando se asegurará de que…",o:["Se sirva agua a los pasajeros","Se hayan dado las instrucciones de seguridad","Todos tengan su equipaje a mano","Se apague el sistema de PA"],a:1,w:"Entre sus obligaciones: en emergencia, si hay tiempo, se asegurará de que se dieron las instrucciones de seguridad. También notifica accidentes a la autoridad y defectos del avión al término del vuelo.",s:"Día 1"},
+
+/* ---------- CAT 1 · PRE-VUELO Y BRIEFING ---------- */
+{c:1,q:"¿Quién está a cargo del briefing de la tripulación de cabina?",o:["El Comandante siempre","El TAC 1 o quien él designe","El Primer Oficial","El jefe de aeropuerto"],a:1,w:"El briefing es una reunión OBLIGATORIA de coordinación antes del vuelo, a cargo del TAC 1 o quien designe.",s:"Día 1"},
+{c:1,q:"¿En qué momento se da por constituida la tripulación?",o:["Al firmar el turno","Una vez realizado el briefing operacional con el Comandante","Al cerrar las puertas del avión","Al despegar"],a:1,w:"El Comandante realiza antes del vuelo una reunión breve con la tripulación de cabina para coordinar las comunicaciones. Una vez realizado este briefing operacional, se da por constituida la tripulación.",s:"Día 1"},
+{c:1,q:"En el briefing operacional, el Comandante aborda —entre otros— estos puntos:",o:["Menú del servicio y turnos de colación","PSV, verificación de RT e INFOPS, ruta, acceso al cockpit (3 claves) y combustible","Solo la meteorología del destino","La asignación de asientos de pasajeros"],a:1,w:"El Comandante aborda: documentación, PSV y hora máxima de apertura de puertas, RT e INFOPS, ruta (TV, meteorología, procedimientos), aeronave, pasajeros/carga, acceso al cockpit (3 claves), combustible y recomendaciones.",s:"Día 1"},
+{c:1,q:"¿Cuándo debe realizarse el chequeo pre-vuelo de los equipos de emergencia?",o:["Solo en el primer vuelo del día","Al abordar el avión por primera vez, cuando hay cambio de tripulación o si el avión quedó sin supervisión","Únicamente cuando lo ordena el Comandante","Cada 30 minutos"],a:1,w:"Debe realizarse cuando se aborda el avión por primera vez, cuando hay cambio de tripulación en un mismo vuelo, o cuando el avión queda sin supervisión.",s:"Día 1"},
+{c:1,q:"El chequeo de equipos de emergencia (EEL) busca asegurar tres cosas. ¿Cuáles?",o:["Marca, modelo y color","Cantidad, ubicación y operatividad","Peso, tamaño y fecha","Precio, stock y proveedor"],a:1,w:"EEL (Emergency Equipment Location): se verifica cantidad, ubicación y operatividad de los equipos de emergencia del avión y de la zona asignada.",s:"Día 1"},
+{c:1,q:"Verdadero o falso: el interfono debe poder operar independientemente del sistema de comunicación con el pasajero (PA).",o:["Verdadero","Falso"],a:0,w:"Verdadero. Además debe ser accesible desde al menos un puesto de tripulante de cabina.",s:"Día 1"},
+{c:1,q:"¿Cuándo está prohibido iniciar comunicaciones al cockpit?",o:["Durante el servicio de a bordo","Durante cabina estéril, excepto en caso de emergencia","Durante el crucero","Nunca está prohibido"],a:1,w:"Queda prohibido iniciar cualquier comunicación al cockpit durante cabina estéril, excepto en caso de emergencia.",s:"Día 1"},
+{c:1,q:"¿Qué es el PA (Public Address)?",o:["El sistema de altavoces para difundir información a los pasajeros, independiente del interfono","El sistema de alarma de incendios","La radio para hablar con la torre de control","El panel de puertas del FAP"],a:0,w:"El PA es el sistema de altavoces para difusión de información a los pasajeros, que opera en forma independiente del sistema de intercomunicación de la tripulación (PA + push to talk).",s:"Día 1"},
+{c:1,q:"¿En qué idioma se debe escribir el Cabin Log Book (CLB)?",o:["Español","Inglés","En el idioma del país de origen","En español e inglés a la vez"],a:1,w:"El CLB se debe escribir en INGLÉS. Es un libro foliado en triplicado y autocopiativo.",s:"Día 1"},
+{c:1,q:"¿Qué se registra en el CLB?",o:["Las ventas del servicio a bordo","Uso de equipos de emergencia, deterioro o daño de éstos y mal funcionamiento de sistemas de cabina","Los datos personales de los pasajeros","Los horarios de la tripulación"],a:1,w:"En el CLB la tripulación registra el uso de equipos de emergencia, su deterioro o daño al interior de la cabina y/o el mal funcionamiento de los sistemas de cabina.",s:"Día 1"},
+{c:1,q:"¿Quién chequea el CLB antes de iniciar el vuelo y cuándo se reporta al Comandante?",o:["El TAC 4; al aterrizar","El TAC 1; al inicio del descenso, sin interferir con la cabina de mando estéril","El Primer Oficial; antes del despegue","Mantenimiento; en cualquier momento"],a:1,w:"Es responsabilidad del TAC 1 chequearlo antes de iniciar el vuelo para constatar acciones correctivas, y reportar al Comandante al inicio del descenso sin interferir la cabina de mando estéril.",s:"Día 1"},
+{c:1,q:"El día anterior al vuelo, el TAC debe…",o:["Presentarse en el aeropuerto","Verificar turno/vuelo/horarios, chequear su documentación vigente e informarse de la hora de presentación","Hacer el chequeo de equipos de emergencia","Realizar el briefing con la tripulación"],a:1,w:"El día anterior: verificar turno/vuelo/horarios, chequear documentación personal (es responsabilidad del TAC tenerla vigente) e informarse sobre la hora de búsqueda/presentación.",s:"Día 1"},
+{c:1,q:"¿Qué se informa en el briefing de cabina previo al vuelo?",o:["Solo el clima","Datos del vuelo: tripulación de mando, matrícula, cantidad de pax, tipo de aeronave, horarios e información adicional","Los resultados del vuelo anterior","El menú de la tripulación"],a:1,w:"En el briefing el TAC1 informa los datos del vuelo: tripulación de mando, matrícula, cantidad de pasajeros, tipo de aeronave, información adicional, horario del vuelo, etc.",s:"Día 1"},
+{c:1,q:"La conciencia situacional se compone de tres etapas:",o:["Mirar, escuchar y actuar","Percepción, comprensión y proyección","Detección, alarma y evacuación","Atención, servicio y reporte"],a:1,w:"Conciencia situacional = PERCEPCIÓN – COMPRENSIÓN – PROYECCIÓN. La TAC está constantemente alerta desde el briefing y durante todas las fases del vuelo.",s:"Día 2"},
+{c:1,q:"¿A qué situaciones de riesgo debe estar alerta la tripulación durante todas las fases del vuelo?",o:["Humo, recalentamiento, olores inusuales, derrames, comportamiento de pax y hielo en las alas","Solo a la turbulencia","Únicamente al comportamiento de los pasajeros","A la calidad del servicio"],a:0,w:"Potenciales situaciones de riesgo: humo, recalentamiento, olores inusuales, derrames, condición y comportamiento de los pasajeros, hielo en las alas u otras que afecten la seguridad.",s:"Día 2"},
+{c:1,q:"¿Qué chequea el TAC en el pre-vuelo a bordo, además del equipo de emergencia?",o:["Elementos de servicio/catering y aseo de cabina y baños","El plan de vuelo","El combustible","El peso y balance"],a:0,w:"Pre-vuelo a bordo: chequeo del equipo de emergencia, chequeo de los elementos de servicio/catering, y chequeo del aseo de cabina y baños.",s:"Día 1"},
+
+/* ---------- CAT 2 · EMBARQUE Y PASAJEROS ---------- */
+{c:2,q:"¿Cuál es la condición para poder embarcar pasajeros?",o:["Que esté el Comandante a bordo","La presencia de la tripulación de cabina mínima requerida","Que el catering esté cargado","Que las puertas estén armadas"],a:1,w:"Solo se podrá abordar a los pasajeros con la presencia de la tripulación de cabina MÍNIMA requerida.",s:"Día 2"},
+{c:2,q:"Un pasajero compró asiento para su violonchelo (CBBG). ¿Dónde se ubica?",o:["En un asiento de pasillo","En un asiento ventana, con el pasajero en el asiento contiguo","En la salida de emergencia","En el jumpseat"],a:1,w:"El CBBG va en asiento VENTANA para no restringir el acceso al pasillo, y el pasajero debe viajar en el asiento contiguo. Máximo 1 asiento adicional por pasajero.",s:"Día 2"},
+{c:2,q:"Verdadero o falso: un CBBG puede ubicarse en un asiento de salida de emergencia si va bien asegurado.",o:["Verdadero","Falso"],a:1,w:"Falso. No debe ubicarse donde impida o restrinja el acceso a pasillos, puertas o salidas de emergencia (incluyendo asientos de salidas de emergencia). Tampoco puede obstruir la visión de los letreros ni contener mercancías peligrosas.",s:"Día 2"},
+{c:2,q:"En el briefing a una persona ajena a la tripulación que usa jumpseat, la instrucción clave en evacuación es:",o:["«Usted evacuará primero por la puerta»","«En caso de evacuación, usted deberá detener a los pasajeros mientras yo abro la puerta»","«Usted deberá inflar el tobogán manualmente»","«Usted dará las órdenes de evacuación»"],a:1,w:"El briefing incluye: cinturón/arnés del jumpseat, ubicación del PSU y del chaleco spare amarillo, tarjeta de seguridad, y la instrucción «en caso de evacuación, usted deberá detener a los pasajeros mientras yo abro la puerta».",s:"Día 2"},
+{c:2,q:"¿Qué chaleco salvavidas corresponde a la persona ajena a la tripulación en un jumpseat?",o:["El chaleco naranjo del pasajero","El spare amarillo de ese jumpseat","El chaleco del TAC","No usa chaleco"],a:1,w:"Se le muestra la ubicación del chaleco salvavidas correspondiente: el spare AMARILLO de ese jumpseat.",s:"Día 2"},
+{c:2,q:"¿Qué es un ABP (Able Bodied Passenger)?",o:["Un pasajero con asistencia especial","Un pasajero físicamente capacitado, seleccionado por la TAC para ayudar en emergencias; su asistencia es voluntaria","Un pasajero frecuente de la aerolínea","Un inspector de la DGAC encubierto"],a:1,w:"ABP: pasajeros físicamente capacitados seleccionados para ayudar en la gestión de emergencias. Ideales: tripulantes de la compañía, militares, policías, bomberos, médicos/paramédicos; de preferencia personas que viajan solas. Su asistencia es voluntaria.",s:"Día 2"},
+{c:2,q:"En una evacuación NO planificada, ¿a quiénes se les asigna la tarea de ABP?",o:["A los pasajeros de primera fila","A los 2 primeros pasajeros físicamente aptos que lleguen a la salida","A los pasajeros de salida de emergencia solamente","A ningún pasajero"],a:1,w:"Cuando no hay tiempo para elegirlos, se asigna la tarea a los 2 primeros pax físicamente aptos que lleguen a la salida, para que ayuden abajo del tobogán a las personas a salir y las alejen del avión.",s:"Día 2"},
+{c:2,q:"¿Cuál es la edad mínima para ocupar un asiento en salida de emergencia?",o:["12 años","15 años","18 años","21 años"],a:1,w:"La edad (siempre que tenga al menos 15 años) y/o la estatura no descalifican a la persona, siempre que conozca todos los requerimientos. La asignación debe ser no discriminatoria.",s:"Día 2"},
+{c:2,q:"Verdadero o falso: un pasajero que usa extensión de cinturón NO puede sentarse en salida de emergencia.",o:["Verdadero","Falso"],a:1,w:"Falso. Los pasajeros que requieren extensión de cinturón no tienen restricción para ocupar asientos en salida de emergencia, siempre que cumplan con los requerimientos.",s:"Día 2"},
+{c:2,q:"Un pasajero en salida de emergencia no cumple los requisitos y se niega a cambiarse de asiento. ¿Qué haces?",o:["Lo dejas ahí para evitar conflicto","Informas al TAC 1 y al Comandante","Llamas a carabineros de inmediato","Le pides a otro pasajero que lo convenza"],a:1,w:"Si no cumple los requisitos y rehúsa cambiarse de asiento, se debe informar al TAC1 y al Comandante.",s:"Día 2"},
+{c:2,q:"El dispositivo de sujeción infantil ACSD está aprobado para niños de…",o:["0 a 10 kilos","10 a 20 kilos","20 a 30 kilos","Cualquier peso"],a:1,w:"El ACSD (Aviation Child Safety Device) está aprobado para niños entre 10 y 20 kilos, debe tener etiqueta del fabricante (FAA Approved for Aircraft Use Only) y lo instala el acompañante, quien es responsable.",s:"Día 2"},
+{c:2,q:"En el embarque con un motor en marcha (estacionamiento remoto), ¿por dónde embarcan/desembarcan los pasajeros?",o:["Por el costado izquierdo, puertas de pasajeros","Por el costado derecho, utilizando las puertas de servicio","Por la puerta que elija el pasajero","Por las salidas del sector alar"],a:1,w:"Se realiza por el costado DERECHO del avión usando las puertas de servicio. El desembarque inicia cuando el personal de aeropuerto lo indica, y durante toda la operación debe permanecer un tripulante de vuelo en el cockpit.",s:"Día 2"},
+{c:2,q:"¿Qué diferencia a un pasajero DEPA de un DEPU?",o:["El DEPA viaja con escolta; el DEPU no requiere escolta ni restricciones","El DEPU viaja esposado; el DEPA no","El DEPA es inadmisible; el DEPU es deportado","Son lo mismo"],a:0,w:"DEPU: deportado que no requiere escolta ni otro tipo de restricción. DEPA: deportado que requiere viajar con escolta (sin las restricciones del transporte de detenidos). INAD: pasajero inadmisible (documentación/falsificación).",s:"Día 2"},
+{c:2,q:"Un pasajero código WCHC…",o:["Sube escaleras solo, pero necesita silla entre el avión y la terminal","Necesita ayuda en escaleras, pero se desplaza solo en cabina","No puede caminar y se desplaza con silla de pasillo; va acompañado si su inmovilidad le impide asistirse en una evacuación","Es un pasajero deportado"],a:2,w:"WCHC: no puede caminar, usa silla de pasillo; es autosuficiente salvo que su grado de inmovilidad le impida asistirse a sí mismo en una evacuación, en cuyo caso debe ir acompañado.",s:"Día 2"},
+{c:2,q:"¿Qué describe al código WCHR?",o:["Pax autosuficiente para escaleras y para desplazarse en la aeronave, pero necesita silla de ruedas entre la aeronave y la terminal","Pax que necesita ayuda para subir y bajar escaleras","Pax que no puede caminar","Pax que viaja con perro de asistencia"],a:0,w:"WCHR: autosuficiente en escaleras y dentro de la aeronave; necesita silla u otro medio solo para el traslado entre la aeronave y la terminal. WCHS: requiere ayuda en escaleras. WCHC: no puede caminar.",s:"Día 2"},
+{c:2,q:"El briefing a pasajeros con discapacidad incluye indicar el momento oportuno para moverse a la salida en una evacuación. ¿Cuál es?",o:["Inmediatamente al escuchar la orden","Cuando la mayoría de los pasajeros del sector estén fuera del pasillo","Al final, cuando el avión esté vacío","Cuando el Comandante lo llame por su nombre"],a:1,w:"Se instruye: ruta hacia la salida a nivel de piso más cercana, ubicación de otras salidas, el momento oportuno (cuando la mayoría del sector esté fuera del pasillo) y preguntar la manera más apropiada de ayudarlo.",s:"Día 2"},
+{c:2,q:"¿Cuál de estos pasajeros REQUIERE certificado Medif para volar?",o:["Embarazada de 20 semanas","Embarazada de 32 semanas","Niño de 3 años","Pasajero con yeso en un brazo"],a:1,w:"Requieren Medif: infantes menores a 7 días, embarazadas desde la semana 29 a la 38, primeros 7 días post parto o cirugía, enfermedades infectocontagiosas, enfermedad terminal, enfermedad mental de alto riesgo, fractura en extremidad INFERIOR con yeso/inmovilizador, y quien viaje con concentrador de O2 portátil.",s:"Día 2"},
+{c:2,q:"¿Qué es el Medif?",o:["Un seguro de viaje","Un documento emitido por un médico que certifica que la salud del pasajero es compatible con el vuelo","Una lista de medicamentos permitidos a bordo","El registro médico de la tripulación"],a:1,w:"Medif: documento emitido por un médico, requerido por la compañía en casos específicos, para certificar que el estado de salud de un pasajero discapacitado, enfermo o con necesidades especiales es compatible con el vuelo.",s:"Día 2"},
+{c:2,q:"Antes del despegue, un pasajero te comenta que ve hielo adherido al ala. ¿Qué haces?",o:["Le explicas que es normal y sigues con el servicio","Reportas inmediatamente al Comandante","Esperas a después del despegue para avisar","Lo anotas en el CLB al final del vuelo"],a:1,w:"El TAC debe reportar INMEDIATAMENTE al Comandante si observa o recibe información de un pasajero de que hay escarcha, hielo, nieve o aguanieve adherida a las alas antes del despegue. Un TAC fuera de servicio lo reporta a un TAC en servicio.",s:"Día 2"},
+{c:2,q:"¿Qué establece el Clean Aircraft Concept?",o:["Que la cabina debe estar aseada antes del embarque","La prohibición de despegar cuando hay escarcha, hielo, nieve o aguanieve adherida a las superficies críticas","Que los motores deben lavarse cada semana","El protocolo de fumigación de cabina"],a:1,w:"Clean Aircraft Concept: prohibición de despegar o intentar despegar cuando cualquier parte de las superficies críticas (alas, alerones, elevadores, spoilers, empenajes, etc.) tiene contaminación adherida o adhiriéndose.",s:"Día 2"},
+{c:2,q:"¿Cuál es la diferencia entre anti-icing y de-icing?",o:["Anti-icing previene la formación de hielo; de-icing lo remueve de las superficies críticas","De-icing previene; anti-icing remueve","Son el mismo procedimiento","Anti-icing es en vuelo; de-icing en tierra"],a:0,w:"Para PREVENIR la formación de hielo se efectúa anti-icing (antihielo). De-icing (deshielo) es el procedimiento para REMOVERLO de las superficies críticas y dejarlas limpias.",s:"Día 2"},
+{c:2,q:"Verdadero o falso: hay un máximo de 2 perros de asistencia permitidos en cabina.",o:["Verdadero","Falso"],a:1,w:"Falso. No hay restricción de cantidad de perros de asistencia en cabina. Deben estar identificados con distintivo oficial, no obstruir pasillos ni ubicarse en asientos de salida de emergencia, y no presentar signos de enfermedad o agresividad.",s:"Día 2"},
+{c:2,q:"Por peso y balance, algunas filas no pueden ocuparse. ¿Cómo se manejan esos asientos?",o:["Se bloquean con carteles visibles","No se bloquean en forma visible; los TAC aseguran que no sean ocupados durante el tiempo indicado por el Comandante","Se les pone cinta de seguridad","Se retiran del avión"],a:1,w:"Los asientos NO serán bloqueados en forma visible: los TAC deben asegurar que no sean ocupados. Todo cambio de ubicación de pasajeros que pudiera afectar la estiba debe coordinarse con el Comandante.",s:"Día 2"},
+{c:2,q:"¿Qué datos se registran de un equipaje voluminoso que se envía a bodega durante el embarque?",o:["Peso y color","MP, nombre, asiento y destino","Solo el número de vuelo","Ninguno"],a:1,w:"Se chequean equipajes voluminosos que no puedan guardarse y asegurarse, para enviarlos a bodega registrando: MP, nombre, asiento y destino.",s:"Día 2"},
+
+/* ---------- CAT 3 · PUERTAS Y DESPEGUE ---------- */
+{c:3,q:"En operación normal, ¿para qué se usan las puertas del lado izquierdo y las del lado derecho?",o:["Izquierdo: catering · Derecho: pasajeros","Izquierdo: embarque y desembarque de pasajeros · Derecho: abastecimiento de catering","Ambos lados para pasajeros","Ambos lados para servicio"],a:1,w:"Las puertas del lado izquierdo se usan para embarque/desembarque de pasajeros; las del lado derecho para abastecimiento de catering. En emergencia, TODAS son consideradas salidas principales.",s:"Día 3"},
+{c:3,q:"En una emergencia, ¿cuáles puertas se consideran salidas principales?",o:["Solo las del lado izquierdo","Solo las delanteras","Todas","Solo las que tienen tobogán"],a:2,w:"En emergencia, todas las puertas son consideradas salidas principales.",s:"Día 3"},
+{c:3,q:"La puerta 1R es…",o:["Delantera izquierda, de acceso de pasajeros","Delantera derecha, de servicio","Posterior derecha, de servicio","Posterior izquierda, de pasajeros"],a:1,w:"1L: delantera izquierda (acceso pasajeros) · 1R: delantera derecha (servicio) · 4L: posterior izquierda (acceso pasajeros) · 4R: posterior derecha (servicio).",s:"Día 3"},
+{c:3,q:"¿Qué caracteriza a las salidas del sector alar?",o:["Están a nivel de piso","No se encuentran a nivel de piso y, junto a las puertas, constituyen las salidas de emergencia del avión","Solo se usan para catering","No cuentan como salidas de emergencia"],a:1,w:"Son salidas que NO están a nivel de piso, ubicadas en el sector de las alas; junto con las puertas constituyen las salidas de emergencia del avión.",s:"Día 3"},
+{c:3,q:"¿Cuál es el flujo de evacuación estimado de un tobogán?",o:["1 pasajero por segundo por cada carril","5 pasajeros por segundo","1 pasajero cada 10 segundos","2 pasajeros por minuto"],a:0,w:"Flujo estimado: 1 pasajero por segundo por cada carril. Los toboganes son unidades inflables de color gris, con inflado automático y manual. Para evacuar se salta con pies y manos hacia adelante.",s:"Día 3"},
+{c:3,q:"¿Dónde están almacenados los toboganes de las puertas?",o:["En el techo de la cabina","En compartimientos en la parte inferior de cada puerta","Bajo los asientos","En el galley posterior"],a:1,w:"Los toboganes se almacenan en compartimientos en la parte inferior de cada puerta; los toboganes rampa, en las salidas de emergencia del sector alar.",s:"Día 3"},
+{c:3,q:"Antes de solicitar el cierre de puertas, el TAC1 confirma con la tripulación que…",o:["El catering está completo y las ventas listas","Briefing a pax de salidas EGA hecho, briefing a necesidades especiales hecho, equipaje guardado y pax en sus asientos","Los pilotos ya almorzaron","Los baños están desocupados"],a:1,w:"TAC1 confirma: briefing a pax en salidas de emergencia realizado, briefing a pax con necesidades especiales (si corresponde), equipaje de mano guardado y asegurado, y pasajeros en sus asientos. Con el total de pax informado, solicita autorización al Piloto al Mando para el cierre.",s:"Día 3"},
+{c:3,q:"¿Cuál es la orden del Piloto al Mando para el ARMADO de toboganes?",o:["«Tripulación, puertas en manual, cross check y reportar»","«Tripulación, puertas en automático, cross check y reportar»","«Tripulación, armar toboganes ahora»","«Tripulación, preparar cabina»"],a:1,w:"Con el puente/escalera retirados y el área despejada, el Piloto al Mando ordena vía PA: «TRIPULACIÓN, PUERTAS EN AUTOMÁTICO, CROSS CHECK Y REPORTAR».",s:"Día 3"},
+{c:3,q:"¿Cuál es la orden para el DESARMADO de toboganes?",o:["«Tripulación, puertas en automático, cross check y reportar»","«Tripulación, puertas en manual, cross check y reportar»","«Tripulación, desarmar y desembarcar»","«Tripulación, cabina libre»"],a:1,w:"Detenido el avión en posición final, el Piloto al Mando ordena vía PA: «TRIPULACIÓN, PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR». La TM verifica en ECAM y luego apaga la señal de cinturones.",s:"Día 3"},
+{c:3,q:"En el desarmado, ¿qué verifica cada TAC responsable de puerta?",o:["Solo su propia puerta","Su puerta y la puerta contraria (cross check)","Las cuatro puertas","El panel ECAM"],a:1,w:"El TAC desarma y verifica TOBOGÁN DESARMADO en su puerta y en la puerta contraria (cross check). El TAC1 pide estatus y confirma en el FAP puertas en manual (ámbar).",s:"Día 3"},
+{c:3,q:"¿Cómo es el procedimiento de apertura de puertas desde el exterior en operación normal?",o:["El TAC abre apenas se detiene el avión","Personal de tierra golpea la puerta, el TAC da conformidad mostrando el pulgar arriba a través del visor, y personal de tierra abre","El Comandante abre desde el cockpit","Se abre automáticamente al apagar motores"],a:1,w:"La política en operación normal es que las puertas se abran DESDE EL EXTERIOR: personal de tierra golpea, el TAC1 o el responsable de la puerta muestra el pulgar hacia arriba por el visor (comunicando que está alejado), y personal de tierra abre.",s:"Día 3"},
+{c:3,q:"¿Cuándo puede un TAC abrir una puerta desde el interior en operación normal?",o:["Cuando lo estime conveniente","Solo en situaciones de contingencia, previa autorización del Comandante al TAC1","Cuando el pasajero tenga apuro","Nunca, bajo ninguna circunstancia"],a:1,w:"Solo en contingencia, previa autorización del Comandante al TAC1. La puerta abierta debe contar con manga o escalera; si no hay nada, se coloca la cinta de seguridad.",s:"Día 3"},
+{c:3,q:"Con una salida inoperativa, la demostración de seguridad…",o:["Se hace por video normalmente","Se hace en vivo, excluyendo la salida afectada, y la puerta debe indicarse visiblemente con cartel","No se hace","Se hace solo para los pasajeros cercanos"],a:1,w:"La demo se hará EN VIVO excluyendo la salida afectada, y la puerta inoperativa DEBE indicarse visiblemente con cartel. El Comandante instruye al TAC1 (cantidad de pax, bloqueo de filas, etc.) y los pasajeros deben ser advertidos.",s:"Día 3"},
+{c:3,q:"¿Entre qué momentos rige la cabina estéril?",o:["Del despegue al aterrizaje","Desde el cierre de puertas hasta los 10.000 ft, y desde los 10.000 ft hasta la apertura de puertas","Solo durante el rodaje","Durante todo el vuelo"],a:1,w:"Cabina estéril: desde el cierre de puertas hasta los 10.000 ft y desde los 10.000 ft hasta la apertura de puertas. En fases críticas los pilotos no pueden ser interrumpidos salvo situación anormal o emergencia.",s:"Día 3"},
+{c:3,q:"¿Quién incorporó el concepto de cabina estéril y en qué año?",o:["La OACI en 1990","La FAA (Federal Aviation Administration) en 1981","La DGAC en 2000","IATA en 1975"],a:1,w:"La FAA lo incorporó en su regulación en 1981, tras investigar accidentes en que la falta de concentración en fases críticas fue factor contribuyente.",s:"Día 3"},
+{c:3,q:"¿Qué 4 elementos es mandatorio instruir al pasajero en la DEMO antes del despegue?",o:["Salidas de emergencia, cinturón de seguridad, sistema de O2 y chaleco salvavidas","Menú, entretenimiento, wifi y baños","Cinturón, mesa, ventana y luz de lectura","Salidas, equipaje, PEDs y reclinación"],a:0,w:"Es mandatorio instruir sobre: salidas de emergencia (EGA), cinturón de seguridad, sistema de oxígeno y chaleco salvavidas.",s:"Día 3"},
+{c:3,q:"Verdadero o falso: durante el rodaje se puede entregar servicio de bebidas si es breve.",o:["Verdadero","Falso"],a:1,w:"Falso. No está permitido proporcionar servicios de atención a bordo (alimentos o bebidas) durante rodajes, despegue o aterrizaje. Todos los pasajeros deben permanecer sentados con cinturón abrochado.",s:"Día 3"},
+{c:3,q:"¿Cuál es el aviso del punto de decisión para el despegue?",o:["«Tripulación, cabina estéril»","«Tripulación, próximos al despegue»","«Tripulación, puertas en automático»","«Tripulación, preparar demo»"],a:1,w:"Para el despegue: «TRIPULACIÓN, PRÓXIMOS AL DESPEGUE». En descenso: «TRIPULACIÓN, PRÓXIMOS AL ATERRIZAJE». Es el punto en el cual, a más tardar, el TAC1 debe reportar el estado de la cabina (CABINA LIBRE / CABINA NO ASEGURADA).",s:"Día 3"},
+{c:3,q:"¿Cuándo debe efectuarse el reporte de «cabina libre»?",o:["Mientras se recorre la cabina","Cuando los TAC están sentados y asegurados con cinturón y arnés","Después del despegue","Antes del briefing"],a:1,w:"El reporte de cabina libre DEBE efectuarse cuando los TAC están sentados y asegurados con cinturón y arnés. El TAC1 deja el FAP en CABIN STATUS y desde su asiento presiona CABIN READY.",s:"Día 3"},
+{c:3,q:"El chequeo de cabina libre verifica, entre otros:",o:["Cinturones ajustados, mesas aseguradas, respaldos verticales, equipaje guardado, pasillos libres, galleys y baños asegurados","Solo que no haya nadie de pie","El nivel de combustible","La temperatura de la cabina"],a:0,w:"Se verifica: cinturones ajustados, mesas aseguradas, respaldos verticales, briefing a pax de salida EGA, equipaje guardado, puertas y pasillos libres, briefing de atenciones especiales, y galleys y baños asegurados.",s:"Día 3"},
+{c:3,q:"En el chequeo pre-vuelo de asientos, el TAC revisa al menos 8 asientos aleatorios de su zona. ¿Qué revisa?",o:["Cinturón de seguridad, cojín de flotación/salvavidas y tarjeta de seguridad","Limpieza, reclinación y luz","Apoyabrazos, mesa y ventana","Bolsillo, revista y bolsa de mareo"],a:0,w:"En al menos 8 asientos aleatorios de su zona asignada revisa: cinturón de seguridad, cojín como elemento de flotación/salvavidas y tarjeta de seguridad (o tarjeta de salida de emergencia si corresponde).",s:"Día 3"},
+{c:3,q:"Todo pasajero mayor de cierta edad debe disponer de asiento con cinturón. ¿Cuál es esa edad?",o:["Mayor de 2 años","Mayor de 5 años","Mayor de 7 años","Mayor de 12 años"],a:0,w:"Todo avión de pasajeros debe disponer de un asiento con cinturón para cada persona MAYOR de 2 años. Los menores de 2 años son infantes: no ocupan asiento ni servicio a bordo.",s:"Día 3"},
+{c:3,q:"¿Quiénes están exceptuados de la prohibición de acceso a la cabina de mando?",o:["Cualquier familiar del Comandante","Inspectores IOA/IA de la DGAC, examinadores designados e instructores, EOV y empleados del operador con licencia o autorización escrita","Pasajeros frecuentes categoría platino","Personal de tierra del aeropuerto"],a:1,w:"Excepciones: (1) Inspectores de Operaciones Aéreas y Aeronavegabilidad de la DGAC, (2) pilotos examinadores designados e instructores del operador, (3) encargados de operaciones de vuelo (EOV), (4) empleados del operador con licencia aeronáutica o autorización escrita. El Piloto al Mando puede condicionar el acceso por seguridad.",s:"Día 3"},
+{c:3,q:"¿Qué limita el número de personas dentro de la cabina de mando?",o:["El criterio del Comandante solamente","El número de asientos disponibles con sus respectivos arneses y máscaras quick donning","El espacio físico disponible de pie","Un máximo fijo de 3 personas"],a:1,w:"No debe ser mayor al número de asientos disponibles que cuenten con arneses de seguridad y máscaras quick donning. Además, se instruye permanecer en silencio en rodaje, despegue, ascenso, aproximación y aterrizaje.",s:"Día 3"},
+{c:3,q:"¿Para qué ajusta la tripulación la iluminación de la cabina?",o:["Para ahorrar energía","Para incrementar la visibilidad, o disminuir la luminosidad y prevenir dificultad de observación por cambios de luz exterior","Solo por estética del servicio","Para que los pasajeros duerman"],a:1,w:"La iluminación se ajusta para incrementar la visibilidad de cabina, objetos y personas, o para disminuir la luminosidad y prevenir dificultad de observar la cabina por cambios de iluminación del exterior (ej: DIM 2).",s:"Día 3"},
+
+/* ---------- CAT 4 · EN VUELO Y EVENTOS ---------- */
+{c:4,q:"¿Qué sectores componen el «área crítica»?",o:["Galley posterior y baños traseros","Galley delantero, baño delantero y sector frente a las puertas 1L y 1R","El cockpit y los jumpseats","Las salidas del sector alar"],a:1,w:"Área crítica: sector de galley delantero, baño delantero y sector frente a las puertas 1L y 1R. Se protege en prevención de actos de interferencia ilícita.",s:"Día 4"},
+{c:4,q:"¿Cómo queda el «área crítica asegurada»?",o:["Con la cortina cerrada","Sin pasajeros, baño desocupado y bloqueado, trolley cruzado (sin elementos en su cubierta) impidiendo el paso, y un TAC resguardando","Con un cartel de no pasar","Con la puerta del cockpit abierta para vigilar"],a:1,w:"Área crítica asegurada: sin pasajeros, baño desocupado y bloqueado, trolley sin elementos en su cubierta cruzado frente al pasillo para impedir el paso, y un TAC resguardando el área.",s:"Día 4"},
+{c:4,q:"Verdadero o falso: los pasajeros nunca pueden circular por el área crítica.",o:["Verdadero","Falso"],a:1,w:"Falso. Los pasajeros pueden circular por el área crítica para acceder al baño; el TAC debe estar alerta a comportamientos inusuales o actividad sospechosa. La TM además supervisa por las cámaras de vigilancia.",s:"Día 4"},
+{c:4,q:"Si un piloto sale del cockpit sobre 25.000 pies, ¿qué debe hacer el piloto que queda a los controles?",o:["Descender de inmediato","Colocarse y usar la máscara de oxígeno hasta que el otro piloto retorne","Llamar al TAC 1 por PA","Activar el piloto automático y descansar"],a:1,w:"Sobre 25.000 ft, el piloto que permanece a los controles debe colocarse y usar la máscara de O2 hasta que el otro retorne. Además, un TAC ingresa y permanece en la cabina de mando: debe conocer las máscaras Quick Donning y permanecer sentado con cinturón.",s:"Día 4"},
+{c:4,q:"Cuando un piloto sale momentáneamente del cockpit, ¿quién debe ingresar y permanecer ahí?",o:["Nadie","Un TAC, que debe reconocer y saber usar las máscaras Quick Donning","Un pasajero ABP","El mecánico de a bordo"],a:1,w:"Se coordina con la tripulación de cabina para que un TAC ingrese y permanezca en la cabina de mando, conociendo las máscaras Quick Donning y sentado con cinturón de seguridad.",s:"Día 4"},
+{c:4,q:"En vuelos hacia SCL, ¿cuánto tiempo antes del cruce de cordillera se hace el anuncio y procedimiento?",o:["5 minutos antes","10 minutos antes","30 minutos antes","1 hora antes"],a:1,w:"Hacia SCL: fraseología y procedimiento 10 minutos antes del cruce. Se cierran funciones de servicio, se asegura el galley, se chequean cinturones, baños bloqueados, OHB cerrados, y cada TAC se asegura en su jumpseat con cinturón y arnés.",s:"Día 4"},
+{c:4,q:"En vuelos que despegan de SCL con cruce de cordillera, la tripulación permanece sentada con cinturón y arnés…",o:["Solo durante el despegue","Desde el despegue hasta terminado el cruce de cordillera","Hasta los 10.000 ft","Durante todo el vuelo"],a:1,w:"Tripulación de Mando y Cabina permanecerá desde el despegue hasta terminado el cruce de cordillera en sus asientos, con cinturón de seguridad y arnés de hombros abrochados.",s:"Día 4"},
+{c:4,q:"¿Cada cuánto se efectúan los chequeos preventivos como mínimo?",o:["Cada 15 minutos en todos los vuelos","Cada 30 minutos en vuelos de más de 1 hora, mientras no se esté entregando servicio","Cada hora","Solo al inicio y final del vuelo"],a:1,w:"Mínimo cada 30 minutos en vuelos de más de 1 hora, mientras no se entrega servicio. El TAC1 es responsable de organizarlos y velar por su cumplimiento. Buscan detectar humo, recalentamiento, olores, derrames, hielo, etc.",s:"Día 4"},
+{c:4,q:"¿Qué repasa el TAC en la «revisión silenciosa» (silence review)?",o:["El menú del servicio y las ventas","Órdenes para evacuar, salidas a utilizar, geografía, equipos EGA, ABP, toboganes y pasajeros a cargo","La lista de pasajeros VIP","Los anuncios de bienvenida"],a:1,w:"La revisión silenciosa repasa mentalmente: órdenes para evacuar, salidas a utilizar, geografía, equipos de emergencia, ABP, toboganes y pasajeros a cargo. Se realiza para el despegue y se repite en el descenso.",s:"Día 4"},
+{c:4,q:"Posición del TAC para despegue/aterrizaje en jumpseat mirando hacia ATRÁS del avión:",o:["Mentón tocando el pecho","Cabeza apoyada contra el apoyacabeza","Cabeza entre las rodillas","Mirando hacia la ventana"],a:1,w:"Mirando hacia atrás: cabeza apoyada contra el apoyacabeza. Mirando hacia adelante: mentón tocando el pecho. Siempre: sentado pegado al respaldo, cinturón sobre caderas, arnés ajustado, pies separados apoyados en el suelo y manos sobre las piernas.",s:"Día 4"},
+{c:4,q:"Aparece «humo blanco» saliendo de los conductos del techo de la cabina. ¿Qué es lo más probable y qué haces?",o:["Incendio: ordenar evacuación inmediata","Condensación: informar al Comandante y dar a los pasajeros una adecuada explicación","Fumigación automática: no hacer nada","Descompresión: lanzar máscaras"],a:1,w:"La CONDENSACIÓN es humedad que se manifiesta con apariencia de humo blanco desde los conductos del techo. El TAC debe estar familiarizado con el fenómeno, informar al Comandante y explicar adecuadamente a los pasajeros.",s:"Día 4"},
+{c:4,q:"¿Cómo se aplica el producto en la fumigación de cabina en vuelo?",o:["Hacia arriba, desde la altura del hombro","Hacia abajo, desde la altura de la cadera","Directamente sobre los pasajeros","Solo en los baños"],a:1,w:"El producto (aprobado por la autoridad sanitaria) se aplica HACIA ABAJO desde la altura de la cadera. Antes, el TAC advierte a los pasajeros con el anuncio correspondiente. En tierra fumigan los funcionarios del Servicio de Salud.",s:"Día 4"},
+{c:4,q:"Un TAC queda incapacitado durante el vuelo. ¿Qué corresponde hacer?",o:["Continuar como si nada","Ubicarlo en un asiento de pasajero, darle primeros auxilios e instruir a un ABP sentado próximo a las salidas de emergencia","Desviar el vuelo siempre","Pedirle a un pasajero que asuma sus funciones de puerta"],a:1,w:"Se le ubica en asiento de pasajero y se dan primeros auxilios. Se instruye a un ABP próximo a las salidas (porque el TAC a cargo de 2 puertas podría no poder abrir). Se puede retornar a base con un TAC menos previa coordinación y autorización de la DGAC.",s:"Día 4"},
+{c:4,q:"Para operar un A320 con 3 TAC (retorno a base), ¿qué hace mantenimiento con los asientos?",o:["Nada","Bloquea el exceso de 150 asientos (las últimas 6 filas de ambos lados)","Bloquea la primera fila","Bloquea las salidas de emergencia"],a:1,w:"Mantenimiento bloquea las últimas 6 filas de ambos lados (A,B,C – D,E,F); en el A320 se debe bloquear el exceso de 150 asientos. La operación con 3 TAC NO es parte de la planificación regular de la compañía.",s:"Día 4"},
+{c:4,q:"Un pasajero desafiante no acata instrucciones de la tripulación, pero sin violencia física. ¿Qué categoría de disruptivo es?",o:["Categoría 1","Categoría 2","Categoría 3","No es disruptivo"],a:1,w:"Categoría 2: afecta la seguridad/higiene/buen orden, actitud desafiante, requiere apoyo del supervisor o personal de seguridad; en la aeronave no acata instrucciones. Cat 1: leve, controlable rápidamente por un funcionario. Cat 3: agresivo y violento, con acción física y/o amenazas.",s:"Día 4"},
+{c:4,q:"Un pasajero agrede físicamente a otro durante el vuelo. ¿Categoría?",o:["Categoría 1","Categoría 2","Categoría 3","Categoría 4"],a:2,w:"Categoría 3: comportamiento agresivo y violento, incluyendo acción física y/o amenazas, que afecta considerablemente la seguridad, higiene o buen orden.",s:"Día 4"},
+{c:4,q:"En el transporte de órganos, ¿dónde se guarda el container y cómo se notifica al Comandante?",o:["En el galley posterior; verbalmente","En el cockpit; mediante NOTOC (Notification to Captain)","En un asiento CBBG; por escrito al aterrizar","En la bodega; no se notifica"],a:1,w:"El TAC1 recibe el container y la documentación; se guardan en el cockpit. El Comandante debe ser notificado mediante NOTOC (Notification to Captain).",s:"Día 4"},
+{c:4,q:"Completa la fraseología de turbulencia: «Estamos pasando por una zona de turbulencia. Vuelve a tu asiento y…»",o:["…espera instrucciones de la tripulación»","…abrocha tu cinturón de seguridad. Muchas gracias»","…sujétate del asiento delantero»","…mantén la calma»"],a:1,w:"«Atención por favor: Estamos pasando por una zona de turbulencia. Vuelve a tu asiento y abrocha tu cinturón de seguridad. Muchas gracias.» / “We are flying through an area of turbulence. Please go back to your seat and fasten your seatbelt.”",s:"Día 4"},
+{c:4,q:"¿Cuál es el aviso del punto de decisión en el descenso?",o:["«Tripulación, próximos al aterrizaje»","«Tripulación, preparar puertas»","«Tripulación, cabina estéril»","«Tripulación, fin del servicio»"],a:0,w:"En descenso: «TRIPULACIÓN, PRÓXIMOS AL ATERRIZAJE». A más tardar en ese punto el TAC1 reporta CABINA LIBRE o CABINA NO ASEGURADA.",s:"Día 4"},
+{c:4,q:"Iniciado el descenso, ¿cuáles son las funciones de la TAC?",o:["Iniciar un último servicio de bebidas","Retirar elementos del servicio, leer fraseología, chequeo de cabina libre, ajustar iluminación (nocturno) e ir a sus puestos; repetir la revisión silenciosa","Abrir las puertas","Desarmar toboganes"],a:1,w:"En descenso: retirar remanentes del servicio (cabina de pax y de mando), leer fraseología, chequeo de cabina libre, ajuste de iluminación en vuelos nocturnos, dirigirse al puesto, dar el «cabina libre» según línea de reporte y repetir la revisión silenciosa.",s:"Día 4"},
+{c:4,q:"En el desembarque, además de asistir prioritariamente a quienes lo requieran, el TAC debe…",o:["Revisar los baños para asegurar que no quede nadie en su interior","Contar el dinero de las ventas","Apagar los motores","Desarmar los jumpseats"],a:0,w:"El desembarque prioriza la asistencia a pasajeros que la requieran e incluye la revisión de los baños para asegurar que no haya nadie en su interior. Luego: sellado de carros y gabinetes, verificación de objetos olvidados y debriefing con toda la tripulación.",s:"Día 4"},
+{c:4,q:"¿Cuándo se realiza el debriefing?",o:["Antes del despegue","Una vez que los pasajeros han desembarcado, con toda la tripulación","Durante el crucero","Al día siguiente por correo"],a:1,w:"El debriefing se realiza con toda la tripulación una vez que los pasajeros han desembarcado del avión.",s:"Día 4"},
+{c:4,q:"Con «luz verde» (carteles de cinturones apagados), la TAC…",o:["Puede descansar en los jumpseats","Coordina la entrega del servicio con la TV, prepara servicio/ventas, hace chequeos preventivos, protege el área crítica y realiza anuncios","Abre la puerta del cockpit","Reparte los chalecos salvavidas"],a:1,w:"Con luz verde: coordinar la entrega de servicio con la Tripulación de Vuelo, preparar servicio/ventas si corresponde, chequeos preventivos de cabina y baños, protección del área crítica y anuncios.",s:"Día 4"},
+{c:4,q:"¿Qué debe hacer el TAC antes de fumigar la cabina?",o:["Nada, se fumiga sin aviso","Advertir a los pasajeros del procedimiento mediante el anuncio correspondiente","Apagar las luces","Pedir permiso a la DGAC"],a:1,w:"Previo a la fumigación, el TAC advertirá a los pasajeros mediante el anuncio: «Es requerimiento de la autoridad sanitaria local aplicar un aerosol en la cabina que no es dañino para tu salud…».",s:"Día 4"}
+];
+
+/* Flashcards: c=categoría, f=frente, b=reverso */
+const CARDS = [
+{c:0,f:"TAC mínima",b:"La que permite evacuar el avión en 90 segundos. 20–50 asientos: 1 TAC · 51–100: 2 TAC · Más de 100: 2 + 1 por cada unidad o parte de unidad de 50."},
+{c:0,f:"Jerarquía a bordo",b:"1) Comandante de la Aeronave · 2) Primer Oficial · 3) TAC 1 · 4) TAC auxiliares en orden jerárquico (TAC2, TAC3, TAC4)."},
+{c:0,f:"Función primaria del TAC",b:"Brindar SEGURIDAD a los pasajeros: prevención, atención de situaciones especiales y actuación ante una emergencia."},
+{c:0,f:"Obligación vs. Responsabilidad",b:"Obligación: conocer leyes, normas, regulaciones y disposiciones. Responsabilidad: aplicar los conocimientos y el entrenamiento en las funciones de seguridad y servicio."},
+{c:0,f:"Documentos del TCP",b:"Bitácora de vuelo (experiencia reciente) · Licencia con habilitación · CMA vigente · Credencial de la empresa · Cédula de identidad · Pasaporte (vuelos internacionales/regionales)."},
+{c:0,f:"TAC adicional (jornada especial)",b:"Participa del briefing como TAC N°5 · Chequea y ocupa el jumpseat 4R · No tiene puerta asignada · En evacuación controla el flujo y asiste al resto."},
+{c:0,f:"Ejecución normal del vuelo",b:"Comienza con la presentación de la TAC en la puerta de embarque, 1 hora antes del vuelo, y finaliza al completar las acciones de post vuelo."},
+{c:1,f:"Briefing (TAC)",b:"Reunión OBLIGATORIA de coordinación antes del vuelo, a cargo del TAC 1 o quien designe. Informa datos del vuelo: TM, matrícula, pax, aeronave, horarios."},
+{c:1,f:"Briefing operacional (TM)",b:"Lo realiza el Comandante; tras él se da por CONSTITUIDA la tripulación. Aborda: documentación, PSV, RT/INFOPS, ruta, aeronave, pax/carga, acceso al cockpit (3 claves), combustible."},
+{c:1,f:"CLB — Cabin Log Book",b:"Libro foliado en triplicado, autocopiativo. Registra uso/daño de equipos de emergencia y fallas de sistemas de cabina. Se escribe en INGLÉS. TAC1 lo chequea antes del vuelo y reporta al Comandante al inicio del descenso."},
+{c:1,f:"Chequeo EEL",b:"Emergency Equipment Location: verificar CANTIDAD, UBICACIÓN y OPERATIVIDAD. Se hace al abordar por primera vez, con cambio de tripulación o si el avión quedó sin supervisión."},
+{c:1,f:"Conciencia situacional",b:"PERCEPCIÓN → COMPRENSIÓN → PROYECCIÓN. Alerta constante desde el briefing y en todas las fases del vuelo."},
+{c:1,f:"Interfono",b:"Comunicación normal entre TAC y TM. Opera independiente del PA y accesible desde al menos un puesto de TAC. Prohibido llamar al cockpit en cabina estéril, excepto emergencia."},
+{c:2,f:"CBBG (Cabin Baggage)",b:"Equipaje en asiento pagado (instrumentos, valijas diplomáticas, obras de arte). Asiento VENTANA, pax contiguo, máx. 1 asiento extra por pax, sin mercancías peligrosas, sin obstruir letreros, totalmente cubierto."},
+{c:2,f:"ABP — Able Bodied Passenger",b:"Pax físicamente capacitado que ayuda voluntariamente en emergencias (tripulantes, militares, policías, bomberos, médicos). Preferir quienes viajan solos. En evacuación no planificada: los 2 primeros aptos que lleguen a la salida."},
+{c:2,f:"Salida de emergencia: requisitos de pax",b:"Mínimo 15 años · asignación no discriminatoria · capaz de operar la salida · la extensión de cinturón NO restringe · briefing antes del cierre de puertas · si rehúsa cambiarse: informar a TAC1 y Comandante."},
+{c:2,f:"WCHR · WCHS · WCHC",b:"WCHR: autosuficiente, silla solo avión↔terminal. WCHS: necesita ayuda en escaleras. WCHC: no camina, silla de pasillo; acompañado si no puede asistirse en evacuación."},
+{c:2,f:"Medif",b:"Certificado médico de compatibilidad con el vuelo. Casos: infante <7 días, embarazo semanas 29–38, 7 días post parto/cirugía, infectocontagiosas, enfermedad terminal, mental de alto riesgo, yeso en extremidad inferior, concentrador de O2."},
+{c:2,f:"INAD · DEPU · DEPA",b:"INAD: inadmisible (documentación/falsificación). DEPU: deportado SIN escolta. DEPA: deportado CON escolta (sin restricciones de detenido)."},
+{c:2,f:"Clean Aircraft Concept",b:"Prohibido despegar con escarcha/hielo/nieve/aguanieve en superficies críticas. Anti-icing PREVIENE · De-icing REMUEVE. Hielo observado → reporte INMEDIATO al Comandante."},
+{c:2,f:"ACSD (sujeción infantil)",b:"Aviation Child Safety Device: arnés aprobado FAA para niños de 10 a 20 kg. Lo provee e instala el acompañante (responsable). Etiqueta «FAA Approved for Aircraft Use Only»."},
+{c:3,f:"Puertas del avión",b:"1L/4L (izquierda): embarque y desembarque de pax · 1R/4R (derecha): servicio/catering. En EMERGENCIA todas son salidas principales. Sector alar: salidas NO a nivel de piso."},
+{c:3,f:"Toboganes",b:"Unidades inflables GRISES bajo cada puerta (rampa en sector alar). Inflado automático y manual. Flujo: 1 pax/segundo por carril. Se salta con pies y manos hacia adelante."},
+{c:3,f:"Órdenes de armado/desarmado",b:"Armado: «TRIPULACIÓN, PUERTAS EN AUTOMÁTICO, CROSS CHECK Y REPORTAR». Desarmado: «…PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR». Cada TAC verifica su puerta y la contraria; TAC1 confirma en FAP; TM verifica en ECAM."},
+{c:3,f:"Cabina estéril",b:"Desde el cierre de puertas hasta 10.000 ft y desde 10.000 ft hasta la apertura de puertas. Concepto FAA, 1981. No interrumpir a los pilotos salvo anormalidad o emergencia."},
+{c:3,f:"DEMO mandatoria",b:"Antes del despegue instruir: salidas de emergencia · cinturón de seguridad · sistema de oxígeno · chaleco salvavidas."},
+{c:3,f:"Cabina libre",b:"Se reporta con los TAC SENTADOS y asegurados (cinturón + arnés). Puntos de decisión: «PRÓXIMOS AL DESPEGUE» / «PRÓXIMOS AL ATERRIZAJE». TAC1: FAP en CABIN STATUS → botón CABIN READY."},
+{c:3,f:"Apertura de puertas (normal)",b:"Desde el EXTERIOR: personal de tierra golpea → TAC muestra pulgar arriba por el visor → tierra abre. Interior: solo contingencia con autorización del Comandante; sin manga/escalera → cinta de seguridad."},
+{c:3,f:"Chequeo de asientos (pre-vuelo)",b:"Mínimo 8 asientos aleatorios por zona: cinturón, cojín de flotación/salvavidas y tarjeta de seguridad. Asiento con cinturón para toda persona mayor de 2 años (menores = infantes, sin asiento)."},
+{c:4,f:"Área crítica",b:"Galley delantero + baño delantero + sector frente a puertas 1L/1R. Asegurada: sin pax, baño bloqueado, trolley cruzado sin elementos, un TAC resguardando. TM vigila por cámaras."},
+{c:4,f:"Ausencia de un piloto",b:"Sobre 25.000 ft: el piloto restante usa máscara de O2. Un TAC ingresa y permanece en el cockpit: conoce las Quick Donning y va sentado con cinturón."},
+{c:4,f:"Chequeos preventivos",b:"Mínimo cada 30 minutos en vuelos de más de 1 hora (sin servicio en curso). Organiza el TAC1. Detectan: humo, recalentamiento, olores, derrames, hielo, comportamiento de pax."},
+{c:4,f:"Revisión silenciosa",b:"Repaso mental del TAC: órdenes para evacuar · salidas a utilizar · geografía · equipos EGA · ABP · toboganes · pax a cargo. Antes del despegue y de nuevo en el descenso."},
+{c:4,f:"Posición de despegue/aterrizaje del TAC",b:"Pegado al respaldo, cinturón sobre caderas, arnés ajustado, pies separados y apoyados, manos sobre las piernas. Mirando ADELANTE: mentón al pecho. Mirando ATRÁS: cabeza contra el apoyacabeza."},
+{c:4,f:"Pasajeros disruptivos",b:"Cat 1: leve, lo controla rápido un funcionario. Cat 2: desafiante, requiere supervisor/seguridad, no acata instrucciones. Cat 3: agresivo y violento, acción física y/o amenazas."},
+{c:4,f:"Cruce de cordillera",b:"Hacia SCL: anuncio + procedimiento 10 min antes. Desde SCL: tripulación sentada con cinturón y arnés desde el despegue hasta terminar el cruce. Se asegura galley, baños, OHB y cinturones de pax."},
+{c:4,f:"Transporte de órganos",b:"TAC1 recibe container + documentación → se guardan en el COCKPIT. Comandante notificado mediante NOTOC (Notification to Captain)."},
+{c:4,f:"Incapacitación de un TAC",b:"Ubicarlo en asiento de pax + primeros auxilios. Instruir un ABP cerca de las salidas. Retorno a base con un TAC menos: autorización DGAC. A320 con 3 TAC: bloquear exceso de 150 asientos (últimas 6 filas)."}
+];
+
+/* ============================ estado ============================ */
+const KEY="oyr-pia-v1";
+let S={stats:{},best:0,exams:[]};
+try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function stat(i){return S.stats[i]||(S.stats[i]={s:0,r:0,w:0,last:null});}
+
+/* dominio: última respuesta correcta */
+function catMastery(c){
+  const qs=QS.map((q,i)=>({q,i})).filter(x=>x.q.c===c);
+  const dom=qs.filter(x=>{const st=S.stats[x.i];return st&&st.last==="r";}).length;
+  return {dom,total:qs.length,pct:qs.length?Math.round(dom/qs.length*100):0};
+}
+function totalMastery(){
+  let dom=0;for(let i=0;i<QS.length;i++){const st=S.stats[i];if(st&&st.last==="r")dom++;}
+  return Math.round(dom/QS.length*100);
+}
+function answeredCount(){return Object.values(S.stats).filter(st=>st.s>0).length;}
+function failedIdx(){return QS.map((q,i)=>i).filter(i=>{const st=S.stats[i];return st&&st.last==="w";});}
+
+/* selección ponderada: no vistas pesan 4; falladas pesan más */
+let recent=[];
+function pickQ(cat){
+  let pool=QS.map((q,i)=>({q,i})).filter(x=>cat==null||x.q.c===cat);
+  const fresh=pool.filter(x=>!recent.includes(x.i));
+  if(fresh.length>=3)pool=fresh;
+  let total=0;const weights=pool.map(x=>{
+    const st=S.stats[x.i];let w;
+    if(!st||st.s===0)w=4;
+    else w=1+3*(st.w/(st.r+st.w||1))+(st.last==="w"?2:0);
+    total+=w;return w;
+  });
+  let r=Math.random()*total;
+  for(let k=0;k<pool.length;k++){r-=weights[k];if(r<=0){remember(pool[k].i);return pool[k].i;}}
+  remember(pool[pool.length-1].i);return pool[pool.length-1].i;
+}
+function remember(i){recent.push(i);if(recent.length>8)recent.shift();}
+function record(i,ok){
+  const st=stat(i);st.s++;ok?st.r++:st.w++;st.last=ok?"r":"w";save();
+}
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+/* ============================ vistas ============================ */
+const view=document.getElementById("view");
+let session={streak:0,points:0};
+let examT=null;
+
+function go(fn,...args){ if(examT){clearInterval(examT);examT=null;} view.innerHTML=""; fn(...args); window.scrollTo({top:0}); }
+
+/* ---------- HOME ---------- */
+function Home(){
+  const pct=totalMastery();
+  const el=document.createElement("div");el.className="screen";
+  const fails=failedIdx().length;
+  el.innerHTML=`
+    <div class="hero">
+      <div class="eyebrow">Tarjeta de embarque · ${QS.length} preguntas · ${CARDS.length} tarjetas</div>
+      <h1>Hola, ${NOMBRE} ✈</h1>
+      <p class="sub">Tu simulador de estudio del curso OYR. Cada respuesta trae su explicación y la fuente, y la app repite más lo que te cuesta.</p>
+      <div class="stats-strip">
+        <div class="stat"><b>${pct}%</b><span>Dominio</span></div>
+        <div class="stat"><b>${answeredCount()}/${QS.length}</b><span>Vistas</span></div>
+        <div class="stat"><b>${S.best}</b><span>Mejor racha</span></div>
+      </div>
+    </div>
+    <div class="modes"></div>`;
+  const modes=el.querySelector(".modes");
+  const M=[
+    ["RUL","🎡","Ruleta","Gira la ruleta tipo preguntados: la suerte (y tus puntos débiles) eligen la categoría.","Modo clásico",()=>go(Wheel)],
+    ["EST","📚","Estudio por categoría","Recorre una categoría completa a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(CatPick)],
+    ["EXM","🛫","Examen de vuelo","20 preguntas de todo el curso, con nota final y revisión de errores.","Simulacro",()=>go(ExamStart)],
+    ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial: definiciones, números y fraseologías.","Memoria",()=>go(Flash)],
+    ["ERR","🩹","Repasar mis errores",fails?`Tienes ${fails} pregunta${fails===1?"":"s"} pendiente${fails===1?"":"s"} de dominar. A pulirlas.`:"Sin errores pendientes por ahora. ¡Impecable!","Refuerzo",()=>go(Redo)],
+    ["PSP","🛂","Mi pasaporte","Tu avance por categoría, timbres de dominio e historial de exámenes.","Progreso",()=>go(Passport)]
+  ];
+  M.forEach(([code,icon,t,d,tag,fn])=>{
+    const b=document.createElement("button");b.className="pass";
+    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
+      <span class="pass-stub"><span class="big">${icon}</span><span>${code}</span><span>OYR-01</span></span>`;
+    b.addEventListener("click",fn);modes.appendChild(b);
+  });
+  view.appendChild(el);
+}
+
+/* ---------- RULETA ---------- */
+let wheelRot=0;
+function Wheel(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`
+    <button class="backbtn">← Menú</button>
+    <div class="eyebrow">Modo ruleta</div>
+    <h2>Gira y responde</h2>
+    <p class="sub">La ruleta favorece un poquito tus categorías más débiles.</p>
+    <div class="wheelwrap">
+      <div class="hud">
+        <div class="stat"><b id="hudStreak">${session.streak}</b><span>Racha</span></div>
+        <div class="stat"><b id="hudPts">${session.points}</b><span>Puntos</span></div>
+        <div class="stat"><b>${S.best}</b><span>Récord</span></div>
+      </div>
+      <div class="wheelbox">
+        <div class="pointer"></div>
+        <svg viewBox="-110 -110 220 220" aria-label="Ruleta de categorías"><g id="wheelG"></g>
+          <circle r="26" fill="var(--card)" stroke="var(--line)" stroke-width="2"></circle>
+          <text y="7" text-anchor="middle" font-size="20">✈</text>
+        </svg>
+      </div>
+      <button class="spin-btn" id="spinBtn">Girar</button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  view.appendChild(el);
+  const g=el.querySelector("#wheelG");
+  CATS.forEach((c,i)=>{
+    const a0=(i*72-90)*Math.PI/180, a1=((i+1)*72-90)*Math.PI/180, R=104;
+    const x0=Math.cos(a0)*R,y0=Math.sin(a0)*R,x1=Math.cos(a1)*R,y1=Math.sin(a1)*R;
+    const p=document.createElementNS("http://www.w3.org/2000/svg","path");
+    p.setAttribute("d",`M0 0 L${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`);
+    p.style.fill=`var(--c${i})`;
+    p.style.stroke="var(--ground)";p.setAttribute("stroke-width","2.5");
+    g.appendChild(p);
+    const mid=(i*72+36-90)*Math.PI/180, r2=66;
+    const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x",(Math.cos(mid)*r2).toFixed(1));t.setAttribute("y",(Math.sin(mid)*r2).toFixed(1));
+    t.setAttribute("text-anchor","middle");t.setAttribute("dominant-baseline","middle");
+    t.setAttribute("font-size","9.5");t.setAttribute("font-weight","800");t.setAttribute("fill","#fff");
+    t.setAttribute("transform",`rotate(${i*72+36} ${(Math.cos(mid)*r2).toFixed(1)} ${(Math.sin(mid)*r2).toFixed(1)})`);
+    t.textContent=CATS[i].short.toUpperCase();
+    g.appendChild(t);
+  });
+  g.style.transform=`rotate(${wheelRot}deg)`;
+  el.querySelector("#spinBtn").addEventListener("click",()=>{
+    const btn=el.querySelector("#spinBtn");btn.disabled=true;
+    /* categoría ponderada por debilidad */
+    let tot=0;const ws=CATS.map((c,i)=>{const m=catMastery(i);const w=1+(100-m.pct)/40;tot+=w;return w;});
+    let r=Math.random()*tot,cat=0;
+    for(let i=0;i<5;i++){r-=ws[i];if(r<=0){cat=i;break;}}
+    const jitter=(Math.random()*44-22);
+    const target=-(cat*72+36)+jitter;
+    const cur=((wheelRot%360)+360)%360;
+    wheelRot+=5*360+((((target-cur)%360)+360)%360);
+    g.style.transform=`rotate(${wheelRot}deg)`;
+    const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(()=>{
+      go(Question,{cat,mode:"wheel"});
+    },reduced?150:3500);
+  });
+}
+
+/* ---------- PREGUNTA (compartida) ---------- */
+function Question(ctx){
+  const qi=ctx.qi!=null?ctx.qi:pickQ(ctx.cat);
+  const q=QS[qi];const cat=CATS[q.c];
+  const order=shuffle(q.o.map((_,k)=>k));
+  const el=document.createElement("div");el.className="screen";
+  const counter=ctx.total?`<span class="q-count">PREG ${String(ctx.n).padStart(2,"0")}/${ctx.total}</span>`:
+    `<span class="q-count">RACHA ${session.streak}</span>`;
+  el.innerHTML=`
+    <button class="backbtn">← ${ctx.mode==="wheel"?"Ruleta":ctx.mode==="exam"?"Abandonar examen":"Salir"}</button>
+    <div class="q-meta">
+      <span class="chip" style="background:${cat.color}">${cat.code} · ${cat.short}</span>
+      ${counter}
+    </div>
+    <div class="q-card">
+      <div class="q-text">${esc(q.q)}</div>
+      <div class="opts"></div>
+      <div class="after"></div>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>{
+    if(ctx.mode==="wheel")go(Wheel); else if(ctx.mode==="exam")go(Home); else if(ctx.mode==="redo")go(Home); else go(CatPick);
+  });
+  const opts=el.querySelector(".opts");
+  const letters=["A","B","C","D"];
+  let answered=false;
+  order.forEach((oi,k)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.innerHTML=`<span class="key">${letters[k]}</span><span>${esc(q.o[oi])}</span>`;
+    b.addEventListener("click",()=>{
+      if(answered)return;answered=true;
+      const ok=oi===q.a;
+      [...opts.children].forEach((btn,j)=>{
+        btn.disabled=true;
+        if(order[j]===q.a)btn.classList.add("correct");
+        else if(j===k&&!ok)btn.classList.add("wrong");
+        else btn.classList.add("dim");
+      });
+      if(ctx.mode!=="exam")record(qi,ok);
+      if(ctx.mode==="wheel"){
+        if(ok){session.streak++;session.points+=10+Math.min(session.streak,5)*2;if(session.streak>S.best){S.best=session.streak;save();}}
+        else session.streak=0;
+      }
+      const after=el.querySelector(".after");
+      const cheers=["¡Eso, tripulante! 🛫","¡Perfecto! ✨","¡Cabina libre! ✅","¡Directo al mando! 👩‍✈️","¡Correctísimo! 🎯"];
+      const ouch=["Casi… mira el porqué 👇","No era esa, pero ahora no se te olvida:","A revisar el detalle:","Tranquila, esta cae de nuevo:"];
+      const head=ok?cheers[Math.floor(Math.random()*cheers.length)]:ouch[Math.floor(Math.random()*ouch.length)];
+      let extra="";
+      if(ctx.mode!=="exam"){
+        extra=`<div class="why">${esc(q.w)}<span class="src">Fuente: ${q.s} · OYR ALAS</span></div>`;
+      }
+      after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔":"✘"} ${head}</div>${extra}
+        <button class="next-btn">${ctx.mode==="exam"?(ctx.n<ctx.total?"Siguiente pregunta →":"Ver resultado ✈"):"Continuar →"}</button>`;
+      after.querySelector(".next-btn").addEventListener("click",()=>ctx.onNext(qi,oi,ok));
+      after.querySelector(".next-btn").focus();
+    });
+    opts.appendChild(b);
+  });
+  const keyH=(ev)=>{
+    const idx="1234".indexOf(ev.key);
+    if(idx>=0&&idx<order.length&&!answered){opts.children[idx].click();}
+  };
+  document.addEventListener("keydown",keyH,{once:false});
+  view.appendChild(el);
+  /* limpia el listener al cambiar de vista */
+  const obs=new MutationObserver(()=>{if(!document.body.contains(el)){document.removeEventListener("keydown",keyH);obs.disconnect();}});
+  obs.observe(view,{childList:true});
+}
+
+/* rueda → pregunta → rueda */
+function wheelNext(){go(Wheel);}
+
+/* ---------- ESTUDIO POR CATEGORÍA ---------- */
+function CatPick(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Modo estudio</div>
+    <h2>Elige tu zona de cabina</h2>
+    <p class="sub">Recorres todas las preguntas de la categoría; primero las que te cuestan.</p>
+    <div class="catgrid"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const grid=el.querySelector(".catgrid");
+  CATS.forEach((c,i)=>{
+    const m=catMastery(i);
+    const b=document.createElement("button");b.className="card-btn";
+    b.innerHTML=`<div class="cat-row">
+        <span class="cat-dot" style="background:${c.color}"></span>
+        <span class="cat-name">${c.name}</span>
+        <span class="cat-pct">${m.dom}/${m.total}</span>
+      </div>
+      <div class="cat-sub">${c.sub}</div>
+      <div class="bar"><i style="width:${m.pct}%;background:${c.color}"></i></div>`;
+    b.addEventListener("click",()=>startStudy(i));
+    grid.appendChild(b);
+  });
+  view.appendChild(el);
+}
+function startStudy(cat){
+  const idxs=QS.map((q,i)=>i).filter(i=>QS[i].c===cat);
+  idxs.sort((a,b)=>{
+    const sa=S.stats[a],sb=S.stats[b];
+    const ka=sa?(sa.last==="w"?0:sa.s?2:1):1, kb=sb?(sb.last==="w"?0:sb.s?2:1):1;
+    return ka-kb||Math.random()-0.5;
+  });
+  runSeq(idxs,"study",cat);
+}
+function runSeq(idxs,mode,cat){
+  let n=0,rights=0;
+  const step=()=>{
+    if(n>=idxs.length){go(SeqDone,{rights,total:idxs.length,mode,cat});return;}
+    go(Question,{qi:idxs[n],mode,n:n+1,total:idxs.length,cat,onNext:(qi,oi,ok)=>{if(ok)rights++;n++;step();}});
+  };
+  step();
+}
+function SeqDone(r){
+  const el=document.createElement("div");el.className="screen";
+  const pct=Math.round(r.rights/r.total*100);
+  const nice=pct>=80;
+  el.innerHTML=`
+    <div class="result-hero">
+      <div class="eyebrow">${r.mode==="redo"?"Repaso de errores":"Estudio · "+CATS[r.cat].name}</div>
+      <div class="score">${r.rights}/${r.total}</div>
+      <p class="sub">${nice?"¡Zona dominada! Sigue así y el examen será un paseo.":"Buen avance — las que fallaste volverán a aparecer hasta que caigan."}</p>
+      <span class="stamp ${nice?"ok":"bad"}">${nice?"Zona OK":"En progreso"}</span>
+    </div>
+    <div class="flash-nav">
+      <button id="again">Repetir</button>
+      <button class="primary" id="menu">Volver al menú</button>
+    </div>`;
+  el.querySelector("#again").addEventListener("click",()=>{r.mode==="redo"?go(Redo):startStudy(r.cat);});
+  el.querySelector("#menu").addEventListener("click",()=>go(Home));
+  view.appendChild(el);
+  if(nice)confetti();
+}
+
+/* ---------- REPASO DE ERRORES ---------- */
+function Redo(){
+  const idxs=shuffle(failedIdx());
+  if(!idxs.length){
+    const el=document.createElement("div");el.className="screen";
+    el.innerHTML=`<button class="backbtn">← Menú</button>
+      <div class="result-hero"><div class="eyebrow">Repaso de errores</div>
+      <div class="score">0</div><p class="sub">No tienes errores pendientes. O eres seca, o toca girar la ruleta para encontrar nuevos desafíos ✈</p>
+      <span class="stamp ok">Todo al día</span></div>`;
+    el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+    view.appendChild(el);return;
+  }
+  runSeq(idxs,"redo",null);
+}
+
+/* ---------- EXAMEN ---------- */
+function ExamStart(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Simulacro</div>
+    <h2>Examen de vuelo 🛫</h2>
+    <p class="sub">20 preguntas balanceadas de los 4 días. Sin explicaciones hasta el final, como en el examen real. Nota de aprobación: 80%.</p>
+    <div class="modes" style="margin-top:18px">
+      <button class="pass" id="goExam">
+        <span class="pass-main"><h3>Iniciar examen</h3><p>Se cronometra el tiempo total (sin límite, solo referencia).</p>
+        <span class="tagline">Check-in abierto</span></span>
+        <span class="pass-stub"><span class="big">🛫</span><span>EXM</span><span>20 PREG</span></span>
+      </button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  el.querySelector("#goExam").addEventListener("click",runExam);
+  view.appendChild(el);
+}
+function runExam(){
+  /* 4 por categoría */
+  let sel=[];
+  CATS.forEach((c,ci)=>{
+    const pool=shuffle(QS.map((q,i)=>i).filter(i=>QS[i].c===ci));
+    sel=sel.concat(pool.slice(0,4));
+  });
+  sel=shuffle(sel);
+  const answers=[];const t0=Date.now();
+  let n=0;
+  const tick=()=>{};
+  const step=()=>{
+    if(n>=sel.length){go(finishExam,sel,answers,Date.now()-t0);return;}
+    go(Question,{qi:sel[n],mode:"exam",n:n+1,total:sel.length,onNext:(qi,oi,ok)=>{
+      answers.push({qi,oi,ok});record(qi,ok);n++;step();
+    }});
+    /* timer chip */
+    const meta=view.querySelector(".q-meta");
+    if(meta){
+      const t=document.createElement("span");t.className="timer";
+      meta.appendChild(t);
+      if(examT)clearInterval(examT);
+      examT=setInterval(()=>{
+        const s=Math.floor((Date.now()-t0)/1000);
+        t.textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+      },1000);
+    }
+  };
+  step();
+}
+function finishExam(sel,answers,ms){
+  if(examT){clearInterval(examT);examT=null;}
+  const right=answers.filter(a=>a.ok).length;
+  const pct=Math.round(right/sel.length*100);
+  const pass=pct>=80;
+  const mins=Math.floor(ms/60000),secs=Math.floor(ms/1000)%60;
+  S.exams.push({d:new Date().toISOString().slice(0,10),pct,right,total:sel.length,t:`${mins}:${String(secs).padStart(2,"0")}`});
+  if(S.exams.length>12)S.exams=S.exams.slice(-12);
+  save();
+  const el=document.createElement("div");el.className="screen";
+  const wrongs=answers.filter(a=>!a.ok);
+  el.innerHTML=`
+    <div class="result-hero">
+      <div class="eyebrow">Resultado del examen · ${mins}:${String(secs).padStart(2,"0")} min</div>
+      <div class="score">${pct}%</div>
+      <p class="sub">${right} de ${sel.length} correctas</p>
+      <span class="stamp ${pass?"ok":"bad"}">${pass?(pct>=95?"Excelencia":"Aprobado"):"Reintentar"}</span>
+      <p class="sub" style="margin-top:12px">${pass?(pct>=95?"Nivel jefa de cabina. Impecable, "+NOMBRE+" 👑":"¡Aprobado! El cielo te queda cerca ✈"):"Aún no — revisa abajo tus errores con la explicación y vuelve a intentarlo."}</p>
+    </div>
+    ${wrongs.length?`<h2 style="margin-top:22px">Revisión de errores</h2><div class="review-list"></div>`:""}
+    <div class="flash-nav" style="margin-top:18px">
+      <button id="again">Nuevo examen</button>
+      <button class="primary" id="menu">Volver al menú</button>
+    </div>`;
+  const list=el.querySelector(".review-list");
+  if(list)wrongs.forEach(a=>{
+    const q=QS[a.qi];
+    const d=document.createElement("div");d.className="review-item";
+    d.innerHTML=`<div class="rq">${esc(q.q)}</div>
+      <div class="ra">Tu respuesta: <b class="badtxt">${esc(q.o[a.oi])}</b><br>Correcta: <b class="good">${esc(q.o[q.a])}</b></div>
+      <div class="why" style="margin-top:9px">${esc(q.w)}<span class="src">Fuente: ${q.s} · OYR ALAS</span></div>`;
+    list.appendChild(d);
+  });
+  el.querySelector("#again").addEventListener("click",runExam);
+  el.querySelector("#menu").addEventListener("click",()=>go(Home));
+  view.appendChild(el);
+  if(pass)confetti();
+}
+
+/* ---------- FLASHCARDS ---------- */
+function Flash(){
+  let cat=null,i=0,deck=shuffle(CARDS.map((c,k)=>k));
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Tarjetas de repaso</div>
+    <h2>Toca la tarjeta para voltearla</h2>
+    <div class="chips-row"></div>
+    <div class="flash" tabindex="0" role="button" aria-label="Voltear tarjeta">
+      <div class="flash-inner">
+        <div class="face front"></div>
+        <div class="face back"></div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button id="prev">← Anterior</button>
+      <button class="primary" id="next">Siguiente →</button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const chips=el.querySelector(".chips-row");
+  const all=document.createElement("button");all.className="fchip on";all.textContent="Todas";
+  all.addEventListener("click",()=>{cat=null;rebuild();});
+  chips.appendChild(all);
+  CATS.forEach((c,ci)=>{
+    const b=document.createElement("button");b.className="fchip";b.textContent=c.short;
+    b.addEventListener("click",()=>{cat=ci;rebuild();});
+    chips.appendChild(b);
+  });
+  const flash=el.querySelector(".flash");
+  function rebuild(){
+    [...chips.children].forEach((b,k)=>b.classList.toggle("on",cat==null?k===0:k===cat+1));
+    deck=shuffle(CARDS.map((c,k)=>k).filter(k=>cat==null||CARDS[k].c===cat));
+    i=0;render();
+  }
+  function render(){
+    const c=CARDS[deck[i]];const catc=CATS[c.c];
+    flash.classList.remove("flipped");
+    el.querySelector(".front").innerHTML=`<span class="chip" style="background:${catc.color}">${catc.short}</span>
+      <div class="fq">${esc(c.f)}</div><span class="hint">Tarjeta ${i+1}/${deck.length} · toca para ver</span>`;
+    el.querySelector(".back").innerHTML=`<div class="fa">${esc(c.b)}</div><span class="hint">Fuente: OYR ALAS</span>`;
+  }
+  flash.addEventListener("click",()=>flash.classList.toggle("flipped"));
+  flash.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flash.classList.toggle("flipped");}});
+  el.querySelector("#next").addEventListener("click",()=>{i=(i+1)%deck.length;render();});
+  el.querySelector("#prev").addEventListener("click",()=>{i=(i-1+deck.length)%deck.length;render();});
+  view.appendChild(el);
+  render();
+}
+
+/* ---------- PASAPORTE ---------- */
+function Passport(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Documento de viaje</div>
+    <h2>🛂 Pasaporte de ${NOMBRE}</h2>
+    <p class="sub">Domina una categoría (≥80% de preguntas con última respuesta correcta) y recibe su timbre.</p>
+    <div class="passport"></div>
+    <h2 style="margin-top:22px">Historial de exámenes</h2>
+    <ul class="exam-history">${S.exams.length?S.exams.slice().reverse().map(e=>`<li>${e.d} — ${e.pct}% (${e.right}/${e.total}) en ${e.t} min</li>`).join(""):"<li>Aún sin exámenes. ¡El primero es hoy!</li>"}</ul>
+    <button class="danger" id="reset">Borrar todo mi progreso</button>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const pp=el.querySelector(".passport");
+  CATS.forEach((c,i)=>{
+    const m=catMastery(i);
+    const d=document.createElement("div");d.className="pp-row";
+    d.innerHTML=`${m.pct>=80?'<span class="pp-stamp">✈ Dominada</span>':""}
+      <div class="cat-row"><span class="cat-dot" style="background:${c.color}"></span>
+      <span class="cat-name">${c.name}</span><span class="cat-pct">${m.pct}%</span></div>
+      <div class="bar"><i style="width:${m.pct}%;background:${c.color}"></i></div>
+      <div class="cat-sub">${m.dom} de ${m.total} preguntas dominadas</div>`;
+    pp.appendChild(d);
+  });
+  el.querySelector("#reset").addEventListener("click",()=>{
+    if(confirm("¿Segura que quieres borrar todo el progreso? Esto no se puede deshacer.")){
+      S={stats:{},best:0,exams:[]};save();session={streak:0,points:0};go(Passport);
+    }
+  });
+  view.appendChild(el);
+}
+
+/* ---------- confetti ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const colors=["var(--c0)","var(--c1)","var(--c2)","var(--c3)","var(--c4)"];
+  for(let k=0;k<70;k++){
+    const d=document.createElement("div");d.className="confetti";
+    d.style.left=Math.random()*100+"vw";
+    d.style.width=6+Math.random()*6+"px";d.style.height=8+Math.random()*8+"px";
+    d.style.background=colors[k%5];
+    d.style.animationDuration=2.2+Math.random()*2+"s";
+    d.style.animationDelay=Math.random()*0.6+"s";
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),5200);
+  }
+}
+
+/* rutas de "siguiente" para el modo ruleta */
+function wheelCtx(){return {cat:null,mode:"wheel",onNext:()=>go(Wheel)};}
+/* parche: el modo ruleta usa Question con onNext → volver a la ruleta */
+const _Question=Question;
+Question=function(ctx){
+  if(ctx.mode==="wheel"&&!ctx.onNext)ctx.onNext=()=>go(Wheel);
+  _Question(ctx);
+};
+
+go(Home);
+</script>
+</body>
+</html>
