@@ -1330,7 +1330,7 @@ function Secret(){
     <div class="pin-msg"></div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
   const inp=el.querySelector(".pin-input"),msg=el.querySelector(".pin-msg");
-  const tries=["Mmm, no… piensa en una fecha muy importante 😉","Casi: son 8 dígitos, día · mes · año","El jefe de seguridad de la casa (sí, el gato) niega con la cabeza 🐈"];
+  const tries=["Mmm, no… piensa en una fecha muy importante 😉","Casi: son 8 dígitos, día · mes · año","Milo, el jefe de seguridad de la casa, niega con la cabeza 🐈"];
   let t=0;
   const tryOpen=()=>{
     if(inp.value.replace(/\D/g,"")==="04061997"){openLove();}
@@ -1358,7 +1358,7 @@ function openLove(){
       <div class="love-sign" style="animation-delay:${(1.4+lines.length*1.5).toFixed(1)}s">— Con todo mi corazón, tu copiloto en tierra: Andy (ex Chino) 🧡</div>
     </div>
     <div class="cat-stage" style="animation-delay:${(2.4+lines.length*1.5).toFixed(1)}s">
-      <div class="cat-bubble">«Miaau» <small>(traducción oficial: tú puedes — y vuelve pronto, que las siestas sin ti no valen)</small></div>
+      <div class="cat-bubble">«Miaau» <small>(traducción oficial de Milo: tú puedes — y vuelve pronto, que las siestas sin ti no valen)</small></div>
       ${catSVG()}
     </div>`;
   document.body.appendChild(ov);
@@ -1382,7 +1382,7 @@ function openLove(){
   }
 }
 function catSVG(){
-  return `<svg class="cat-svg" viewBox="0 0 200 190" role="img" aria-label="Un gatito atigrado como el de casa">
+  return `<svg class="cat-svg" viewBox="0 0 200 190" role="img" aria-label="Milo, el gatito atigrado de la casa">
     <g class="cat-tail">
       <path d="M168 152 Q198 138 189 104" fill="none" stroke="#8F7157" stroke-width="13" stroke-linecap="round"/>
       <path d="M186 116 l10 3 M184 128 l11 3" stroke="#6B5138" stroke-width="4" stroke-linecap="round"/>
