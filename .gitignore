@@ -1,0 +1,6 @@
+# Material del curso (no publicar — es de ALAS)
+*.pdf
+
+# Basura de sistema
+Thumbs.db
+.DS_Store
