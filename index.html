@@ -292,6 +292,34 @@ footer .heart{color:var(--accent)}
 .report-phase .rp-score{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
 .report-phase .rp-score.good{color:var(--ok)} .report-phase .rp-score.meh{color:var(--bad)}
 
+/* ---------- carga especial ---------- */
+.pin-row{display:flex;gap:10px;margin-top:16px}
+.pin-input{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:13px;font:700 21px ui-monospace,Consolas,monospace;letter-spacing:.3em;text-align:center;color:var(--ink);width:100%;min-width:0}
+.pin-input:focus{outline:3px solid var(--accent);outline-offset:1px}
+.pin-go{background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px 20px;font:700 15px system-ui,sans-serif;cursor:pointer}
+.pin-msg{margin-top:10px;font-size:13.5px;color:var(--bad);min-height:20px;font-weight:600}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-7px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.love-overlay{position:fixed;inset:0;z-index:200;background:linear-gradient(180deg,#0B1B3A 0%,#20356B 38%,#7A4A78 68%,#E8794A 100%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:52px 22px 30px;overflow-y:auto;overflow-x:hidden}
+.love-close{position:fixed;top:14px;right:16px;z-index:210;background:rgba(255,255,255,.18);border:none;color:#fff;font-size:17px;width:38px;height:38px;border-radius:50%;cursor:pointer}
+.love-float{position:fixed;bottom:-46px;z-index:201;pointer-events:none;animation:floatup linear forwards}
+@keyframes floatup{from{transform:translateY(0) rotate(-8deg);opacity:0}12%{opacity:1}to{transform:translateY(-114vh) rotate(10deg);opacity:.85}}
+.love-card{position:relative;z-index:205;max-width:520px;width:100%;text-align:center;color:#FFF7EE}
+.love-title{font-size:24px;font-weight:800;letter-spacing:.02em;text-wrap:balance;opacity:0;animation:lovein .8s ease forwards}
+.love-line{font-size:16.5px;line-height:1.65;margin-top:16px;opacity:0;animation:lovein .8s ease forwards;text-wrap:balance}
+.love-sign{margin-top:18px;font-size:15px;font-style:italic;opacity:0;animation:lovein .8s ease forwards}
+@keyframes lovein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.cat-stage{position:relative;z-index:205;margin-top:28px;opacity:0;animation:lovein 1s ease forwards;display:flex;flex-direction:column;align-items:center;gap:12px;padding-bottom:12px}
+.cat-bubble{background:#FFF7EE;color:#4A3527;border-radius:14px;padding:10px 15px;font:600 14px/1.5 system-ui,sans-serif;max-width:330px;box-shadow:0 4px 14px rgba(0,0,0,.25);position:relative}
+.cat-bubble small{font-weight:500;color:#7A6350}
+.cat-bubble::after{content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border:9px solid transparent;border-top-color:#FFF7EE;border-bottom:0}
+.cat-svg{width:min(240px,60vw);height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
+.cat-eyes{animation:blink 4.5s infinite;transform-origin:100px 82px}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+.cat-tail{animation:wag 3s ease-in-out infinite;transform-origin:168px 152px}
+@keyframes wag{0%,100%{transform:rotate(0)}50%{transform:rotate(9deg)}}
+@media (prefers-reduced-motion: reduce){.love-float{display:none}}
+
 /* confetti */
 .confetti{position:fixed;top:-12px;border-radius:2px;z-index:99;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
@@ -674,7 +702,8 @@ function Home(){
     ["EXM","🛫","Examen de vuelo","20 preguntas de todo el curso, con nota final y revisión de errores.","Simulacro",()=>go(ExamStart)],
     ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial: definiciones, números y fraseologías.","Memoria",()=>go(Flash)],
     ["ERR","🩹","Repasar mis errores",fails?`Tienes ${fails} pregunta${fails===1?"":"s"} pendiente${fails===1?"":"s"} de dominar. A pulirlas.`:"Sin errores pendientes por ahora. ¡Impecable!","Refuerzo",()=>go(Redo)],
-    ["PSP","🛂","Mi pasaporte","Tu avance por categoría, timbres de dominio e historial de exámenes.","Progreso",()=>go(Passport)]
+    ["PSP","🛂","Mi pasaporte","Tu avance por categoría, timbres de dominio e historial de exámenes.","Progreso",()=>go(Passport)],
+    ["♥","💌","Carga especial","Hay una encomienda registrada a tu nombre en la bodega. Se abre con un código de 8 dígitos que solo tú sabes.","Solo para Pía",()=>go(Secret)]
   ];
   M.forEach(([code,icon,t,d,tag,fn])=>{
     const b=document.createElement("button");b.className="pass";
@@ -1285,6 +1314,97 @@ function SimReport(scores){
   el.querySelector("#menu").addEventListener("click",()=>go(Home));
   view.appendChild(el);
   if(pass)confetti();
+}
+
+/* ---------- CARGA ESPECIAL ---------- */
+function Secret(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Bodega de carga especial</div>
+    <h2>🔐 Encomienda para ${NOMBRE}</h2>
+    <p class="sub">Hay una carga frágil registrada a tu nombre. Para abrir la bodega, ingresa el código de seguridad de 8 dígitos.<br><br>Pista: el día en que nació alguien que nació para volar ✈</p>
+    <div class="pin-row">
+      <input class="pin-input" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="········" aria-label="Código de seguridad">
+      <button class="pin-go">Abrir</button>
+    </div>
+    <div class="pin-msg"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const inp=el.querySelector(".pin-input"),msg=el.querySelector(".pin-msg");
+  const tries=["Mmm, no… piensa en una fecha muy importante 😉","Casi: son 8 dígitos, día · mes · año","El jefe de seguridad de la casa (sí, el gato) niega con la cabeza 🐈"];
+  let t=0;
+  const tryOpen=()=>{
+    if(inp.value.replace(/\D/g,"")==="04061997"){openLove();}
+    else{inp.classList.remove("shake");void inp.offsetWidth;inp.classList.add("shake");msg.textContent=tries[t++%tries.length];inp.select();}
+  };
+  el.querySelector(".pin-go").addEventListener("click",tryOpen);
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")tryOpen();});
+  view.appendChild(el);
+  inp.focus();
+}
+let loveTimer=null;
+function openLove(){
+  const ov=document.createElement("div");ov.className="love-overlay";
+  const lines=[
+    "Si abriste esta bodega es porque necesitas que alguien te lo recuerde: lo vas a lograr. No tengo ni una sola duda.",
+    "Cada pregunta que respondes y cada racha que no cortas es un metro más de pista. Y tú despegas sí o sí.",
+    "Muy pronto vas a caminar por ese pasillo con tu uniforme, y yo voy a estar mirándote desde la puerta de embarque, orgulloso hasta las nubes.",
+    "El cielo no es tu límite: es tu nueva oficina."
+  ];
+  ov.innerHTML=`
+    <button class="love-close" aria-label="Cerrar">✕</button>
+    <div class="love-card">
+      <div class="love-title" style="animation-delay:.2s">Para mi futura tripulante favorita ✈</div>
+      ${lines.map((l,i)=>`<div class="love-line" style="animation-delay:${(1.2+i*1.5).toFixed(1)}s">${l}</div>`).join("")}
+      <div class="love-sign" style="animation-delay:${(1.4+lines.length*1.5).toFixed(1)}s">— Con todo mi corazón, tu copiloto en tierra 🧡</div>
+    </div>
+    <div class="cat-stage" style="animation-delay:${(2.4+lines.length*1.5).toFixed(1)}s">
+      <div class="cat-bubble">«Miaau» <small>(traducción oficial: tú puedes — y vuelve pronto, que las siestas sin ti no valen)</small></div>
+      ${catSVG()}
+    </div>`;
+  document.body.appendChild(ov);
+  const close=()=>{
+    if(loveTimer){clearInterval(loveTimer);loveTimer=null;}
+    document.querySelectorAll(".love-float").forEach(n=>n.remove());
+    ov.remove();go(Home);
+  };
+  ov.querySelector(".love-close").addEventListener("click",close);
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const EMO=["✈","💗","💖","✨","☁","🧡","💛"];
+    loveTimer=setInterval(()=>{
+      const s=document.createElement("span");s.className="love-float";
+      s.textContent=EMO[Math.floor(Math.random()*EMO.length)];
+      s.style.left=Math.random()*94+"vw";
+      s.style.fontSize=(15+Math.random()*26)+"px";
+      s.style.animationDuration=(4.5+Math.random()*4)+"s";
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),9000);
+    },340);
+  }
+}
+function catSVG(){
+  return `<svg class="cat-svg" viewBox="0 0 200 190" role="img" aria-label="Un gatito atigrado como el de casa">
+    <g class="cat-tail">
+      <path d="M168 152 Q198 138 189 104" fill="none" stroke="#8F7157" stroke-width="13" stroke-linecap="round"/>
+      <path d="M186 116 l10 3 M184 128 l11 3" stroke="#6B5138" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <ellipse cx="100" cy="152" rx="62" ry="36" fill="#A18266"/>
+    <path d="M52 136 q12 16 6 30 M76 146 q8 14 4 26 M148 136 q-12 16 -6 30 M124 146 q-8 14 -4 26" stroke="#6B5138" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/>
+    <ellipse cx="100" cy="163" rx="26" ry="20" fill="#F4ECE1"/>
+    <path d="M58 50 L49 12 L90 34 Z" fill="#A18266"/><path d="M60 44 L55 22 L79 35 Z" fill="#D9A38F"/>
+    <path d="M142 50 L151 12 L110 34 Z" fill="#A18266"/><path d="M140 44 L145 22 L121 35 Z" fill="#D9A38F"/>
+    <circle cx="100" cy="80" r="47" fill="#A18266"/>
+    <path d="M86 37 q2 11 -1 16 M100 34 v19 M114 37 q-2 11 1 16" stroke="#6B5138" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M54 72 l-12 -4 M56 82 l-13 0 M146 72 l12 -4 M144 82 l13 0" stroke="#6B5138" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+    <ellipse cx="100" cy="103" rx="21" ry="15" fill="#F4ECE1"/>
+    <g class="cat-eyes">
+      <ellipse cx="81" cy="82" rx="11" ry="9.5" fill="#A9BC72"/><ellipse cx="81" cy="82" rx="4" ry="8" fill="#1E1B16"/><circle cx="84" cy="78" r="2" fill="#fff" opacity=".9"/>
+      <ellipse cx="119" cy="82" rx="11" ry="9.5" fill="#A9BC72"/><ellipse cx="119" cy="82" rx="4" ry="8" fill="#1E1B16"/><circle cx="122" cy="78" r="2" fill="#fff" opacity=".9"/>
+    </g>
+    <path d="M93 97 h14 l-7 8 Z" fill="#C4766B"/>
+    <path d="M100 105 v6 M100 111 q-6 6 -13 3 M100 111 q6 6 13 3" stroke="#6B5138" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M76 100 L38 94 M77 106 L40 107 M78 112 L44 120 M124 100 L162 94 M123 106 L160 107 M122 112 L156 120" stroke="#F7F1E6" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+    <path d="M70 178 q4 6 12 5 M118 183 q8 1 12 -5" stroke="#6B5138" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+  </svg>`;
 }
 
 /* ---------- confetti ---------- */
