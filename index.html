@@ -257,6 +257,24 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
 footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--muted)}
 footer .heart{color:var(--accent)}
 
+/* ---------- rango, racha y logros ---------- */
+.rankrow{display:flex;align-items:center;gap:10px;margin:10px 0 4px;flex-wrap:wrap}
+.epaulette{display:inline-flex;gap:3px;background:#1B2A41;border-radius:7px;padding:7px 10px;align-items:center;border:1px solid rgba(232,184,75,.45)}
+.epaulette i{display:block;width:5px;height:15px;background:#E8B84B;border-radius:1.5px}
+.epaulette i.off{opacity:.22}
+.rankname{font-weight:800;font-size:15px}
+.ranknext{font-size:11.5px;color:var(--muted);font-family:ui-monospace,Consolas,monospace;letter-spacing:.04em}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.badge{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;box-shadow:var(--shadow)}
+.badge .bi{font-size:26px;line-height:1}
+.badge .bn{font-weight:700;font-size:13px;margin-top:6px}
+.badge .bd{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+.badge.locked{opacity:.45;filter:grayscale(1)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:#1B2A41;color:#fff;padding:12px 20px;border-radius:99px;box-shadow:var(--shadow);font-weight:650;font-size:14px;z-index:100;animation:toastin .3s ease;max-width:88vw;text-align:center}
+@keyframes toastin{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+.backup-box{display:flex;gap:10px;margin-top:10px}
+.backup-box button{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:11px;font:650 13.5px system-ui,sans-serif;color:var(--ink);cursor:pointer}
+
 /* ---------- simulación: turno de vuelo ---------- */
 .flightpath{display:flex;align-items:center;gap:5px;margin:4px 0 12px;flex-wrap:wrap}
 .fp-dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;transition:background .2s}
@@ -535,7 +553,7 @@ const SIM=[
 
 /* ============================ estado ============================ */
 const KEY="oyr-pia-v1";
-let S={stats:{},best:0,exams:[]};
+let S={stats:{},best:0,exams:[],flights:[],daily:{last:null,streak:0,best:0},ach:{}};
 try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function stat(i){return S.stats[i]||(S.stats[i]={s:0,r:0,w:0,last:null});}
@@ -552,6 +570,44 @@ function totalMastery(){
 }
 function answeredCount(){return Object.values(S.stats).filter(st=>st.s>0).length;}
 function failedIdx(){return QS.map((q,i)=>i).filter(i=>{const st=S.stats[i];return st&&st.last==="w";});}
+
+/* ---------- rangos, racha diaria y logros ---------- */
+const RANKS=[["Alumna",0],["TAC 4",15],["TAC 3",35],["TAC 2",55],["TAC 1",75],["Jefa de Cabina",90]];
+function examPassed(){return (S.exams||[]).some(e=>e.pct>=80);}
+function rankIdx(){
+  const m=totalMastery();let r=0;
+  RANKS.forEach((rk,i)=>{if(m>=rk[1])r=i;});
+  if(r===5&&!examPassed())r=4;
+  return r;
+}
+function fmtDate(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function todayStr(){return fmtDate(new Date());}
+function yesterdayStr(){const d=new Date();return fmtDate(new Date(d.getFullYear(),d.getMonth(),d.getDate()-1));}
+const ACH=[
+  {id:"primera",icon:"🛫",n:"Primer despegue",d:"Responde tu primera pregunta",f:()=>answeredCount()>=1},
+  {id:"zona",icon:"✅",n:"Zona dominada",d:"Lleva una categoría al 80%",f:()=>CATS.some((c,i)=>catMastery(i).pct>=80)},
+  {id:"cabina",icon:"🗺",n:"Cabina completa",d:"Las 5 categorías al 80%",f:()=>CATS.every((c,i)=>catMastery(i).pct>=80)},
+  {id:"punteria",icon:"🎯",n:"Puntería",d:"Racha de 10 seguidas en la ruleta",f:()=>S.best>=10},
+  {id:"aprobada",icon:"🎓",n:"Aprobada",d:"Un examen con 80% o más",f:()=>(S.exams||[]).some(e=>e.pct>=80)},
+  {id:"excelencia",icon:"🌟",n:"Excelencia",d:"Un examen con 95% o más",f:()=>(S.exams||[]).some(e=>e.pct>=95)},
+  {id:"evac90",icon:"🛝",n:"Evacuación en 90 segundos",d:"Secuencia de puertas perfecta en el simulador",f:()=>false},
+  {id:"impecable",icon:"👩‍✈️",n:"Vuelo impecable",d:"Un turno de vuelo con 95% o más",f:()=>(S.flights||[]).some(x=>x.pct>=95)},
+  {id:"semana",icon:"🔥",n:"Semana en el aire",d:"7 días seguidos de vuelo del día",f:()=>(S.daily.best||0)>=7},
+  {id:"quincena",icon:"🚀",n:"Quincena imparable",d:"15 días seguidos de vuelo del día",f:()=>(S.daily.best||0)>=15},
+  {id:"jefa",icon:"👑",n:"Jefa de Cabina",d:"Alcanza el rango máximo",f:()=>rankIdx()>=5}
+];
+let toastQ=[],toastBusy=false;
+function toast(msg){toastQ.push(msg);if(!toastBusy)nextToast();}
+function nextToast(){
+  const m=toastQ.shift();
+  if(m==null){toastBusy=false;return;}
+  toastBusy=true;
+  const t=document.createElement("div");t.className="toast";t.textContent=m;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.remove();nextToast();},2000);
+}
+function unlock(id,name){if(S.ach[id])return;S.ach[id]=todayStr();save();toast("🏅 Logro desbloqueado: "+name);}
+function checkAch(){ACH.forEach(a=>{if(!S.ach[a.id]&&a.f())unlock(a.id,a.n);});}
 
 /* selección ponderada: no vistas pesan 4; falladas pesan más */
 let recent=[];
@@ -571,7 +627,7 @@ function pickQ(cat){
 }
 function remember(i){recent.push(i);if(recent.length>8)recent.shift();}
 function record(i,ok){
-  const st=stat(i);st.s++;ok?st.r++:st.w++;st.last=ok?"r":"w";save();
+  const st=stat(i);st.s++;ok?st.r++:st.w++;st.last=ok?"r":"w";save();checkAch();
 }
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
@@ -588,20 +644,30 @@ function Home(){
   const pct=totalMastery();
   const el=document.createElement("div");el.className="screen";
   const fails=failedIdx().length;
+  const ri=rankIdx();
+  const nextTxt=ri>=5?"Rango máximo 👑":ri===4?"Próximo: Jefa de Cabina · 90% + examen aprobado":`Próximo: ${RANKS[ri+1][0]} al ${RANKS[ri+1][1]}%`;
   el.innerHTML=`
     <div class="hero">
       <div class="eyebrow">Tarjeta de embarque · ${QS.length} preguntas · ${CARDS.length} tarjetas</div>
       <h1>Hola, ${NOMBRE} ✈</h1>
+      <div class="rankrow">
+        <span class="epaulette" title="Tu rango">${ri?"<i></i>".repeat(ri):'<i class="off"></i>'}</span>
+        <span class="rankname">${RANKS[ri][0]}</span>
+        <span class="ranknext">${nextTxt}</span>
+      </div>
       <p class="sub">Tu simulador de estudio del curso OYR. Cada respuesta trae su explicación y la fuente, y la app repite más lo que te cuesta.</p>
       <div class="stats-strip">
         <div class="stat"><b>${pct}%</b><span>Dominio</span></div>
         <div class="stat"><b>${answeredCount()}/${QS.length}</b><span>Vistas</span></div>
         <div class="stat"><b>${S.best}</b><span>Mejor racha</span></div>
+        <div class="stat"><b>${S.daily.streak||0} 🔥</b><span>Días seguidos</span></div>
       </div>
     </div>
     <div class="modes"></div>`;
   const modes=el.querySelector(".modes");
+  const doneToday=S.daily.last===todayStr();
   const M=[
+    ["DIA","🛫","Vuelo del día",doneToday?`Completado hoy ✓ — racha de ${S.daily.streak} día${S.daily.streak===1?"":"s"} 🔥. Vuelve mañana para mantenerla.`:(S.daily.streak?`Tu dosis de hoy: 10 preguntas en 5 minutos. Racha de ${S.daily.streak} 🔥 — no la cortes.`:"Tu dosis de hoy: 10 preguntas a tu medida en 5 minutos. Parte tu racha hoy."),doneToday?"Hecho por hoy ✓":"Dosis diaria",()=>runDaily()],
     ["RUL","🎡","Ruleta","Gira la ruleta tipo preguntados: la suerte (y tus puntos débiles) eligen la categoría.","Modo clásico",()=>go(Wheel)],
     ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones reales fase por fase, eventos sorpresa en crucero e informe final.","Modo historia · nuevo",()=>go(SimIntro)],
     ["EST","📚","Estudio por categoría","Recorre una categoría completa a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(CatPick)],
@@ -702,7 +768,7 @@ function Question(ctx){
       <div class="after"></div>
     </div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>{
-    if(ctx.mode==="wheel")go(Wheel); else if(ctx.mode==="exam")go(Home); else if(ctx.mode==="redo")go(Home); else go(CatPick);
+    if(ctx.mode==="wheel")go(Wheel); else if(ctx.mode==="study")go(CatPick); else go(Home);
   });
   const opts=el.querySelector(".opts");
   const letters=["A","B","C","D"];
@@ -799,21 +865,44 @@ function SeqDone(r){
   const el=document.createElement("div");el.className="screen";
   const pct=Math.round(r.rights/r.total*100);
   const nice=pct>=80;
+  let extra="";
+  if(r.mode==="daily"){
+    const t=todayStr();
+    if(S.daily.last!==t){
+      S.daily.streak=(S.daily.last===yesterdayStr())?S.daily.streak+1:1;
+      S.daily.last=t;S.daily.best=Math.max(S.daily.best||0,S.daily.streak);
+      save();
+    }
+    checkAch();
+    extra=`<p class="sub" style="margin-top:10px">🔥 Racha: <b>${S.daily.streak} día${S.daily.streak===1?"":"s"}</b> — nos vemos mañana para la siguiente dosis.</p>`;
+  }
+  const title=r.mode==="redo"?"Repaso de errores":r.mode==="daily"?"Vuelo del día":"Estudio · "+CATS[r.cat].name;
+  const subTxt=r.mode==="daily"
+    ?(nice?"Dosis del día cumplida con estilo.":"Dosis cumplida — lo que fallaste volverá a aparecer hasta que caiga.")
+    :(nice?"¡Zona dominada! Sigue así y el examen será un paseo.":"Buen avance — las que fallaste volverán a aparecer hasta que caigan.");
   el.innerHTML=`
     <div class="result-hero">
-      <div class="eyebrow">${r.mode==="redo"?"Repaso de errores":"Estudio · "+CATS[r.cat].name}</div>
+      <div class="eyebrow">${title}</div>
       <div class="score">${r.rights}/${r.total}</div>
-      <p class="sub">${nice?"¡Zona dominada! Sigue así y el examen será un paseo.":"Buen avance — las que fallaste volverán a aparecer hasta que caigan."}</p>
-      <span class="stamp ${nice?"ok":"bad"}">${nice?"Zona OK":"En progreso"}</span>
+      <p class="sub">${subTxt}</p>
+      <span class="stamp ${nice?"ok":"bad"}">${r.mode==="daily"?"Hecho por hoy":nice?"Zona OK":"En progreso"}</span>
+      ${extra}
     </div>
     <div class="flash-nav">
       <button id="again">Repetir</button>
       <button class="primary" id="menu">Volver al menú</button>
     </div>`;
-  el.querySelector("#again").addEventListener("click",()=>{r.mode==="redo"?go(Redo):startStudy(r.cat);});
+  el.querySelector("#again").addEventListener("click",()=>{r.mode==="redo"?go(Redo):r.mode==="daily"?runDaily():startStudy(r.cat);});
   el.querySelector("#menu").addEventListener("click",()=>go(Home));
   view.appendChild(el);
   if(nice)confetti();
+}
+
+/* ---------- VUELO DEL DÍA ---------- */
+function runDaily(){
+  const used=new Set();const idxs=[];let guard=0;
+  while(idxs.length<10&&guard++<300){const i=pickQ(null);if(!used.has(i)){used.add(i);idxs.push(i);}}
+  runSeq(idxs,"daily",null);
 }
 
 /* ---------- REPASO DE ERRORES ---------- */
@@ -887,7 +976,7 @@ function finishExam(sel,answers,ms){
   const mins=Math.floor(ms/60000),secs=Math.floor(ms/1000)%60;
   S.exams.push({d:new Date().toISOString().slice(0,10),pct,right,total:sel.length,t:`${mins}:${String(secs).padStart(2,"0")}`});
   if(S.exams.length>12)S.exams=S.exams.slice(-12);
-  save();
+  save();checkAch();
   const el=document.createElement("div");el.className="screen";
   const wrongs=answers.filter(a=>!a.ok);
   el.innerHTML=`
@@ -970,15 +1059,29 @@ function Flash(){
 /* ---------- PASAPORTE ---------- */
 function Passport(){
   const el=document.createElement("div");el.className="screen";
+  const ri=rankIdx();
   el.innerHTML=`<button class="backbtn">← Menú</button>
     <div class="eyebrow">Documento de viaje</div>
     <h2>🛂 Pasaporte de ${NOMBRE}</h2>
+    <div class="rankrow">
+      <span class="epaulette">${ri?"<i></i>".repeat(ri):'<i class="off"></i>'}</span>
+      <span class="rankname">${RANKS[ri][0]}</span>
+      <span class="ranknext">${ri>=5?"Rango máximo 👑":ri===4?"Jefa de Cabina: 90% + examen aprobado":`Siguiente: ${RANKS[ri+1][0]} al ${RANKS[ri+1][1]}% de dominio`}</span>
+    </div>
     <p class="sub">Domina una categoría (≥80% de preguntas con última respuesta correcta) y recibe su timbre.</p>
     <div class="passport"></div>
+    <h2 style="margin-top:22px">Insignias 🏅</h2>
+    <div class="badges"></div>
     <h2 style="margin-top:22px">Historial de exámenes</h2>
     <ul class="exam-history">${S.exams.length?S.exams.slice().reverse().map(e=>`<li>${e.d} — ${e.pct}% (${e.right}/${e.total}) en ${e.t} min</li>`).join(""):"<li>Aún sin exámenes. ¡El primero es hoy!</li>"}</ul>
     <h2 style="margin-top:22px">Turnos de vuelo 🧭</h2>
     <ul class="exam-history">${(S.flights||[]).length?S.flights.slice().reverse().map(f=>`<li>${f.d} — ${f.pct}% (${f.right}/${f.total} decisiones)</li>`).join(""):"<li>Aún sin turnos volados. ¡Embarca desde el menú!</li>"}</ul>
+    <h2 style="margin-top:22px">Respaldo 💾</h2>
+    <p class="sub">Tu progreso vive en este navegador. Copia tu respaldo de vez en cuando (guárdalo donde quieras, por ejemplo mandándotelo por WhatsApp) y podrás restaurarlo aquí o en otro dispositivo.</p>
+    <div class="backup-box">
+      <button id="exp">📋 Copiar respaldo</button>
+      <button id="imp">📥 Restaurar respaldo</button>
+    </div>
     <button class="danger" id="reset">Borrar todo mi progreso</button>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
   const pp=el.querySelector(".passport");
@@ -992,9 +1095,31 @@ function Passport(){
       <div class="cat-sub">${m.dom} de ${m.total} preguntas dominadas</div>`;
     pp.appendChild(d);
   });
+  const bg=el.querySelector(".badges");
+  ACH.forEach(a=>{
+    const got=!!S.ach[a.id];
+    const d=document.createElement("div");d.className="badge"+(got?"":" locked");
+    d.innerHTML=`<div class="bi">${a.icon}</div><div class="bn">${a.n}</div><div class="bd">${got?"Conseguida el "+S.ach[a.id]:a.d}</div>`;
+    bg.appendChild(d);
+  });
+  el.querySelector("#exp").addEventListener("click",async()=>{
+    const code="OYR1."+btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+    try{await navigator.clipboard.writeText(code);toast("Respaldo copiado ✔ — pégalo donde quieras guardarlo");}
+    catch(e){prompt("Copia este código de respaldo:",code);}
+  });
+  el.querySelector("#imp").addEventListener("click",()=>{
+    const code=prompt("Pega aquí tu código de respaldo (empieza con OYR1.):");
+    if(!code)return;
+    try{
+      const S2=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^OYR1\./,"")))));
+      if(!S2||typeof S2!=="object"||!S2.stats)throw 0;
+      S=Object.assign({stats:{},best:0,exams:[],flights:[],daily:{last:null,streak:0,best:0},ach:{}},S2);
+      save();toast("Progreso restaurado ✔");go(Passport);
+    }catch(e){toast("Ese código no es válido — revisa que esté completo");}
+  });
   el.querySelector("#reset").addEventListener("click",()=>{
     if(confirm("¿Segura que quieres borrar todo el progreso? Esto no se puede deshacer.")){
-      S={stats:{},best:0,exams:[]};save();session={streak:0,points:0};go(Passport);
+      S={stats:{},best:0,exams:[],flights:[],daily:{last:null,streak:0,best:0},ach:{}};save();session={streak:0,points:0};go(Passport);
     }
   });
   view.appendChild(el);
@@ -1118,7 +1243,7 @@ function SimOrder(node,scores,onNext,idx,total){
       btn.addEventListener("click",()=>{
         done=true;
         const ok=built.every((ii,pos)=>ii===pos);
-        scores[node.ph].t++;if(ok)scores[node.ph].r++;
+        scores[node.ph].t++;if(ok){scores[node.ph].r++;unlock("evac90","Evacuación en 90 segundos");}
         const after=el.querySelector(".after");
         const correcta=node.items.map((s,k)=>`${k+1}. ${esc(s)}`).join("<br>");
         after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔ Secuencia perfecta — así se opera":"✘ El orden correcto era:"}</div>
@@ -1141,7 +1266,7 @@ function SimReport(scores){
   S.flights=S.flights||[];
   S.flights.push({d:new Date().toISOString().slice(0,10),pct,right,total:tot});
   if(S.flights.length>12)S.flights=S.flights.slice(-12);
-  save();
+  save();checkAch();
   const el=document.createElement("div");el.className="screen";
   el.innerHTML=`
     <div class="result-hero">
