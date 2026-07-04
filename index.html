@@ -257,6 +257,23 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
 footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--muted)}
 footer .heart{color:var(--accent)}
 
+/* ---------- simulación: turno de vuelo ---------- */
+.flightpath{display:flex;align-items:center;gap:5px;margin:4px 0 12px;flex-wrap:wrap}
+.fp-dot{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none;transition:background .2s}
+.fp-dot.done{background:var(--ok)}
+.fp-dot.cur{background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.scene-setup{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:9px}
+.seq-built{display:flex;flex-direction:column;gap:6px;min-height:48px;background:var(--ground);border:1.5px dashed var(--line);border-radius:11px;padding:9px;margin-top:13px}
+.seq-built:empty::before{content:"Toca los pasos de abajo en el orden correcto…";color:var(--muted);font-size:13px;padding:3px}
+.seq-chip{display:flex;align-items:flex-start;gap:8px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 11px;font:600 13px/1.35 system-ui,sans-serif;cursor:pointer;text-align:left;width:100%}
+.seq-chip .n{font-family:ui-monospace,Consolas,monospace;opacity:.85;flex:none}
+.seq-hint{font-size:12px;color:var(--muted);margin-top:7px}
+.report-phase{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:14px;text-align:left}
+.report-phase:last-child{border-bottom:none}
+.report-phase .rp-name{flex:1}
+.report-phase .rp-score{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+.report-phase .rp-score.good{color:var(--ok)} .report-phase .rp-score.meh{color:var(--bad)}
+
 /* confetti */
 .confetti{position:fixed;top:-12px;border-radius:2px;z-index:99;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.9}}
@@ -457,6 +474,65 @@ const CARDS = [
 {c:4,f:"Incapacitación de un TAC",b:"Ubicarlo en asiento de pax + primeros auxilios. Instruir un ABP cerca de las salidas. Retorno a base con un TAC menos: autorización DGAC. A320 con 3 TAC: bloquear exceso de 150 asientos (últimas 6 filas)."}
 ];
 
+/* ===================== SIMULACIÓN: TURNO DE VUELO =====================
+   Nodos: ph=fase, set=contexto, t=decisión, o/a/w como en QS.
+   type:"order" → items en el orden correcto; must:1 → siempre entra. */
+const SIM_PHASES=[
+  {t:"Presentación",icon:"🧳"},
+  {t:"Briefing",icon:"📋"},
+  {t:"Pre-vuelo a bordo",icon:"🔦"},
+  {t:"Embarque",icon:"🛗"},
+  {t:"Cierre y armado",icon:"🚪"},
+  {t:"Despegue",icon:"🛫"},
+  {t:"Crucero",icon:"☁"},
+  {t:"Descenso",icon:"🌆"},
+  {t:"Aterrizaje y post-vuelo",icon:"🛬"}
+];
+const SIM_PICK=[1,1,1,2,2,1,3,1,2];
+const SIM=[
+/* F0 · Presentación */
+{ph:0,set:"Hoy vuelas SCL → Lima como TAC 3 en un A320.",t:"Llegas a la puerta de embarque justo a la hora de salida del vuelo y el TAC1 te llama la atención. ¿Por qué?",o:["Porque la ejecución normal del vuelo comienza con la presentación de la TAC una hora antes del vuelo","Porque había que llegar 15 minutos antes","Porque el briefing es después del embarque","No tiene razón: basta llegar antes del cierre de puertas"],a:0,w:"La ejecución normal del vuelo comienza con la presentación de la TAC en la puerta de embarque UNA HORA antes del vuelo, y termina al completar el post vuelo.",s:"Día 1"},
+{ph:0,set:"Preparas tu bolso la noche anterior: llevas licencia con habilitación, credencial y cédula.",t:"El vuelo es internacional (SCL → Lima). ¿Qué documentos te faltan?",o:["Ninguno, con eso basta","Bitácora de vuelo, CMA vigente y pasaporte vigente","Solo el pasaporte","Certificado de antecedentes y pasaporte"],a:1,w:"El TCP porta: bitácora (experiencia reciente), licencia con habilitación, CMA vigente, credencial, cédula y pasaporte vigente en vuelos internacionales y regionales. Chequear documentación es tarea del día anterior.",s:"Día 1"},
+{ph:0,set:"Revisas tus documentos antes de salir de casa.",t:"Notas que tu CMA (Certificación Médica Aeronáutica) venció ayer. ¿Qué corresponde?",o:["Volar igual y renovarla a la vuelta","No estás habilitada para volar: la vigencia de tus documentos es tu responsabilidad y debes reportarlo","Pedirle permiso al TAC1 para volar sin CMA","Basta con llevar la licencia"],a:1,w:"Es responsabilidad del TAC contar con todo documento VIGENTE. Sin CMA vigente no se está habilitado; corresponde reportarlo de inmediato.",s:"Día 1"},
+/* F1 · Briefing */
+{ph:1,set:"En la sala designada, el TAC1 informa matrícula, cantidad de pax y horarios. Luego el Comandante realiza su reunión breve con la tripulación de cabina.",t:"Al terminar esa reunión, ¿qué acaba de ocurrir formalmente?",o:["Se dio inicio al embarque","Se dio por constituida la tripulación","Se cerró el plan de vuelo","Nada formal: es solo protocolo"],a:1,w:"Tras el briefing operacional del Comandante (crew coordination) se da por CONSTITUIDA la tripulación.",s:"Día 1"},
+{ph:1,set:"El Comandante desarrolla su briefing operacional.",t:"Entre los puntos que aborda está el acceso al cockpit. ¿Qué coordina al respecto?",o:["Las 3 claves de acceso","Que la puerta quedará abierta en crucero","Que nadie puede acercarse al área crítica","La contraseña del wifi de cabina"],a:0,w:"El briefing operacional aborda: documentación, PSV y hora máx. de apertura de puertas, RT e INFOPS, ruta, aeronave, pax/carga, ACCESO AL COCKPIT (3 CLAVES), combustible y recomendaciones.",s:"Día 1"},
+/* F2 · Pre-vuelo a bordo */
+{ph:2,set:"Abordas el avión por primera vez en el día.",t:"¿Qué corresponde hacer en tu zona antes del embarque?",o:["Preparar el carro de servicio","Asegurar tu equipaje en el lugar designado y chequear los equipos de emergencia: cantidad, ubicación y operatividad","Esperar instrucciones del Comandante en el jumpseat","Revisar los pasaportes de los pasajeros"],a:1,w:"En el pre-vuelo a bordo cada TAC asegura su equipaje y efectúa el chequeo de equipos de emergencia (EEL: cantidad, ubicación, operatividad), más elementos de servicio y aseo de cabina y baños.",s:"Día 1"},
+{ph:2,set:"Durante tu chequeo encuentras una linterna de emergencia inoperativa.",t:"¿Dónde queda registrado el hallazgo?",o:["En un mensaje de WhatsApp al supervisor","En el CLB (Cabin Log Book), escrito en inglés","En la tarjeta de seguridad del asiento","No se registra si hay otra linterna"],a:1,w:"El CLB registra uso, deterioro o daño de equipos de emergencia y fallas de sistemas de cabina. Se escribe en INGLÉS y el TAC1 lo chequea antes del vuelo para constatar acciones correctivas.",s:"Día 1"},
+{ph:2,set:"Te toca el chequeo de asientos de tu zona.",t:"¿Cuántos asientos revisas como mínimo y qué buscas en cada uno?",o:["Todos los asientos del avión, solo el cinturón","Al menos 8 asientos aleatorios: cinturón, cojín de flotación/salvavidas y tarjeta de seguridad","4 asientos de la primera fila","Solo los asientos de salida de emergencia"],a:1,w:"Durante el chequeo pre-vuelo se revisan AL MENOS 8 ASIENTOS ALEATORIOS de la zona asignada: cinturón de seguridad, cojín como flotación/salvavidas y tarjeta de seguridad (o de salida de emergencia si corresponde).",s:"Día 3"},
+/* F3 · Embarque */
+{ph:3,set:"Embarque en curso. Un pasajero sentado junto a la ventana te hace señas.",t:"Te dice: «señorita, el ala tiene como una capa de hielo». ¿Qué haces?",o:["Le explicas que el avión resiste el hielo","Reportas INMEDIATAMENTE al Comandante","Lo anotas para comentarlo en el debriefing","Avisas a mantenimiento cuando termine el embarque"],a:1,w:"Clean Aircraft Concept: prohibido despegar con hielo adherido a superficies críticas. El TAC reporta INMEDIATAMENTE al Comandante si observa o recibe información de contaminación en las alas.",s:"Día 2"},
+{ph:3,set:"Sube un pasajero con un violonchelo con asiento pagado (CBBG).",t:"¿Dónde lo ubicas?",o:["En cualquier asiento libre","En asiento ventana, con el pasajero en el asiento contiguo, cubierto y sujeto con cinturón (más extensión si hace falta)","En la fila de salida de emergencia, que tiene más espacio","De pie en el galley posterior"],a:1,w:"El CBBG va en asiento VENTANA (no restringe el pasillo), pax al lado, máximo 1 asiento extra por pax, sin mercancías peligrosas, sin tapar letreros y totalmente cubierto, asegurado con el cinturón.",s:"Día 2"},
+{ph:3,set:"Hoy viaja en el jumpseat 4R una inspectora ajena a la tripulación.",t:"En tu briefing le muestras cinturón/arnés, PSU, chaleco spare amarillo y la tarjeta. ¿Qué instrucción clave le das para una evacuación?",o:["«Usted salta primero por el tobogán»","«En caso de evacuación, usted deberá detener a los pasajeros mientras yo abro la puerta»","«Usted infla el tobogán con la palanca roja»","«Usted queda a cargo de dar las órdenes»"],a:1,w:"El briefing a persona ajena en jumpseat cierra con: «en caso de evacuación, usted deberá detener a los pasajeros mientras yo abro la puerta». Debe cumplir los mismos requisitos que un pax de salida de emergencia.",s:"Día 2"},
+{ph:3,set:"En la fila de salida de emergencia hay un adolescente de 14 años viajando solo.",t:"¿Qué corresponde?",o:["Puede quedarse si es alto y fuerte","Reubicarlo: no cumple la edad mínima de 15 años para ocupar salida de emergencia","Pedirle autorización a los padres por teléfono","Hacerle el briefing igual y dejarlo"],a:1,w:"Para ocupar asiento en salida de emergencia se requiere al menos 15 AÑOS (además de poder operar la salida). Si un pax no cumple requisitos y rehúsa cambiarse: informar al TAC1 y al Comandante.",s:"Día 2"},
+{ph:3,set:"Una pasajera embarazada de 32 semanas embarca sonriente.",t:"¿Qué debes verificar?",o:["Nada, puede volar libremente","Que cuente con Medif: entre las semanas 29 y 38 se requiere el certificado médico de compatibilidad con el vuelo","Que viaje acompañada","Que se siente cerca del baño"],a:1,w:"El Medif es exigible a embarazadas desde la semana 29 a la 38 (entre otros casos: infantes <7 días, post cirugía, infectocontagiosas, yeso en extremidad inferior, concentrador de O2…).",s:"Día 2"},
+{ph:3,set:"Llega a la puerta un container refrigerado: transporte de órganos.",t:"¿Cuál es el procedimiento?",o:["Se guarda en un OHB libre","El TAC1 lo recibe con su documentación, se guarda en el cockpit y el Comandante es notificado mediante NOTOC","Se amarra en un asiento CBBG","Se rechaza: no pueden viajar órganos en cabina"],a:1,w:"TAC1 recibe container + documentación → se guardan en el COCKPIT → Comandante notificado mediante NOTOC (Notification to Captain).",s:"Día 4"},
+/* F4 · Cierre y armado */
+{ph:4,must:1,type:"order",t:"Terminó el embarque. Ordena la secuencia correcta desde aquí hasta los toboganes armados:",items:["Confirmar briefings realizados, equipaje asegurado y pax en sus asientos","Con el total de pax informado, solicitar al Piloto al Mando la autorización de cierre","Cerrar puertas y verificar su estado en el FAP","Retiro de puente/escalera y área adyacente despejada","Orden del Piloto al Mando vía PA: «puertas en automático, cross check y reportar»","TACs arman toboganes, hacen cross check y reportan"],w:"El TAC1 confirma briefings/equipaje/pax → solicita autorización de cierre al Piloto al Mando → cierre y verificación en FAP → retirado el puente y despejada el área, el Piloto al Mando ordena por PA el armado → los TAC arman, cross check y reportan.",s:"Día 3"},
+{ph:4,set:"Recién cerradas las puertas, escuchas por PA: «TRIPULACIÓN, PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR».",t:"¿Es la orden que esperabas?",o:["Sí, es la orden estándar tras el cierre","No: para el armado de toboganes la orden es «puertas en AUTOMÁTICO»; «en manual» corresponde al desarmado en el arribo","Sí, manual y automático son sinónimos","No: la orden correcta es «cabina libre»"],a:1,w:"Armado (salida): «PUERTAS EN AUTOMÁTICO, CROSS CHECK Y REPORTAR». Desarmado (arribo): «PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR».",s:"Día 3"},
+{ph:4,set:"El Comandante informa que la puerta 4R quedó inoperativa para este vuelo.",t:"¿Cómo cambia la demostración de seguridad?",o:["No cambia","Se hace en vivo excluyendo la salida afectada, y la puerta inoperativa se señaliza visiblemente con cartel","Se omite la demo","Se hace solo en video"],a:1,w:"Con salida inoperativa: el Comandante instruye al TAC1 (pax, ubicaciones, bloqueo de filas), los pasajeros son advertidos, la demo se hace EN VIVO excluyendo la salida afectada y la puerta se indica VISIBLEMENTE con cartel.",s:"Día 3"},
+/* F5 · Despegue */
+{ph:5,set:"El avión rueda a la pista. Suena: «TRIPULACIÓN, PRÓXIMOS AL DESPEGUE». La TAC2 sigue asegurando un galley.",t:"¿Cuándo puede darse el reporte de cabina libre?",o:["Ahora mismo, el galley puede esperar","Solo cuando todos los TAC estén sentados y asegurados con cinturón y arnés","Después de rotar en el despegue","Cuando lo pida un pasajero"],a:1,w:"El reporte de CABINA LIBRE debe efectuarse cuando los TAC están SENTADOS y asegurados con cinturón y arnés. TAC1 deja el FAP en CABIN STATUS y presiona CABIN READY desde su asiento.",s:"Día 3"},
+{ph:5,set:"Sentada en tu jumpseat mirando hacia atrás del avión, adoptas tu posición: cabeza contra el apoyacabeza, pies separados, manos sobre las piernas.",t:"Mientras tanto haces tu revisión silenciosa. ¿Qué repasas?",o:["El menú del servicio y las ventas del duty free","Órdenes para evacuar, salidas a utilizar, geografía, equipos EGA, ABP, toboganes y pax a cargo","La lista de pasajeros frecuentes","Los anuncios de bienvenida"],a:1,w:"Revisión silenciosa (silence review): órdenes para evacuar, salidas a utilizar, geografía, equipos de emergencia, ABP, toboganes y pasajeros a cargo. Se repite en el descenso.",s:"Día 4"},
+/* F6 · Crucero */
+{ph:6,set:"A los 20 minutos de crucero el avión empieza a sacudirse: turbulencia moderada sin aviso.",t:"¿Qué haces primero?",o:["Seguir el servicio con cuidado","Leer la fraseología de turbulencia («vuelve a tu asiento y abrocha tu cinturón»), asegurar cabina y asegurarte tú","Llamar al cockpit para preguntar qué pasa","Repartir chalecos salvavidas"],a:1,w:"Ante turbulencia: anuncio «Estamos pasando por una zona de turbulencia. Vuelve a tu asiento y abrocha tu cinturón de seguridad», verificación de cabina y tripulación asegurada. No se interrumpe al cockpit en cabina estéril salvo emergencia.",s:"Día 4"},
+{ph:6,set:"A 35.000 ft, el Primer Oficial necesita salir del cockpit al baño.",t:"¿Qué debe ocurrir mientras está fuera?",o:["Nada especial, es un momento corto","Un TAC ingresa y permanece en el cockpit (conociendo las máscaras Quick Donning) y el piloto en los controles usa su máscara de O2 por estar sobre 25.000 ft","Se apaga el piloto automático","El TAC1 toma los controles"],a:1,w:"Si queda un solo piloto: sobre 25.000 ft usa la máscara de O2 hasta que el otro vuelva, y un TAC ingresa y permanece en la cabina de mando, sentado con cinturón y sabiendo usar las Quick Donning.",s:"Día 4"},
+{ph:6,set:"Un pasajero te muestra el techo: sale un «humo blanco» de los conductos de aire.",t:"¿Qué es lo más probable y cómo actúas?",o:["Incendio eléctrico: inicias evacuación","Condensación: informas al Comandante y das a los pasajeros una explicación adecuada","Fumigación automática programada","Falla de presurización: bajan las máscaras"],a:1,w:"La CONDENSACIÓN es humedad con apariencia de humo blanco desde los conductos del techo. El TAC debe conocer el fenómeno, informar al Comandante y tranquilizar a los pasajeros con una buena explicación.",s:"Día 4"},
+{ph:6,set:"Un pasajero lleva dos vasos de vino, insulta a otro pasajero y no obedece cuando le pides que vuelva a su asiento, aunque sin agredir físicamente.",t:"¿Cómo lo clasificas y qué haces?",o:["Categoría 1: lo ignoras","Categoría 2 (desafiante, no acata instrucciones): informas al TAC1 y al Comandante","Categoría 3: lo esposas de inmediato","No es disruptivo hasta que golpee a alguien"],a:1,w:"Cat 2: actitud desafiante, no acata instrucciones de la tripulación; requiere apoyo y reporte por la línea de mando. Cat 1 es leve y controlable; Cat 3 implica agresión física y/o amenazas.",s:"Día 4"},
+{ph:6,set:"Vuelo de 2 h 30 min. Terminó el primer servicio y la cabina está tranquila.",t:"¿Cada cuánto corresponde hacer los chequeos preventivos?",o:["Cada 10 minutos","Como mínimo cada 30 minutos mientras no se esté entregando servicio","Una vez por vuelo","Solo si el Comandante lo pide"],a:1,w:"En vuelos de más de 1 hora: chequeos preventivos mínimo CADA 30 MINUTOS mientras no haya servicio en curso. Los organiza el TAC1. Buscan humo, recalentamiento, olores, derrames, hielo, comportamiento de pax.",s:"Día 4"},
+{ph:6,set:"Notas a un pasajero parado largo rato frente al baño delantero, mirando insistentemente hacia el cockpit.",t:"¿Qué corresponde?",o:["Nada: puede estar donde quiera","Está en el área crítica: puede circular para ir al baño, pero debes mantener control y supervisión ante su comportamiento inusual","Ordenarle volver a su asiento esposado","Abrir la puerta del cockpit para preguntar"],a:1,w:"El área crítica (galley delantero, baño delantero, sector frente a 1L/1R) se protege contra interferencia ilícita. Los pax pueden circular hacia el baño, pero el TAC mantiene control y alerta ante comportamiento inusual; la TM vigila por cámaras.",s:"Día 4"},
+{ph:6,set:"La TAC4 se desmaya en el galley posterior a mitad de vuelo.",t:"¿Qué corresponde hacer?",o:["Sentarla en su jumpseat y seguir","Ubicarla en un asiento de pasajero, darle primeros auxilios e instruir a un ABP sentado próximo a las salidas de emergencia","Pedir un médico y nada más","Aterrizar de emergencia siempre"],a:1,w:"TAC incapacitado: asiento de pasajero + primeros auxilios + instruir un ABP cerca de las salidas (su puerta podría quedar sin operador). El retorno a base con un TAC menos requiere coordinación y autorización de la DGAC.",s:"Día 4"},
+{ph:6,set:"Vuelan de regreso hacia SCL. El Comandante avisa que en 10 minutos cruzan la cordillera.",t:"¿Qué hace la tripulación de cabina?",o:["Nada distinto al resto del crucero","Anuncio a los pax, cierre de funciones de servicio, galley y baños asegurados, OHB cerrados, cinturones chequeados y cada TAC asegurado en su jumpseat con cinturón y arnés","Solo bajar las luces","Repartir oxígeno preventivo"],a:1,w:"Hacia SCL, 10 minutos antes del cruce: fraseología («…próximos a cruzar las cumbres más altas de toda América…»), cierre del servicio, galley y baños asegurados, OHB cerrados, pax con cinturón y TACs asegurados con cinturón y arnés.",s:"Día 4"},
+/* F7 · Descenso */
+{ph:7,set:"El Comandante anuncia el inicio del descenso.",t:"¿Cuáles son tus funciones ahora?",o:["Iniciar un último servicio de café","Retirar remanentes del servicio (pax y cockpit), leer fraseología, chequeo de cabina libre, ajustar iluminación si es nocturno, ir al puesto y repetir la revisión silenciosa","Desarmar los toboganes","Abrir las cortinas y esperar"],a:1,w:"En descenso: retirar servicio, fraseología, chequeo de cabina libre, iluminación (nocturno), puestos para el aterrizaje con reporte de «cabina libre» y nueva revisión silenciosa. Además el TAC1 reporta el CLB al Comandante al INICIO del descenso.",s:"Día 4"},
+{ph:7,set:"Recuerdas que durante el vuelo anotaste una falla en el CLB.",t:"¿Cuándo corresponde reportarla al Comandante?",o:["Después de aterrizar","Al inicio del descenso, sin interferir con la cabina de mando estéril","En pleno aterrizaje","Al día siguiente por correo"],a:1,w:"El TAC1 reporta el CLB al Comandante AL INICIO DEL DESCENSO, sin interferir la cabina de mando estéril.",s:"Día 1"},
+/* F8 · Aterrizaje y post-vuelo */
+{ph:8,set:"Aterrizaron y el avión se detiene en su posición final. Se apaga la señal de cinturones tras la orden por PA.",t:"¿Cuál fue esa orden y qué haces con tu puerta?",o:["«Puertas en automático»: armo el tobogán","«Puertas en manual, cross check y reportar»: desarmo, verifico mi puerta y la contraria, y reporto; el TAC1 confirma en el FAP (ámbar)","«Cabina libre»: abro la puerta","No hay orden: cada TAC decide"],a:1,w:"Al arribo: «TRIPULACIÓN, PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR». Cada TAC desarma y verifica su puerta y la contraria, reporta, el TAC1 confirma en FAP (ámbar) y la TM verifica en ECAM antes de apagar la señal de cinturones.",s:"Día 3"},
+{ph:8,set:"Con el tobogán desarmado, alguien golpea la puerta 1L desde afuera.",t:"¿Cómo procede la apertura en operación normal?",o:["La abres tú de inmediato","Das tu conformidad mostrando el pulgar hacia arriba a través del visor (estás alejada) y el personal de tierra la abre desde el exterior","Esperas la orden del TAC4","Se abre sola con el gate"],a:1,w:"Política normal: apertura DESDE EL EXTERIOR. Tierra golpea → el TAC responsable muestra el pulgar arriba por el visor → tierra abre. Desde el interior solo en contingencia con autorización del Comandante.",s:"Día 3"},
+{ph:8,set:"Los pasajeros desembarcan.",t:"Antes del debriefing final, ¿qué te falta chequear?",o:["Nada, el vuelo terminó","Asistir a quienes lo requieran, revisar los baños (que no quede nadie), verificar objetos olvidados y sellar carros y gabinetes","Solo contar los chalecos","Rellenar el combustible"],a:1,w:"Post-vuelo: desembarque priorizando asistencia, revisión de baños, sellado de carros/gabinetes, verificación de objetos olvidados y DEBRIEFING con toda la tripulación una vez desembarcados los pax.",s:"Día 4"}
+];
+
 /* ============================ estado ============================ */
 const KEY="oyr-pia-v1";
 let S={stats:{},best:0,exams:[]};
@@ -527,6 +603,7 @@ function Home(){
   const modes=el.querySelector(".modes");
   const M=[
     ["RUL","🎡","Ruleta","Gira la ruleta tipo preguntados: la suerte (y tus puntos débiles) eligen la categoría.","Modo clásico",()=>go(Wheel)],
+    ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones reales fase por fase, eventos sorpresa en crucero e informe final.","Modo historia · nuevo",()=>go(SimIntro)],
     ["EST","📚","Estudio por categoría","Recorre una categoría completa a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(CatPick)],
     ["EXM","🛫","Examen de vuelo","20 preguntas de todo el curso, con nota final y revisión de errores.","Simulacro",()=>go(ExamStart)],
     ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial: definiciones, números y fraseologías.","Memoria",()=>go(Flash)],
@@ -900,6 +977,8 @@ function Passport(){
     <div class="passport"></div>
     <h2 style="margin-top:22px">Historial de exámenes</h2>
     <ul class="exam-history">${S.exams.length?S.exams.slice().reverse().map(e=>`<li>${e.d} — ${e.pct}% (${e.right}/${e.total}) en ${e.t} min</li>`).join(""):"<li>Aún sin exámenes. ¡El primero es hoy!</li>"}</ul>
+    <h2 style="margin-top:22px">Turnos de vuelo 🧭</h2>
+    <ul class="exam-history">${(S.flights||[]).length?S.flights.slice().reverse().map(f=>`<li>${f.d} — ${f.pct}% (${f.right}/${f.total} decisiones)</li>`).join(""):"<li>Aún sin turnos volados. ¡Embarca desde el menú!</li>"}</ul>
     <button class="danger" id="reset">Borrar todo mi progreso</button>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
   const pp=el.querySelector(".passport");
@@ -919,6 +998,168 @@ function Passport(){
     }
   });
   view.appendChild(el);
+}
+
+/* ---------- SIMULACIÓN: TURNO DE VUELO ---------- */
+function SimIntro(){
+  const el=document.createElement("div");el.className="screen";
+  const hist=(S.flights||[]);
+  const best=hist.length?Math.max(...hist.map(f=>f.pct)):null;
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Modo historia</div>
+    <h2>🧭 Turno de vuelo</h2>
+    <p class="sub">Eres TAC en un A320, ruta SCL → Lima. Vas a vivir el vuelo completo en ${SIM_PICK.reduce((a,b)=>a+b,0)} decisiones: cada fase trae situaciones reales y el crucero trae eventos sorpresa distintos en cada turno. Al final recibes tu informe de vuelo.</p>
+    ${best!=null?`<p class="sub" style="margin-top:6px">Tu mejor turno: <b>${best}%</b></p>`:""}
+    <div class="modes" style="margin-top:18px">
+      <button class="pass" id="goSim">
+        <span class="pass-main"><h3>Embarcar ✈</h3><p>Del briefing al debriefing. Cada corrida es distinta: vale la pena repetirla.</p>
+        <span class="tagline">Puerta 1L · abierta</span></span>
+        <span class="pass-stub"><span class="big">🧭</span><span>SIM</span><span>SCL→LIM</span></span>
+      </button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  el.querySelector("#goSim").addEventListener("click",runSim);
+  view.appendChild(el);
+}
+function runSim(){
+  const plan=[];
+  SIM_PHASES.forEach((p,pi)=>{
+    const pool=SIM.filter(n=>n.ph===pi);
+    const must=pool.filter(n=>n.must);
+    const rest=shuffle(pool.filter(n=>!n.must));
+    plan.push(...must.concat(rest).slice(0,SIM_PICK[pi]));
+  });
+  const scores=SIM_PHASES.map(()=>({r:0,t:0}));
+  let i=0;
+  const step=()=>{
+    if(i>=plan.length){go(SimReport,scores);return;}
+    go(SimNode,plan[i],scores,()=>{i++;step();},i,plan.length);
+  };
+  step();
+}
+function simHead(node,idx,total){
+  const ph=SIM_PHASES[node.ph];
+  const dots=SIM_PHASES.map((p,k)=>`<span class="fp-dot ${k<node.ph?"done":k===node.ph?"cur":""}" title="${p.t}"></span>`).join("");
+  return `<button class="backbtn">← Abandonar turno</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">${ph.icon} ${ph.t}</span>
+      <span class="q-count">DEC ${String(idx+1).padStart(2,"0")}/${total}</span>
+    </div>
+    <div class="flightpath">${dots}</div>`;
+}
+function SimNode(node,scores,onNext,idx,total){
+  if(node.type==="order"){SimOrder(node,scores,onNext,idx,total);return;}
+  const el=document.createElement("div");el.className="screen";
+  const order=shuffle(node.o.map((_,k)=>k));
+  el.innerHTML=`${simHead(node,idx,total)}
+    <div class="q-card">
+      ${node.set?`<div class="scene-setup">${esc(node.set)}</div>`:""}
+      <div class="q-text">${esc(node.t)}</div>
+      <div class="opts"></div><div class="after"></div>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const opts=el.querySelector(".opts");
+  const letters=["A","B","C","D"];let answered=false;
+  order.forEach((oi,k)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.innerHTML=`<span class="key">${letters[k]}</span><span>${esc(node.o[oi])}</span>`;
+    b.addEventListener("click",()=>{
+      if(answered)return;answered=true;
+      const ok=oi===node.a;
+      scores[node.ph].t++;if(ok)scores[node.ph].r++;
+      [...opts.children].forEach((btn,j)=>{
+        btn.disabled=true;
+        if(order[j]===node.a)btn.classList.add("correct");
+        else if(j===k&&!ok)btn.classList.add("wrong");
+        else btn.classList.add("dim");
+      });
+      const after=el.querySelector(".after");
+      after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔ Buena decisión, tripulante":"✘ En el vuelo real esto importa — mira:"}</div>
+        <div class="why">${esc(node.w)}<span class="src">Fuente: ${node.s} · OYR ALAS</span></div>
+        <button class="next-btn">Continuar el vuelo →</button>`;
+      after.querySelector(".next-btn").addEventListener("click",onNext);
+      after.querySelector(".next-btn").focus();
+    });
+    opts.appendChild(b);
+  });
+  view.appendChild(el);
+}
+function SimOrder(node,scores,onNext,idx,total){
+  const el=document.createElement("div");el.className="screen";
+  let pool=shuffle(node.items.map((_,k)=>k));
+  let built=[];
+  el.innerHTML=`${simHead(node,idx,total)}
+    <div class="q-card">
+      <div class="q-text">${esc(node.t)}</div>
+      <div class="seq-built"></div>
+      <div class="seq-hint">Toca un paso de tu secuencia para devolverlo abajo.</div>
+      <div class="opts"></div><div class="after"></div>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const builtBox=el.querySelector(".seq-built");
+  const opts=el.querySelector(".opts");
+  let done=false;
+  function render(){
+    builtBox.innerHTML="";opts.innerHTML="";
+    built.forEach((ii,pos)=>{
+      const c=document.createElement("button");c.className="seq-chip";
+      c.innerHTML=`<span class="n">${pos+1}.</span><span>${esc(node.items[ii])}</span>`;
+      c.addEventListener("click",()=>{if(done)return;built.splice(pos,1);pool.push(ii);render();});
+      builtBox.appendChild(c);
+    });
+    pool.forEach(ii=>{
+      const b=document.createElement("button");b.className="opt";
+      b.innerHTML=`<span class="key">·</span><span>${esc(node.items[ii])}</span>`;
+      b.addEventListener("click",()=>{if(done)return;pool=pool.filter(x=>x!==ii);built.push(ii);render();});
+      opts.appendChild(b);
+    });
+    if(!pool.length&&!done){
+      const btn=document.createElement("button");btn.className="next-btn";btn.textContent="Confirmar secuencia ✔";
+      btn.addEventListener("click",()=>{
+        done=true;
+        const ok=built.every((ii,pos)=>ii===pos);
+        scores[node.ph].t++;if(ok)scores[node.ph].r++;
+        const after=el.querySelector(".after");
+        const correcta=node.items.map((s,k)=>`${k+1}. ${esc(s)}`).join("<br>");
+        after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔ Secuencia perfecta — así se opera":"✘ El orden correcto era:"}</div>
+          <div class="why">${ok?esc(node.w):correcta+"<br><br>"+esc(node.w)}<span class="src">Fuente: ${node.s} · OYR ALAS</span></div>
+          <button class="next-btn">Continuar el vuelo →</button>`;
+        after.querySelector(".next-btn").addEventListener("click",onNext);
+        opts.innerHTML="";
+        [...builtBox.children].forEach(c=>c.disabled=true);
+      });
+      opts.appendChild(btn);
+    }
+  }
+  render();
+  view.appendChild(el);
+}
+function SimReport(scores){
+  const right=scores.reduce((a,s)=>a+s.r,0), tot=scores.reduce((a,s)=>a+s.t,0);
+  const pct=Math.round(right/tot*100);
+  const pass=pct>=80;
+  S.flights=S.flights||[];
+  S.flights.push({d:new Date().toISOString().slice(0,10),pct,right,total:tot});
+  if(S.flights.length>12)S.flights=S.flights.slice(-12);
+  save();
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`
+    <div class="result-hero">
+      <div class="eyebrow">Informe de vuelo · SCL → LIM</div>
+      <div class="score">${pct}%</div>
+      <p class="sub">${right} de ${tot} decisiones correctas</p>
+      <span class="stamp ${pass?"ok":"bad"}">${pct>=95?"Vuelo impecable":pass?"Vuelo completado":"Vuelo con observaciones"}</span>
+      <p class="sub" style="margin-top:12px">${pct>=95?"Ni una observación en el informe. Nivel instructora, "+NOMBRE+" 👑":pass?"Turno cumplido — el informe va limpio al debriefing ✈":"El Comandante anotó observaciones: repite el turno, los eventos cambian cada vez."}</p>
+      <div style="margin-top:16px">${scores.map((s,k)=>`<div class="report-phase"><span>${SIM_PHASES[k].icon}</span><span class="rp-name">${SIM_PHASES[k].t}</span><span class="rp-score ${s.r===s.t?"good":"meh"}">${s.r}/${s.t}</span></div>`).join("")}</div>
+    </div>
+    <div class="flash-nav" style="margin-top:18px">
+      <button id="again">Nuevo turno</button>
+      <button class="primary" id="menu">Volver al menú</button>
+    </div>`;
+  el.querySelector("#again").addEventListener("click",runSim);
+  el.querySelector("#menu").addEventListener("click",()=>go(Home));
+  view.appendChild(el);
+  if(pass)confetti();
 }
 
 /* ---------- confetti ---------- */
