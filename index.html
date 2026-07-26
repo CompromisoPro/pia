@@ -495,6 +495,93 @@ footer .heart{color:var(--accent)}
 .ramo-hero h1{font-size:clamp(22px,5.5vw,27px);margin:4px 0 4px}
 .ramo-hero .stats-strip{margin-top:13px}
 
+
+/* ============ mapa conceptual ============ */
+.mapa{margin-top:16px;position:relative}
+.mapa-rama{
+  position:relative;padding-left:20px;margin-bottom:16px;
+  border-left:2px solid var(--rc,var(--accent));
+  animation:cardin .45s ease backwards;
+}
+.mapa-rama:nth-child(1){animation-delay:.04s}
+.mapa-rama:nth-child(2){animation-delay:.09s}
+.mapa-rama:nth-child(3){animation-delay:.14s}
+.mapa-rama:nth-child(4){animation-delay:.19s}
+.mapa-rama:nth-child(5){animation-delay:.24s}
+.mapa-rama:nth-child(6){animation-delay:.29s}
+.mapa-rama:nth-child(7){animation-delay:.34s}
+.mapa-rama:last-child{margin-bottom:0}
+.mapa-mod{
+  position:relative;display:flex;align-items:center;gap:9px;margin-bottom:10px;
+  font-weight:700;font-size:15.5px;
+}
+.mapa-mod::before{
+  content:"";position:absolute;left:-27px;width:13px;height:13px;border-radius:50%;
+  background:var(--rc,var(--accent));border:3px solid var(--sky-mid);
+}
+.mapa-mod .mm-pct{
+  font-family:ui-monospace,Consolas,monospace;font-size:11px;font-weight:700;
+  padding:2px 8px;border-radius:99px;background:var(--inner);color:var(--muted);
+  border:1px solid var(--line);
+}
+.mapa-nodos{display:flex;flex-direction:column;gap:7px}
+.mapa-nodo{
+  position:relative;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;
+  padding:10px 13px;box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .14s ease,border-color .14s ease;
+}
+.mapa-nodo::before{
+  content:"";position:absolute;left:-21px;top:19px;width:19px;height:2px;
+  background:var(--rc,var(--accent));opacity:.45;
+}
+.mapa-nodo:hover{transform:translateX(3px);border-color:var(--rc,var(--accent))}
+.mapa-nodo .mn-t{display:flex;align-items:center;gap:8px;font-weight:650;font-size:14.5px}
+.mapa-nodo .mn-t i{
+  font-style:normal;font-size:11px;color:var(--muted);margin-left:auto;flex:none;
+  transition:transform .2s ease;
+}
+.mapa-nodo.open .mn-t i{transform:rotate(90deg)}
+.mapa-nodo .mn-d{
+  font-size:13.5px;line-height:1.5;color:var(--muted);
+  max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease;
+}
+.mapa-nodo.open .mn-d{max-height:400px;margin-top:7px}
+.mapa-leyenda{font-size:12.5px;color:var(--muted);margin-top:4px}
+
+/* ============ buscador ============ */
+.search-box{display:flex;gap:9px;margin-top:14px}
+.search-input{
+  flex:1;min-width:0;background:var(--glass-strong);border:1.5px solid var(--glass-border);
+  border-radius:13px;padding:13px 15px;font:15px system-ui,sans-serif;color:var(--ink);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.search-input:focus{outline:3px solid var(--accent);outline-offset:1px}
+.search-meta{font-size:13px;color:var(--muted);margin-top:12px}
+.res-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.res-item{
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:13px;
+  padding:12px 14px;box-shadow:var(--shadow);cursor:pointer;width:100%;text-align:left;
+  font:inherit;color:inherit;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .14s ease;
+}
+.res-item:hover{transform:translateY(-2px)}
+.res-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px}
+.res-chip{
+  font-family:ui-monospace,Consolas,monospace;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 8px;border-radius:99px;color:#fff;font-weight:700;
+}
+.res-kind{font-family:ui-monospace,Consolas,monospace;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.res-q{font-weight:650;font-size:14.5px;line-height:1.4}
+.res-a{font-size:13.5px;color:var(--ok);margin-top:5px;font-weight:600}
+.res-w{font-size:13px;color:var(--muted);line-height:1.5;
+  max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease}
+.res-item.open .res-w{max-height:500px;margin-top:8px}
+mark{background:var(--accent-soft);color:var(--accent);font-weight:700;padding:0 2px;border-radius:3px}
+.search-empty{text-align:center;color:var(--muted);font-size:14px;padding:26px 10px}
+
 /* ============ ajuste móvil: mismo look, menos costo de GPU ============ */
 @media (max-width: 520px){
   .board,.q-card,.result-hero{backdrop-filter:blur(9px) saturate(1.15);-webkit-backdrop-filter:blur(9px) saturate(1.15)}
@@ -1614,6 +1701,342 @@ C("pa5","OVACE","Obstrucción LEVE (tose y habla): NO intervenir, animar a toser
 C("fh7","Neurociencia aplicada","Neuroplasticidad: fortalecimiento sináptico + engramas motores (la repetición crea respuestas automáticas). El cortisol alto daña la memoria operativa y la atención. Las checklists reducen la carga de la memoria de trabajo. Líder en crisis: regulación emocional, decisión ágil, flexibilidad y resiliencia.");
 
 
+const MAPAS={};
+function M(r,ramas){MAPAS[r]=ramas;}
+/* ================= MAPAS CONCEPTUALES POR RAMO ================= */
+/* M(ramo, [ [moduloId, [ [concepto, detalle], ... ] ], ... ] ) */
+
+M("oyr",[
+ ["oyr1",[
+  ["Ejecución normal del vuelo","Comienza con la presentación de la TAC en la puerta de embarque 1 HORA antes del vuelo y termina al completar el post vuelo."],
+  ["Jerarquía a bordo","Comandante → Primer Oficial → TAC 1 → TAC auxiliares (TAC2, TAC3, TAC4)."],
+  ["Función primaria del TAC","SEGURIDAD de los pasajeros: prevención + atención de situaciones especiales + actuación ante emergencia."],
+  ["Obligación vs Responsabilidad","Obligación: CONOCER leyes y normas. Responsabilidad: APLICAR los conocimientos en seguridad y servicio."],
+  ["TAC mínima","La que permite evacuar en 90 segundos. 20-50 asientos → 1 · 51-100 → 2 · +100 → 2 más 1 por cada unidad o parte de 50."],
+  ["Documentos del TCP","Bitácora · licencia con habilitación · CMA vigente · credencial · cédula · pasaporte (internacional y regional)."],
+  ["TAC extra tripulante y adicional","Extra tripulante: auditorías o evaluaciones, NO es tripulación mínima. Adicional: TAC N°5, jumpseat 4R, sin puerta asignada."]
+ ]],
+ ["oyr2",[
+  ["Briefing TAC","Reunión obligatoria antes del vuelo a cargo del TAC 1: matrícula, pax, aeronave, horarios."],
+  ["Briefing operacional (TM)","Lo hace el Comandante; al terminar se da por CONSTITUIDA la tripulación. Incluye las 3 claves del cockpit."],
+  ["Chequeo pre-vuelo EEL","Cantidad, ubicación y operatividad de los equipos. Al abordar por primera vez, con cambio de tripulación o si el avión quedó sin supervisión."],
+  ["CLB · Cabin Log Book","Libro foliado en triplicado, se escribe en INGLÉS. El TAC1 lo revisa antes del vuelo y reporta al Comandante al inicio del descenso."],
+  ["Comunicaciones","Interfono independiente del PA. Prohibido llamar al cockpit en cabina estéril, salvo emergencia."],
+  ["Conciencia situacional","Percepción → Comprensión → Proyección. Alerta constante desde el briefing."]
+ ]],
+ ["oyr3",[
+  ["Condición para embarcar","Solo con la tripulación de cabina MÍNIMA presente."],
+  ["CBBG · equipaje en asiento","Asiento ventana, pax contiguo, máximo 1 extra, cubierto y asegurado, sin MP, nunca en salida de emergencia."],
+  ["ABP · Able Bodied Passenger","Pax capacitado que ayuda voluntariamente. Sin tiempo: los 2 primeros aptos que lleguen a la salida."],
+  ["Salidas de emergencia","Mínimo 15 años, asignación no discriminatoria, briefing antes del cierre de puertas. La extensión de cinturón NO restringe."],
+  ["Códigos de silla de ruedas","WCHR: solo avión↔terminal · WCHS: ayuda en escaleras · WCHC: no camina, silla de pasillo."],
+  ["Medif","Certificado médico. Embarazo semanas 29-38, infante <7 días, post cirugía, infectocontagiosas, yeso en extremidad inferior, O2 portátil."],
+  ["Hielo en las alas","Clean Aircraft Concept: prohibido despegar con contaminación. Reporte INMEDIATO al Comandante."]
+ ]],
+ ["oyr4",[
+  ["Puertas del A320","1L y 4L (izquierda): pasajeros · 1R y 4R (derecha): servicio. En emergencia TODAS son salidas principales."],
+  ["Armado de toboganes","«TRIPULACIÓN, PUERTAS EN AUTOMÁTICO, CROSS CHECK Y REPORTAR» tras retirar puente y despejar el área."],
+  ["Desarmado","«TRIPULACIÓN, PUERTAS EN MANUAL, CROSS CHECK Y REPORTAR» con el avión detenido en posición final."],
+  ["Cabina estéril","Del cierre de puertas a 10.000 ft y de 10.000 ft a la apertura. Concepto FAA, 1981."],
+  ["DEMO mandatoria","Salidas de emergencia · cinturón · sistema de oxígeno · chaleco salvavidas."],
+  ["Cabina libre","Se reporta SENTADOS y asegurados con cinturón y arnés. FAP en CABIN STATUS → botón CABIN READY."],
+  ["Chequeo de asientos","Mínimo 8 asientos aleatorios por zona: cinturón, cojín de flotación y tarjeta de seguridad."]
+ ]],
+ ["oyr5",[
+  ["Área crítica","Galley delantero + baño delantero + frente a puertas 1L/1R. Asegurada: sin pax, baño bloqueado, trolley cruzado y un TAC resguardando."],
+  ["Ausencia de un piloto","Sobre 25.000 ft el que queda usa máscara de O2 y un TAC entra al cockpit (Quick Donning, sentado con cinturón)."],
+  ["Chequeos preventivos","Mínimo cada 30 minutos en vuelos de más de 1 hora, sin servicio en curso. Los organiza el TAC1."],
+  ["Revisión silenciosa","Órdenes para evacuar · salidas · geografía · equipos EGA · ABP · toboganes · pax a cargo."],
+  ["Pasajeros disruptivos","Cat 1: leve · Cat 2: desafiante, no acata · Cat 3: agresivo y violento."],
+  ["Cruce de cordillera","Hacia SCL: anuncio 10 min antes. Desde SCL: tripulación asegurada desde el despegue hasta terminar el cruce."]
+ ]]
+]);
+
+M("ega",[
+ ["ega1",[
+  ["Incapacitación de la TM","El copiloto toma los controles; si no queda tripulación mínima se declara emergencia. La TAC ayuda a retirarlo del puesto sin que bloquee los controles."],
+  ["Desembarque rápido","«TRIPULACIÓN DESEMBARQUE RÁPIDO». Por manga o escalera, SIN toboganes, sin equipaje de mano."],
+  ["Turbulencia · 3 niveles","LIGERA: líquidos se agitan · MODERADA: salpican, difícil caminar · SEVERA: objetos volando, la TAC se sienta de inmediato."],
+  ["Descompresión","Rápida/explosiva: ruido, niebla, ráfaga, máscaras. Máscara más cercana + asegurarse. Lenta: despejar 4 filas."],
+  ["TUC · Tiempo Útil de Conciencia","18.000→20 min · 22.000→10 min · 25.000→3 min · 30.000→1-2 min · 35.000→30 seg · 40.000→15 seg."],
+  ["Amenaza de bomba","Específica o no específica. UMR del A320: puerta 4R. Búsqueda en cabina, galleys y baños sin accionar seguros."],
+  ["Situaciones especiales","Tire burst (reventón de neumático) · Torching (llamarada en APU o motores) · Condensación (humo blanco del techo)."]
+ ]],
+ ["ega2",[
+  ["Prioridades S-O-S","Sobrevivir al impacto → Orden de evacuación → Sobrevivir afuera."],
+  ["ATTENTION CREW AT STATIONS","La TM evalúa: ir a estaciones, asegurar área, bloquear baños, puertas en automático y esperar."],
+  ["Posición de protección","Pegado al respaldo, cinturón sobre caderas, arnés, pies separados con zapatos bajos, manos sobre las piernas."],
+  ["Los 90 segundos","Tiempo máximo de evacuación: después, el humo, los gases y el fuego hacen imposible la supervivencia."],
+  ["Apertura de salidas","CHEQUEAR condiciones exteriores → ABRIR → VERIFICAR salida habilitada. Si no infla: PULL TO INFLATE."],
+  ["Órdenes de evacuación","Tierra: «SUELTEN CINTURONES, DEJEN TODO / SALGAN POR ACÁ, SALTEN». Agua: «PÓNGASE EL CHALECO / INFLEN EL CHALECO»."]
+ ]],
+ ["ega3",[
+  ["Posición de detención","Sujetarse, mano abierta y ordenar «DETÉNGASE - STOP» mientras se habilita la salida."],
+  ["Control de flujo","Órdenes fuertes y claras + lenguaje corporal. Evaluar constantemente el avión y el tobogán."],
+  ["Evacuación NO planificada","Sin aviso, en embarque, rodaje, despegue o aterrizaje. Orden clave: «PROTÉJASE, PROTÉJASE / BRACE, BRACE»."],
+  ["Ditching","Chaleco antes de salir, desconectar tobogán (FOR DITCHING ONLY), cortar mooring line con el cuchillo."],
+  ["Después de la evacuación","Alejar del combustible y fuego, área segura, mantenerlos juntos y CONTARLOS. Responsables hasta el relevo del rescate."]
+ ]],
+ ["ega4",[
+  ["TESTI","Tipo de emergencia · Evacuación necesaria · Señal de evacuación · Tiempo disponible · Información adicional."],
+  ["7 pasos de preparación","TESTI → Fraseología → ABP → Cabina → «PRÓXIMOS AL ATERRIZAJE» → «BRACE FOR IMPACT» → Después del contacto."],
+  ["Alturas clave","2.000 ft (2 min antes): próximos al aterrizaje. 500 ft (30 seg antes): BRACE FOR IMPACT."],
+  ["ABP · selección","2 por puerta y 1 por salida alar. Se reubican en asiento de pasillo cercano a la salida."],
+  ["Instrucción al ABP","Detener pax, ayudar abajo del tobogán y abrir la salida si el TAC queda incapacitado. El tobogán infla en 10 segundos."]
+ ]],
+ ["ega5",[
+  ["Botiquines","MK: solo personal de salud · FAK: lo usa la TC · NPU/UPK: fluidos y enfermedad infectocontagiosa. Sellos: verde OK, amarillo verificar, rojo usado."],
+  ["DEA","Trata la fibrilación ventricular. Parche derecho bajo la clavícula, izquierdo bajo el pecho. Niños <25 kg u 8 años: llave pediátrica."],
+  ["Chalecos salvavidas","Pax amarillo, tripulación rojo fosforescente. Adulto: infante de MÁS de 15 kg. Infante: menos de 15 kg, con cuerda al adulto. Se inflan AL SALIR."],
+  ["ELT","Emite 48 horas. 243 y 121.5 MHz (bip corto) · 406.25 MHz (bip largo, COSPAS-SARSAT). Antena libre ~5 min en agua."],
+  ["Extintores de halón","6-8 segundos de duración, alcance ~2 metros, apuntar a la BASE del fuego y descargar todo."],
+  ["PBE","Air Liquide: indicador verde = operativo (15 min) · Dräger: cinta amarilla intacta (20 min) · Scott/Avox: NO rosado (15 min)."],
+  ["Oxígeno portátil","310 litros. HI 4 lts/min 75 min adulto · LOW 2 lts/min 150 min infante · HI+LO 6 lts/min 50 min. Dejar 500 psi de remanente."]
+ ]],
+ ["ega6",[
+  ["Tetraedro del fuego","Combustible + oxígeno + calor + reacción en cadena. El halón actúa inhibiendo la reacción en cadena."],
+  ["Roles","ATACANTE identifica y ataca · INFORMANTE avisa a la TM · ASISTENTE provee equipo y releva · SOPORTE reubica pax y da primeros auxilios."],
+  ["Procedimiento general","Identificar → Informar → Atacar con halón → Desconectar circuitos eléctricos si es necesario."],
+  ["Fuego en baño","Con calor y humo: PBE, abrir la puerta usándola como protección, descargar halón, cerrar y esperar."],
+  ["Batería de litio","Halón sobre las llamas → agua o líquido NO alcohólico para enfriar → sumergir en recipiente → baño posterior bloqueado y vigilado."],
+  ["Fuego en OHB y horno","Abrir LIGERAMENTE solo para la boquilla del halón, descargar y cerrar. En el horno, mantener la puerta cerrada para privarlo de oxígeno."]
+ ]]
+]);
+
+M("mp",[
+ ["mp1",[
+  ["Qué es una MMPP","Artículos o sustancias capaces de poner en peligro la salud, seguridad, propiedad y medio ambiente, listados en la reglamentación."],
+  ["Normativa base","Anexo 18 OACI y Doc 9284 AN/905 · IATA publica la RMP · en Chile el DAR 18 y el DAN 18."],
+  ["Responsabilidad de la TC","Orientar al pasajero sobre MP permitidas y ADVERTIR AL CAPITÁN de artículos no admitidos."],
+  ["NOTOC","Notificación de cargas especiales al capitán. La exigen: DGR · AVI · HUM · HEG · LHO · HEA (más de 90 kg)."]
+ ]],
+ ["mp2",[
+  ["Limitaciones","No todas vuelan; algunas solo con dispensa; otras solo en carguero puro; otras en avión de pax y carga."],
+  ["Riesgos del transporte aéreo","Vibración · temperatura · presión · humedad."],
+  ["Dispensa estatal","Permiso para transportar una MP que figura como PROHIBIDA."],
+  ["Detectar MP ocultas","Ruido de aerosoles, humo o gases, cajas reutilizadas con etiquetas, restos de combustible, empaques mojados, superficies muy frías o calientes."]
+ ]],
+ ["mp3",[
+  ["Clase 1 y 2","1 Explosivos · 2 Gases: 2.1 inflamables, 2.2 no inflamables no tóxicos, 2.3 tóxicos."],
+  ["Clase 3 y 4","3 Líquidos inflamables (punto de inflamación 60 °C) · 4 Sólidos: 4.1 inflamable, 4.2 pirofórico, 4.3 emite gases con agua."],
+  ["Clase 5 y 6","5 Oxidantes (5.1) y peróxidos orgánicos (5.2) · 6 Tóxicos (6.1) e infecciosos (6.2)."],
+  ["Clase 7, 8 y 9","7 Radiactivos (no detectables por los sentidos) · 8 Corrosivos · 9 Misceláneos (imanes, pilas, motores)."],
+  ["Identificación","Número ONU de 4 dígitos + nombre apropiado de expedición. ID 8000: no clasificada por la ONU."]
+ ]],
+ ["mp4",[
+  ["Regla general","Nada se transporta salvo lo expresamente permitido en la Tabla 2.3A."],
+  ["Baterías de litio","Hasta 100 Wh y 12 V. Máximo 2 de repuesto, protegidas y SOLO en cabina. PMED: 100-160 Wh."],
+  ["Sillas de ruedas","WCBD no derramable · WCBW derramable · WCLB ion litio (máx 300 Wh o 2 de 160 Wh). Terminales aislados."],
+  ["Prohibidos siempre","Taser · gas pimienta y discapacitadores · equipaje con batería no extraíble sobre 0,3 g o 2,7 Wh · maletines de seguridad."],
+  ["Piloto informado","OXYG · WCLB · WCBD · WCBW. Se documenta con el Anexo A (pax, explotador y AVSEC)."]
+ ]],
+ ["mp5",[
+  ["Etiquetas","De PELIGRO (las 9 clases) y de MANIPULACIÓN (cuidados de estiba). Si se pone por error, se remueve o tacha."],
+  ["Accidente vs incidente","Accidente: lesiones mortales o graves o daños de consideración. Incidente: todo lo demás, incluso fuera de la aeronave."],
+  ["Quién informa","El PILOTO AL MANDO. El ciclo es reporte → investigación → recomendación → aplicación → verificación."]
+ ]],
+ ["mp6",[
+  ["Respuesta en tierra","AÍSLE → EVALÚE → ACTÚE (SSEI) → REPORTE."],
+  ["Doc 9481 AN/928","Guía OACI de respuesta a incidentes con MP en vuelo, con su checklist para la tripulación de cabina."],
+  ["Compartimientos de carga","A: acceso fácil · B: extintor manual + detector · C: detector + sistema integral · D: limita el oxígeno · E: solo cargueros."],
+  ["Claves alfabéticas","W: si se moja emite gases venenosos (NUNCA agua) · P: veneno · S: pirofórico · X: comburente · C: corrosivo · E: explosivo."],
+  ["Regla de oro","Si hay evidencias de fuego, ruido o gases: ¡ALÉJESE DEL ÁREA INMEDIATAMENTE!"]
+ ]]
+]);
+
+M("av",[
+ ["av1",[
+  ["AVSEC","Aviation Security: prevenir, contrarrestar y evitar actos ilícitos contra la aviación civil."],
+  ["Convenios","Chicago 1944 (crea la OACI) · Tokio 1963 (delitos a bordo) · Montreal 1999 (responsabilidad de aerolíneas) · Anexo 17 (1974)."],
+  ["Marco chileno","Ley 18.916 Código Aeronáutico · Ley 16.752 DGAC · DAR 17 · programas PNSAC, PNSCA, PNISAC y PNCCSAC."],
+  ["Organismos","OACI (Montreal, 193 Estados) · IATA (La Haya 1919) · TSA (DHS de EE.UU.) · EASA (UE, 2002) · DGAC (1930, Merino Benítez)."]
+ ]],
+ ["av2",[
+  ["Control de seguridad","Todo el personal que entre a zona crítica o restringida pasa control, igual que los pasajeros."],
+  ["Retenidos vs prohibidos","RETENIDOS: van en bodega sin acceso en vuelo. PROHIBIDOS (requisados): no suben al avión de ninguna forma."],
+  ["Verificación de la aeronave","La exige el DAR 17. Áreas: cabina de pasajeros, baños, cocinas y exterior. Se informa VERBALMENTE al comandante."],
+  ["Objetos olvidados (RFP)","Van a Lost & Found, se registran en World Tracer y se entregan solo en el aeropuerto."]
+ ]],
+ ["av3",[
+  ["Interferencia ilícita","Apoderamiento, rehenes, sabotaje, intrusión, armas a bordo o información falsa que comprometa la seguridad."],
+  ["Amenaza de bomba","No se informa a los pax salvo que haya que buscar. Los anuncios los hace el comandante en español e inglés."],
+  ["Objeto sospechoso","NO manipular, cortar, abrir ni levantar. Informar ubicación y descripción. Alejar pax al menos 4 filas."],
+  ["UMR","Ubicación de Mínimo Riesgo: puerta 4R en el A320. Deslizar una tarjeta de seguridad bajo el objeto antes de moverlo."],
+  ["Secuestro","Objetivo principal: PROTEGER EL COCKPIT. En tierra, mantenerse en tierra e inutilizar la aeronave."],
+  ["Códigos","7500 secuestro · 7600 fallo de radio · 7700 emergencia general · Código Bravo · Código Adam (niño perdido)."]
+ ]]
+]);
+
+M("rae",[
+ ["rae1",[
+  ["Organizaciones","ONU → OACI (normas) · IATA (aerolíneas, no gubernamental) · FAA y FAR (EE.UU.) · DGAC y JAC (Chile)."],
+  ["Jerarquía normativa","DAR: ley, la modifica el Presidente · DAN: técnica, la modifica el Director DGAC · DAP: procedimientos · DAC: circulares."],
+  ["Código Aeronáutico","Art. 1 soberanía · 52 certificado de aeronavegabilidad · 58 personal de vuelo · 67 y 71 obligaciones del comandante · 90 documentos · 96 y 97 tipos de servicio."],
+  ["Sanciones","Art. 185: amonestación, multa de 5 a 500 IMM, suspensión hasta 3 años o cancelación. Art. 193: alcohol y drogas."],
+  ["Programas de seguridad","DAN 152 SMS · DAN 13-01 SARSEV (reportes anónimos NO punitivos) · Ley 20.000 de drogas."]
+ ]],
+ ["rae2",[
+  ["Licencia de TAC","DAN 63 Cap. D: 18 años, español, CMA vigente e instrucción acreditada."],
+  ["Habilitaciones","Máximo 3, más una cuarta si es de la misma familia (ej. A320-A321-B787)."],
+  ["Experiencia reciente","3 despegues y 3 aterrizajes cada 90 días por cada habilitación."],
+  ["Revalidar / renovar / recalificar","Revalidar antes del vencimiento · renovar si venció · recalificar si se perdió la experiencia reciente."]
+ ]],
+ ["rae3",[
+  ["Fórmula del PSV","1 hora antes del ETD + Tiempo de Vuelo + 30 minutos de debriefing."],
+  ["Jornadas","Ordinaria: 12 h, extensible a 14 por meteorología, emergencia médica o MEL. Especial: hasta 20 h en 24 h, con TAC adicional."],
+  ["Límites de PSV","160 al mes · 450 al trimestre · 1600 al año."],
+  ["Descansos","PSV 7 h o menos → 10 h de PD. Cambio de longitud de 45° → +2 h, y +30 min por cada 15° extra."],
+  ["Período nocturno","21:00 a 06:00. Si un PSV superó el 50% del período nocturno, el siguiente no puede exceder ese 50%."],
+  ["Ley 20.321","Rol con 5 días de anticipación · máx 18 noches fuera de base · máx 10 días continuos · 106 h de descanso mensual."]
+ ]]
+]);
+
+M("fh",[
+ ["fh1",[
+  ["Premisa fundamental","TODOS LOS ACCIDENTES PUEDEN SER EVITADOS."],
+  ["Accidente OACI","Ocurrencia entre el abordaje con intención de volar y el desembarque: lesiones graves o letales, daño estructural, o aeronave perdida."],
+  ["Documentos","Anexo 13 (investigación) · Doc 9422 (prevención, obsoleto) · Doc 9859 (gestión de la seguridad operacional, 2009)."]
+ ]],
+ ["fh2",[
+  ["Más tres / Menos ocho","El 80% de los accidentes ocurre en los 3 primeros y los 8 últimos minutos de vuelo."],
+  ["Secuencia de eventos","Factores encadenados en orden fijo y lógico que culminan en el accidente."],
+  ["Precedente conocido","Si un factor produjo un accidente y no se corrige, tenderá a repetirse."],
+  ["Causas de accidentes","50% piloto · 22% mecánico · 12% meteorología · 9% sabotaje · 7% otras."],
+  ["Complacencia y atención canalizada","Complacencia: exceso de confianza que baja la alerta. Atención canalizada: fijarse en un estímulo ignorando lo prioritario."]
+ ]],
+ ["fh3",[
+  ["Hombre-Máquina-Medio Ambiente","Hombre: acciones inseguras · Máquina: condiciones mecánicas inseguras · Medio: condiciones físicas inseguras."],
+  ["Factores humanos","Entre 70% y 80% de los accidentes se deben al error humano. El elemento humano es el más flexible pero el más vulnerable."],
+  ["Aspectos fisiológicos","Fatiga · barotrauma · hipoxia."]
+ ]],
+ ["fh4",[
+  ["Barreras físicas","Ruido, volumen y tono, fatiga, sueño, hambre, conectividad, barbijo."],
+  ["Barreras psicosociales","Resentimiento, preocupación, status, prejuicios, creencias, dogmatismo, idioma."],
+  ["Escucha activa","Escuchar sin interrumpir, empatizar, parafrasear, reforzar y resumir. NO es preparar la respuesta mientras el otro habla."],
+  ["Asertividad","Expresarse con eficiencia sin temor a las dudas: el punto medio entre pasividad y agresividad."]
+ ]],
+ ["fh5",[
+  ["Las 6 C del líder","Constancia · Congruencia · Confiabilidad · Integridad · Competencia · Carisma."],
+  ["Estilos","Dominante (resultados) · Lógico (innovación) · Inspirador (oportunidades) · Apoyador (facilita)."],
+  ["Liderazgo situacional","Directivo (unidireccional) · Persuasivo (vende la idea) · Participativo (consulta) · Delegativo (grupo maduro)."],
+  ["Grupo vs equipo","Grupo: trabajo independiente hacia un objetivo global. Equipo: habilidades complementarias y responsabilidad compartida."],
+  ["Sinergia","Suma de energías que se multiplica. Su esencia es la VALORACIÓN DE LAS DIFERENCIAS."]
+ ]],
+ ["fh6",[
+  ["Los 3 niveles","Percepción (nivel 1) → Comprensión (nivel 2) → Proyección del futuro inmediato (nivel 3)."],
+  ["Pérdida de la CS","Indicios: ambigüedad, fijación de la atención y confusión. Influyen atención, memoria de trabajo, estrés y fatiga."],
+  ["Defensas","Briefings · seguir procedimientos · trabajar en equipo · comunicación eficaz."],
+  ["Toma de decisiones","Analítica (hay tiempo: información, opiniones, recursos, evaluación) e intuitiva (emergencia: entrenamiento y procedimientos)."]
+ ]],
+ ["fh7",[
+  ["Neuroplasticidad","Fortalecimiento sináptico + engramas motores: la repetición convierte procedimientos en respuestas automáticas."],
+  ["Cortisol","El estrés alto compromete la toma de decisiones, la memoria operativa y la atención."],
+  ["Checklists","Reducen la carga de la memoria de trabajo y guían la atención hacia lo crítico."],
+  ["Líder en crisis","Regulación emocional, decisión ágil, flexibilidad cognitiva y resiliencia neural."]
+ ]]
+]);
+
+M("a320",[
+ ["a1",[
+  ["Datos generales","Techo 39.000 ft · crucero 880 km/h · 39 m de largo · 34 m de envergadura · autonomía ~6 h · a 39.000 ft la cabina está a 8.000 ft."],
+  ["Sistemas","Fly by Wire (control eléctrico, activación hidráulica) · ECAM en cabina de mando · APU en el empenaje · 2 bodegas + bulk."],
+  ["Cabina de pasajeros","Configuración 186 · salidas alares en filas 11-12 / 12-13 · PSU con generador químico de oxígeno sobre cada fila."],
+  ["Baños","Detector de humo tras la rejilla del techo · extintor fijo de halón sobre el basurero, manómetro en verde."],
+  ["Jumpseats","Estándar (adosado a 90°) · giratorio (control visual de la cabina en despegue y aterrizaje) · retráctil con seguro TTL."]
+ ]],
+ ["a2",[
+  ["CIDS","Cabin Intercommunication Data System: controla aire, comunicaciones, protección de fuego, iluminación, agua y desechos."],
+  ["FAP","Touch screen o pantalla de botones. La alerta de humo sobre-comanda toda página. Botón CABIN READY: tenue, oscuro, verde."],
+  ["AAP, AIP y ACP","AAP junto a la puerta 4L · AIP: verde fija normal, roja intermitente emergencia · ACP: la luz azul de pax es SIEMPRE fija."],
+  ["Agua y temperatura","200 litros de agua · 170 de desechos · temperatura 18-30 °C desde el cockpit, ±2,5 °C desde el FAP."],
+  ["EVAC","Switch en CAPT & PURS (cockpit y FAP) o CAPT (solo cockpit). EVAC RESET silencia la alarma auditiva."],
+  ["Iluminación de emergencia","Automática si falla la energía (switch en ARM) o hay pérdida de presión. Franjas fotoluminiscentes de piso para el humo."]
+ ]],
+ ["a3",[
+  ["Salidas","4 puertas a nivel de piso (principales) y 4 salidas sobre el sector alar con tobogán rampa."],
+  ["Advertencias de puerta","SLIDE ARMED (blanca fija): tobogán armado. CABIN PRESSURE (roja intermitente): presión residual, NO abrir."],
+  ["Armado","Pin del letrero DISARMED → palanca a ARMED → visor rojo y flecha alineada → pin al brazo, cinta no visible. FAP verde."],
+  ["Tipos de dispositivo","Tobogán: 1 carril, 1 pax/seg, flotación sin abordar · Tobogán balsa: 2 carriles, 2 pax/seg, se aborda · Rampa: siempre armado, no se desconecta."],
+  ["Ditching","Cubierta FOR DITCHING ONLY → manija blanca HANDLE → cortar la mooring line. Kits de supervivencia en OHB cercanos."]
+ ]],
+ ["a4",[
+  ["Oxígeno de pasajeros","Generadores químicos en el PSU. Automático a 14.000 ft de altitud de cabina, desde el cockpit, o manual con el MRT (hay 4)."],
+  ["Puerta del cockpit","Blindada, con key pad al costado del FAP y cerrojo de seguridad al centro-izquierda si falla el mecanismo."],
+  ["Ventanas de escape","2 ventanas abribles SOLO desde el interior, con cuerda de 5,5 m que soporta 181 kg."],
+  ["Quick donning","4 máscaras de un tanque. Clips rojos inflan el arnés · EMERGENCY da sobrepresión contra humo · N/100% mezcla o puro."]
+ ]]
+]);
+
+M("pau",[
+ ["pa1",[
+  ["Leyes de los gases","BOYLE: volumen inversamente proporcional a la presión. HENRY: gas disuelto proporcional a la presión sobre la solución."],
+  ["Hipoxia · 4 tipos","Hipóxica (respiratoria) · Hipémica (transporte) · Por estancamiento (flujo) · Histotóxica (utilización)."],
+  ["Síntomas vs signos","Síntomas los siente uno mismo (mareo, cefalea, visión tunelizada). Signos los ve un tercero (cianosis, confusión, euforia)."],
+  ["Hiperventilación","Exceso de ventilación → pérdida de CO2 → alcalosis respiratoria. Tratamiento: control de la respiración, bolsa, oxígeno OFF."],
+  ["Disbarismos · gases atrapados","Expansión gastrointestinal (la más frecuente) · barotitis media (peor en descenso) · barosinusitis (en ascenso) · barodontalgia."],
+  ["Enfermedad por descompresión","Bends (articulaciones) · dérmicas · chokes (pulmón) · neurológicas · vasomotoras (la más grave). Hasta 24 h post vuelo."],
+  ["Hábitos y vuelo","Alcohol: efecto multiplicado en altura, prohibido 24 h antes. Tabaco: el CO duplica el riesgo de hipoxia. Automedicación prohibida."]
+ ]],
+ ["pa2",[
+  ["WOCL","Window of Circadian Low: 02:00 a 06:00, el nivel más bajo de alerta y rendimiento del cuerpo."],
+  ["Fatiga","Insidiosa: el fatigado no puede autoevaluarse. Microsueños de 2 a 30 segundos. Alarga el tiempo de reacción, crítico para los 90 segundos."],
+  ["FRMS y Cultura Justa","La aerolínea programa respetando descansos; el TCP tiene la obligación legal y moral de reportar y marginarse si está fatigado."],
+  ["Estrés","Agudo: taquicardia, visión de túnel, bloqueo mental. Crónico: ansiedad, insomnio, burnout. Se maneja con CRM y preparación."],
+  ["Ritmo circadiano","Sincronizadores: comidas, horarios de trabajo y luz/oscuridad. Resincronizar 6+ husos toma unos 7 días."]
+ ]],
+ ["pa3",[
+  ["Reglas básicas","Equipo de trabajo · solicitar médico por PA y confirmar identificación · informar al Capitán · disponer del DEA."],
+  ["Diabetes","Hipoglicemia: piel pálida, fría y húmeda → azúcar. Hiperglicemia: piel seca y colorada, aliento a alcohol, sed → agua y su fármaco."],
+  ["IAM y ACV","IAM: semisentado, O2 a 2 lts/min, sin comida ni bebida. ACV: posición de seguridad, O2, escala de Cincinnati (cara, brazo, habla)."],
+  ["Convulsiones","NO sujetar, NO poner objetos en la boca. Proteger la cabeza y posición de seguridad al terminar."],
+  ["Hemorragias","Compresión directa, elevar el miembro, NO torniquete, NO retirar paños. Objeto empalado: presión alrededor sin retirarlo."],
+  ["Quemaduras","Regla de los 9. Gran quemado: 25% adulto, 15% niño. AB: no romper ampollas. B: sin dolor, no retirar ropa pegada."],
+  ["Parto a bordo","3 fases: avanzado, expulsivo y alumbramiento. Galley, posición ginecológica. Placenta en bolsa de MMPP."]
+ ]],
+ ["pa4",[
+  ["MK · Medical Kit","Solo personal de salud calificado: fármacos, insumos y equipo de intubación."],
+  ["FAK · First Aid Kit","Lo usa la Tripulación de Cabina para primeros auxilios."],
+  ["UPK","Ante sospecha de enfermedad infectocontagiosa y manejo de fluidos corporales."],
+  ["DEA · precauciones","No mojar, no tocar al analizar, sin electrodos sobre marcapasos, sin burbujas bajo los parches."],
+  ["Medicamentos","La TC NUNCA recomienda ni administra medicamentos, ni inyecciones, ni da nada a un menor no acompañado."]
+ ]],
+ ["pa5",[
+  ["PCR","No responde, no tiene pulso y no respira o solo jadea/boquea."],
+  ["Secuencia C-V-R","Compresión → Vía respiratoria → Respiración, para víctimas inconscientes de todas las edades."],
+  ["Números de la RCP","30:2 = 1 ciclo · al menos 100/min · adulto 2 pulgadas (2 manos) · niño ~2 (1-2 manos) · bebé ~1½ (2 dedos) · relevo cada 2 min."],
+  ["DEA","Sin detener compresiones al poner los parches. No tocar al analizar. Pediátrico: uno en el tórax y otro en la espalda."],
+  ["OVACE","Leve: que tosa, no intervenir. Severa: compresiones abdominales. Embarazada u obeso: compresiones en el pecho. Bebé: 5 golpes + 5 compresiones."],
+  ["Casos especiales","Embarazada en PCR: desplazar el abdomen a la izquierda. Inconsciente que respira: posición de recuperación."]
+ ]]
+]);
+
+M("tec",[
+ ["tec1",[
+  ["Las 4 fuerzas","Sustentación (arriba) · peso (abajo) · tracción (adelante) · resistencia al avance (atrás)."],
+  ["Perfil alar","Borde de ataque, borde de fuga, cara dorsal, cara ventral y cuerda alar."],
+  ["Ejes y controles","Alerones → alabeo → eje longitudinal · Timón de profundidad → cabeceo · Timón de dirección → guiño → eje vertical."],
+  ["Stall","Pérdida brusca de sustentación por un ángulo de ataque excesivo."],
+  ["Superficies secundarias","Flaps y slats aumentan sustentación para volar lento. Spoilers la reducen: son los speed brakes del descenso de emergencia."]
+ ]],
+ ["tec2",[
+  ["Atmósfera estándar","Nivel del mar, latitud 45°, 15 °C y 1013.2 hPa (29.92 pulgadas de mercurio)."],
+  ["Capas","Troposfera: todos los fenómenos meteorológicos · Tropopausa: límite de calma · Estratosfera: temperatura constante."],
+  ["Nubes","Altas (cristales de hielo) · medias · bajas · de desarrollo vertical: cúmulos y cumulonimbos, las peligrosas."],
+  ["Frentes","Frío: cumuliforme, turbulencia, tormentas. Caliente: estratos, techo bajo, sin turbulencia, llovizna."],
+  ["Turbulencia","Convectiva · mecánica · onda montaña (los Andes) · windshear · cumulonimbos · jetstream (turbulencia de aire claro sobre 15.000 ft)."],
+  ["Visibilidad","Niebla: menos de 1.000 m. Neblina: entre 1.000 y 3.000 m."]
+ ]],
+ ["tec3",[
+  ["Tipos de navegación","Observada o visual · estimada · radioeléctrica · por satélite (GPS)."],
+  ["La tierra","Meridianos (polo a polo, desde Greenwich) y paralelos (paralelos al Ecuador). Rotación de oeste a este en 23 h 56 min."],
+  ["Curso y rumbo","Curso: dirección de la línea entre dos puntos en la carta. Rumbo: hacia dónde apunta la nariz del avión."],
+  ["Husos horarios","Cada 15° de longitud = 1 hora. Al este se suma, al oeste se resta. La aviación usa hora UTC."],
+  ["Instrumentos","Altímetro (presión/altura) · variómetro (pies por minuto) · horizonte artificial (actitud) · ILS para aproximación."],
+  ["Servicios","SAR: búsqueda y rescate, depende de la FACh. SEI: extinción de incendios del aeródromo, depende de la DGAC."]
+ ]]
+]);
+
+
 /* ---------- ESTADO ---------- */
 const KEY="oyr-pia-v2";
 let S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{}};
@@ -1793,7 +2216,8 @@ function Home(){
     grid.appendChild(b);
   });
   const modes=el.querySelector(".modes");
-  [["PSP","🛂","Mi pasaporte","Progreso de los 7 ramos, insignias, historial y respaldo.","Progreso",()=>go(Passport)],
+  [["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar)],
+   ["PSP","🛂","Mi pasaporte",`Progreso de los ${RAMOS.length} ramos, insignias, historial y respaldo.`,"Progreso",()=>go(Passport)],
    ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones fase por fase e informe final.","Simulador",()=>go(SimIntro)],
    ["♥","💌","Carga especial","Hay una encomienda registrada a tu nombre en la bodega. Se abre con un código de 8 dígitos.","Solo para Pía",()=>go(Secret)]
   ].forEach(([code,icon,t,d,tag,fn])=>{
@@ -1831,6 +2255,7 @@ function RamoHome(rid){
   [["RUL","🎡","Ruleta del ramo",`Gira y responde: la suerte (y tus puntos débiles) eligen el módulo de ${r.n}.`,"Modo clásico",()=>go(Wheel,rid)],
    ["EST","📚","Estudio por módulo","Recorre un módulo completo a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(ModPick,rid)],
    ["EXM","🎓","Examen","20 preguntas del ramo completo, o examen de un módulo suelto. Con nota y revisión.","Simulacro",()=>go(ExamStart,rid)],
+   ["MAP","🗺","Mapa conceptual",`Todo ${r.n} en una pantalla: los ${r.mods.length} módulos y sus conceptos clave conectados.`,"Vista de conjunto",()=>go(Mapa,rid)],
    ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial del ramo: definiciones, números y fraseologías.","Memoria",()=>go(Flash,rid)],
    ["ERR","🩹","Repasar mis errores",fails?`Tienes ${fails} pregunta${fails===1?"":"s"} pendiente${fails===1?"":"s"} en este ramo.`:"Sin errores pendientes en este ramo. ¡Impecable!","Refuerzo",()=>go(Redo,rid)]
   ].forEach(([code,icon,t,d,tag,fn])=>{
@@ -2351,6 +2776,133 @@ const SIM=[
 {ph:8,set:"Con el tobogán desarmado, alguien golpea la puerta 1L desde afuera.",t:"¿Cómo procede la apertura en operación normal?",o:["La abres tú de inmediato","Das tu conformidad mostrando el pulgar hacia arriba a través del visor (estás alejada) y el personal de tierra la abre desde el exterior","Esperas la orden del TAC4","Se abre sola con el gate"],a:1,w:"Política normal: apertura DESDE EL EXTERIOR. Tierra golpea → el TAC responsable muestra el pulgar arriba por el visor → tierra abre. Desde el interior solo en contingencia con autorización del Comandante.",s:"Día 3"},
 {ph:8,set:"Los pasajeros desembarcan.",t:"Antes del debriefing final, ¿qué te falta chequear?",o:["Nada, el vuelo terminó","Asistir a quienes lo requieran, revisar los baños (que no quede nadie), verificar objetos olvidados y sellar carros y gabinetes","Solo contar los chalecos","Rellenar el combustible"],a:1,w:"Post-vuelo: desembarque priorizando asistencia, revisión de baños, sellado de carros/gabinetes, verificación de objetos olvidados y DEBRIEFING con toda la tripulación una vez desembarcados los pax.",s:"Día 4"}
 ];
+
+/* ================= MAPA CONCEPTUAL ================= */
+function Mapa(rid){
+  const r=RAMO_BY_ID[rid], mapa=MAPAS[rid]||[];
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← ${esc(r.n)}</button>
+    <div class="eyebrow">Mapa conceptual</div>
+    <h2>${r.ic} ${esc(r.n)} de un vistazo</h2>
+    <p class="sub">Todo el ramo en una sola pantalla. Toca cualquier concepto para ver su explicación breve.</p>
+    <div class="mapa" style="--rc:${r.col}"></div>
+    <div class="flash-nav" style="margin-top:18px">
+      <button id="estudiar">Estudiar un módulo</button>
+      <button class="primary" id="volver">Volver al ramo</button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(RamoHome,rid));
+  const cont=el.querySelector(".mapa");
+  mapa.forEach(([mid,nodos])=>{
+    const mo=MOD_BY_ID[mid]; if(!mo)return;
+    const m=mastery(mid);
+    const rama=document.createElement("div");rama.className="mapa-rama";
+    rama.innerHTML=`<div class="mapa-mod">${esc(mo.n)}<span class="mm-pct">${m.pct}%</span></div>
+      <div class="mapa-nodos"></div>`;
+    const cn=rama.querySelector(".mapa-nodos");
+    nodos.forEach(([t,d])=>{
+      const b=document.createElement("button");b.className="mapa-nodo";
+      b.innerHTML=`<span class="mn-t">${esc(t)}<i>▸</i></span><span class="mn-d">${esc(d)}</span>`;
+      b.addEventListener("click",()=>b.classList.toggle("open"));
+      cn.appendChild(b);
+    });
+    cont.appendChild(rama);
+  });
+  if(!mapa.length)cont.innerHTML=`<p class="sub">Este ramo aún no tiene mapa.</p>`;
+  el.querySelector("#estudiar").addEventListener("click",()=>go(ModPick,rid));
+  el.querySelector("#volver").addEventListener("click",()=>go(RamoHome,rid));
+  view.appendChild(el);
+}
+
+/* ================= BUSCADOR GLOBAL ================= */
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function resaltar(txt,terms){
+  let out=esc(txt);
+  terms.forEach(t=>{
+    if(t.length<2)return;
+    const re=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    const plain=norm(out);
+    let idx=plain.indexOf(norm(t));
+    if(idx<0)return;
+    out=out.replace(re,"<mark>$1</mark>");
+  });
+  return out;
+}
+function Buscar(){
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Buscador</div>
+    <h2>🔎 Busca en todo el curso</h2>
+    <p class="sub">Escribe un concepto, una sigla o un número — por ejemplo «PBE», «TESTI», «90 segundos» o «litio» — y te muestro dónde aparece.</p>
+    <div class="search-box">
+      <input class="search-input" type="search" placeholder="Buscar en ${QS.length} preguntas y ${CARDS.length} tarjetas…" aria-label="Buscar">
+    </div>
+    <div class="search-meta"></div>
+    <div class="res-list"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const input=el.querySelector(".search-input");
+  const meta=el.querySelector(".search-meta");
+  const list=el.querySelector(".res-list");
+  const sugerencias=["PBE","TESTI","90 segundos","batería de litio","cabina estéril","WOCL","tobogán","UMR","PSV","hipoxia"];
+  function vacio(){
+    meta.textContent="";
+    list.innerHTML=`<div class="search-empty">Prueba con: ${sugerencias.map(s=>`<b>${s}</b>`).join(" · ")}</div>`;
+  }
+  function buscar(q){
+    const terms=norm(q).split(/\s+/).filter(t=>t.length>1);
+    if(!terms.length){vacio();return;}
+    const hits=[];
+    QS.forEach(x=>{
+      const hay=norm(x.q+" "+x.o.join(" ")+" "+x.w);
+      if(terms.every(t=>hay.indexOf(t)>=0))hits.push({tipo:"P",x});
+    });
+    CARDS.forEach(c=>{
+      const hay=norm(c.f+" "+c.b);
+      if(terms.every(t=>hay.indexOf(t)>=0))hits.push({tipo:"T",x:c});
+    });
+    list.innerHTML="";
+    if(!hits.length){
+      meta.textContent="";
+      list.innerHTML=`<div class="search-empty">Sin resultados para «${esc(q)}». Prueba con menos palabras o una sigla.</div>`;
+      return;
+    }
+    const porRamo={};
+    hits.forEach(h=>{const rid=RAMO_OF_MOD[h.x.c];(porRamo[rid]=porRamo[rid]||[]).push(h);});
+    const nR=Object.keys(porRamo).length;
+    meta.textContent=`${hits.length} resultado${hits.length===1?"":"s"} en ${nR} ramo${nR===1?"":"s"}`;
+    const orig=q.split(/\s+/).filter(t=>t.length>1);
+    hits.slice(0,60).forEach(h=>{
+      const ra=RAMO_BY_ID[RAMO_OF_MOD[h.x.c]], mo=MOD_BY_ID[h.x.c];
+      const b=document.createElement("button");b.className="res-item";
+      if(h.tipo==="P"){
+        b.innerHTML=`<div class="res-top">
+            <span class="res-chip" style="background:${ra.col}">${ra.ic} ${esc(ra.n)}</span>
+            <span class="res-kind">${esc(mo.n)}</span></div>
+          <div class="res-q">${resaltar(h.x.q,orig)}</div>
+          <div class="res-a">✔ ${resaltar(h.x.o[h.x.a],orig)}</div>
+          <div class="res-w">${resaltar(h.x.w,orig)}</div>`;
+      }else{
+        b.innerHTML=`<div class="res-top">
+            <span class="res-chip" style="background:${ra.col}">${ra.ic} ${esc(ra.n)}</span>
+            <span class="res-kind">Tarjeta · ${esc(mo.n)}</span></div>
+          <div class="res-q">${resaltar(h.x.f,orig)}</div>
+          <div class="res-w">${resaltar(h.x.b,orig)}</div>`;
+      }
+      b.addEventListener("click",()=>b.classList.toggle("open"));
+      list.appendChild(b);
+    });
+    if(hits.length>60){
+      const p=document.createElement("p");p.className="sub";p.style.marginTop="10px";
+      p.textContent=`Mostrando los primeros 60 de ${hits.length}. Afina la búsqueda para ver menos.`;
+      list.appendChild(p);
+    }
+  }
+  let t=null;
+  input.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(()=>buscar(input.value.trim()),160);});
+  vacio();
+  view.appendChild(el);
+  input.focus();
+}
+
 
 /* ---------- SIMULACIÓN: TURNO DE VUELO ---------- */
 function SimIntro(){
