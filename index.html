@@ -688,15 +688,19 @@ const RAMOS = [
      {id:"rae2", n:"Licencias y habilitaciones",          sub:"DAR 01, DAR 63, DAN 63, experiencia reciente"},
      {id:"rae3", n:"DAN 121 y Ley 20.321",                sub:"PSV, PD, jornadas, descansos, cálculos"}
    ]},
-  {id:"fh", n:"Factores Humanos", full:"Factores Humanos · PREVAC + CRM", ic:"🧠", col:"#C05572", ap:80,
-   sub:"Prevención de accidentes, comunicación y liderazgo",
+  {id:"prevac", n:"PREVAC", full:"PREVAC · Prevención de Accidentes", ic:"⚠", col:"#C9922E", ap:80,
+   sub:"Investigación de accidentes y seguridad operacional",
    mods:[
-     {id:"fh1", n:"Accidentes y normativa",        sub:"PREVAC clase 1 · Anexo 13, definiciones"},
-     {id:"fh2", n:"Prevención de accidentes",      sub:"PREVAC clase 2 · +3/-8, secuencia, precedente"},
-     {id:"fh3", n:"Hombre-Máquina-Medio Ambiente", sub:"PREVAC clase 3 · factores humanos, fisiología"},
-     {id:"fh4", n:"Comunicación efectiva",         sub:"CRM clase 4 · barreras, escucha, asertividad"},
-     {id:"fh5", n:"Liderazgo y trabajo en equipo", sub:"CRM clase 5 · estilos, equipos, sinergia"},
-     {id:"fh6", n:"Conciencia situacional y TD",   sub:"CRM clase 6 · 3 niveles, toma de decisiones"},
+     {id:"fh1", n:"Accidentes y normativa",        sub:"Clase 1 · Anexo 13, definición OACI, cuasi-colisiones"},
+     {id:"fh2", n:"Prevención de accidentes",      sub:"Clase 2 · +3/-8, secuencia, precedente conocido"},
+     {id:"fh3", n:"Hombre-Máquina-Medio Ambiente", sub:"Clase 3 · factores humanos, aspectos fisiológicos"}
+   ]},
+  {id:"fh", n:"Actuación Humana · CRM", full:"Actuación Humana · Factores Humanos y CRM", ic:"🧠", col:"#C05572", ap:80,
+   sub:"Comunicación, liderazgo y conciencia situacional",
+   mods:[
+     {id:"fh4", n:"Comunicación efectiva",         sub:"Clase 4 · barreras, escucha activa, asertividad"},
+     {id:"fh5", n:"Liderazgo y trabajo en equipo", sub:"Clase 5 · estilos, equipos, sinergia"},
+     {id:"fh6", n:"Conciencia situacional y TD",   sub:"Clase 6 · 3 niveles, toma de decisiones"},
      {id:"fh7", n:"Neurociencia aplicada",         sub:"Neuroplasticidad, cortisol, atención y liderazgo"}
    ]},
   {id:"a320", n:"Habilitación A320", full:"A320 · Habilitación de flota", ic:"🛬", col:"#3E7CA6", ap:80,
@@ -1891,7 +1895,7 @@ M("rae",[
  ]]
 ]);
 
-M("fh",[
+M("prevac",[
  ["fh1",[
   ["Premisa fundamental","TODOS LOS ACCIDENTES PUEDEN SER EVITADOS."],
   ["Accidente OACI","Ocurrencia entre el abordaje con intención de volar y el desembarque: lesiones graves o letales, daño estructural, o aeronave perdida."],
@@ -1908,7 +1912,10 @@ M("fh",[
   ["Hombre-Máquina-Medio Ambiente","Hombre: acciones inseguras · Máquina: condiciones mecánicas inseguras · Medio: condiciones físicas inseguras."],
   ["Factores humanos","Entre 70% y 80% de los accidentes se deben al error humano. El elemento humano es el más flexible pero el más vulnerable."],
   ["Aspectos fisiológicos","Fatiga · barotrauma · hipoxia."]
- ]],
+ ]]
+]);
+
+M("fh",[
  ["fh4",[
   ["Barreras físicas","Ruido, volumen y tono, fatiga, sueño, hambre, conectividad, barbijo."],
   ["Barreras psicosociales","Resentimiento, preocupación, status, prejuicios, creencias, dogmatismo, idioma."],
