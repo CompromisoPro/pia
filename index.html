@@ -248,7 +248,11 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
   width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;
   border-top:20px solid var(--accent);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));z-index:2;
 }
-#wheelG{transition:transform 3.4s cubic-bezier(.12,.67,.14,.99);transform-box:view-box;transform-origin:50% 50%}
+#wheelG{
+  transition:transform 3.4s cubic-bezier(.12,.67,.14,.99);
+  transform-box:view-box;transform-origin:110px 110px;  /* centro exacto del viewBox 0 0 220 220 */
+  will-change:transform;
+}
 .spin-btn{
   background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:99px;
   font:700 16px/1 system-ui,sans-serif;letter-spacing:.06em;
@@ -719,6 +723,14 @@ const RAMOS = [
      {id:"pa3", n:"Emergencias médicas",      sub:"IAM, ACV, convulsiones, quemaduras, parto"},
      {id:"pa4", n:"Equipos médicos a bordo",  sub:"MK, FAK, UPK, DEA y manejo de medicamentos"},
      {id:"pa5", n:"RCP, DEA y OVACE",         sub:"C-V-R, 30:2, desfibrilación y atragantamiento"}
+   ]},
+  {id:"sup", n:"Supervivencia", full:"Supervivencia en tierra y mar", ic:"🏕", col:"#5B8C5A", ap:80,
+   sub:"Prioridades, señales, refugio, balsa y kit",
+   mods:[
+     {id:"su1", n:"Principios y prioridades", sub:"M1 · protección, localización, agua y alimento"},
+     {id:"su2", n:"Señales, refugio, agua y fuego", sub:"M2 · código tierra/aire, purificación, comestibilidad"},
+     {id:"su3", n:"En tierra y en mar", sub:"M3 · desierto, trópico, nieve, balsa y localización"},
+     {id:"su4", n:"Kit de supervivencia", sub:"M4 · elementos de protección, agua y alimento"}
    ]},
   {id:"tec", n:"Conocimientos Técnicos", full:"Técnicos · Aerodinámica, Meteorología y Navegación", ic:"🛩", col:"#4E8FA8", ap:80,
    sub:"Cómo vuela, qué tiempo hace y dónde estamos",
@@ -2044,6 +2056,104 @@ M("tec",[
 ]);
 
 
+/* ================= SUP · SUPERVIVENCIA ================= */
+Q("su1","¿Cómo se define la SUPERVIVENCIA?",["La capacidad de resistir el frío","La capacidad de un individuo de sobrevivir frente a una emergencia con los medios naturales y artificiales que posee","El rescate por parte del SAR","La evacuación del avión"],1,"SUPERVIVENCIA: es la capacidad de un individuo de sobrevivir frente a una situación de emergencia con los medios naturales y artificiales que posee. Un conjunto de técnicas y conocimientos que ayudan a salvar la vida propia y la de otros en circunstancias difíciles. LA DETERMINACIÓN DE SOBREVIVIR ES VITAL.","Supervivencia M1");
+Q("su1","¿Cuáles son las PRIORIDADES en una situación de supervivencia, en orden?",["Agua, alimento, protección y localización","Protección · Localización · Agua · Alimento","Localización, protección, alimento y agua","Alimento, agua, refugio y señales"],1,"Las prioridades son, en orden: 1) PROTECCIÓN · 2) LOCALIZACIÓN (incluido el código de señales visuales tierra/aire) · 3) AGUA · 4) ALIMENTO.","Supervivencia M1");
+Q("su1","¿Cuál es el rol de la Tripulación de Cabina en una supervivencia?",["Buscar ayuda por su cuenta","Ejercer LIDERAZGO POSITIVO: mantener el ánimo alto, la cohesión de los sobrevivientes y el correcto uso del equipo","Racionar el agua únicamente","Esperar en silencio el rescate"],1,"La TC debe ejercer LIDERAZGO POSITIVO. Claves: la motivación por vivir es vital, evitar caer en baja moral, correcto uso del equipo de supervivencia, velar por la seguridad, mantener el ánimo alto y la cohesión de los sobrevivientes.","Supervivencia M1");
+Q("su1","¿Cuáles son los tres factores personales clave para sobrevivir?",["Fuerza, resistencia y velocidad","Control mental (actitud psíquica para dominar la situación), experiencia (lograda con práctica) e ingenio (inventar y crear soluciones)","Comida, agua y refugio","Juventud, salud y entrenamiento"],1,"Los tres factores: CONTROL MENTAL (actitud psíquica para dominar la situación) · EXPERIENCIA (lograda con la práctica) · INGENIO (inventar y crear soluciones). «La vida es un 10% de lo que te sucede y un 90% cómo reaccionamos a ello».","Supervivencia M1");
+Q("su1","¿Cuáles son los obstáculos COMUNES en una supervivencia?",["Solo el frío y el hambre","Ansiedad, dolor, frío, sed, hambre, fatiga y privación del sueño","Los animales salvajes","La falta de herramientas"],1,"OBSTÁCULOS COMUNES: ansiedad, dolor, frío, sed, hambre, fatiga y privación del sueño. OBSTÁCULOS MENTALES: desconocimiento, incomodidad, debilidad propia, miedo a las personas, y terreno y clima.","Supervivencia M1");
+Q("su1","¿Qué condiciones del lugar hay que evaluar tras un aterrizaje de emergencia?",["Solo la temperatura","Zona geográfica (montaña, desierto, mar, nieve, bosque), meteorología, material disponible de la aeronave y cantidad de heridos","La distancia al aeropuerto","La hora del día"],1,"Condiciones del lugar a evaluar: ZONA GEOGRÁFICA (montaña, desierto, mar, nieve, bosque), METEOROLOGÍA, MATERIAL con el que se cuenta (restos de la aeronave) y CANTIDAD DE HERIDOS.","Supervivencia M1");
+
+Q("su2","¿Qué tamaño deben tener las señales del código visual tierra/aire?",["1 metro de largo","Aproximadamente 6 metros de largo, 4 de ancho y 1 de espesor, para ser visibles desde grandes alturas","30 centímetros","10 metros de diámetro"],1,"Las señales deben hacerse lo más grandes y llamativas posibles: aproximadamente 6 METROS DE LARGO, 4 METROS DE ANCHO y 1 METRO DE ESPESOR, ya que tienen que ser visibles desde grandes alturas. El código internacional OACI exige señales de más de 3 metros de longitud.","Supervivencia M2");
+Q("su2","¿Cómo se aumenta el contraste de una señal en el terreno?",["Pintándola de blanco","Cavando los signos como trincheras y amontonando la tierra a los costados, para aumentar la profundidad de la sombra","Usando solo piedras claras","Haciéndola más pequeña"],1,"Hay que contrastar con el material del terreno: CAVAR LOS SIGNOS COMO SI FUERAN TRINCHERAS, AMONTONANDO LA TIERRA A LOS COSTADOS para que aumente la profundidad de la sombra. Se pueden usar piedras, troncos, ramas, tierra o nieve, y mejor aún si van acompañadas de fuego.","Supervivencia M2");
+Q("su2","¿Cómo se clasifican los medios de señalización?",["Solo visuales y sonoros","Radioeléctricos (ELT, PLB, EPIRB), pirotécnicos (bengalas), codificados (espejo, paños, cuerpo) y no codificados (silbato, linterna)","Diurnos y nocturnos","Naturales y artificiales"],1,"Se clasifican en: RADIOELÉCTRICOS (ELT aeronáutico, PLB personal, EPIRB marítimo) · PIROTÉCNICOS (bengalas día/noche: humo de día, fuego de noche) · CODIFICADOS (espejo, latas o papel aluminio, paños de colores, señales con el cuerpo, naturales) · NO CODIFICADOS (silbato, megáfono, linterna, luces del chaleco).","Supervivencia M2");
+Q("su2","¿Cómo indica una aeronave que ENTENDIÓ tu mensaje?",["Aterrizando de inmediato","De día: alabeo (inclinación de las alas). De noche: dos destellos con los faros de aterrizaje o encendiendo y apagando dos veces las luces de navegación","Lanzando una bengala","Sobrevolando en círculos"],1,"Mensaje entendido por la aeronave: DE DÍA, alabeo (inclinación de las alas del avión). DE NOCHE, destellos dos veces con los faros de aterrizaje o encendiendo y apagando dos veces las luces de navegación.","Supervivencia M2");
+Q("su2","¿Qué es el TRIÁNGULO DE FUEGO como señal?",["El tetraedro de la combustión","Tres fogatas separadas entre 15 y 30 metros formando un triángulo, que indican un pedido de auxilio","Una señal de peligro de incendio","Un tipo de refugio"],1,"El TRIÁNGULO DE FUEGO se forma con TRES FOGATAS colocadas entre 15 Y 30 METROS de distancia formando un triángulo: indican un pedido de auxilio. La altura de la hoguera no debe superar el tamaño de una persona. Use HUMO de día y FUEGO de noche.","Supervivencia M2");
+Q("su2","¿Cómo se produce humo BLANCO y humo NEGRO para señalizar?",["Con distintos combustibles químicos","Humo NEGRO: restos de la aeronave. Humo BLANCO: hojas verdes, musgos o rociando el fuego con agua","Blanco de día y negro de noche","No se puede controlar el color"],1,"HUMO NEGRO: se logra quemando restos de la aeronave. HUMO BLANCO: se agregan hojas verdes, musgos o se rocía con agua el fuego. Se elige el que contraste con el terreno.","Supervivencia M2");
+Q("su2","¿Dónde NO se debe construir un refugio?",["Cerca del avión","En el lecho seco de ríos, en zonas ventosas o de drenaje pobre, y en montaña sin protección de avalanchas","En zonas boscosas","En terreno plano"],1,"Construcción de refugios: NO ACAMPE EN EL LECHO SECO DE RÍOS · evite zonas ventosas o de drenaje pobre · en zonas subtropicales aísle el refugio de la humedad del suelo · en montaña elija lugares protegidos de avalanchas, lluvia, inundaciones y vientos.","Supervivencia M2");
+Q("su2","Al construir un refugio en la NIEVE, ¿hacia dónde debe ir la entrada?",["Hacia el viento, para ventilar","En la dirección OPUESTA a la del viento, amontonando la nieve extraída como protección","Hacia el sur siempre","Hacia el avión"],1,"En la nieve: cave un pozo grande, aísle del suelo colocando telas, troncos o ramas en el piso, y CONSTRUYA LA ENTRADA EN LA DIRECCIÓN OPUESTA A LA DEL VIENTO, amontonando la nieve extraída como protección.","Supervivencia M2");
+Q("su2","Si se hace fuego dentro de un refugio, ¿qué precaución es obligatoria?",["Apagarlo antes de dormir","Dejar siempre buena ventilación, aún con temperaturas bajas, porque las llamas producen MONÓXIDO DE CARBONO","Hacerlo solo de día","Usar solo carbón"],1,"Al producir fuego en el interior de un refugio, recuerde siempre —AÚN CON TEMPERATURAS BAJAS— DEJAR UNA BUENA VENTILACIÓN, pues las llamas producen MONÓXIDO DE CARBONO.","Supervivencia M2");
+Q("su2","¿Qué significa la regla JAG en supervivencia?",["Juntar, Alimentar, Guardar","JUNTE - ACUMULE - GUARDE","Jerarquía, Acción, Grupo","Justificar, Analizar, Gestionar"],1,"La regla JAG: JUNTE - ACUMULE - GUARDE. Aplica al manejo de recursos disponibles durante la supervivencia.","Supervivencia M2");
+Q("su2","¿Cuánto tiempo se puede sobrevivir sin agua y cuándo se bebe la primera ración?",["3 días; beber de inmediato","De 8 a 10 días; esperar 24 horas antes de beber la primera ración","1 mes; beber al segundo día","5 días; beber cada hora"],1,"Días máximos de sobrevivir sin agua: 8 A 10 DÍAS. Hay que RACIONAR: esperar 24 HORAS antes de beber la primera ración. Del segundo al sexto día, 500 cm³ por día y por persona.","Supervivencia M2");
+Q("su2","¿Cuánto tiempo resiste el ser humano sin agua a 48 °C?",["10 días","7 días","2 días","1 día"],2,"Resistencia sin agua: a 10 °C → 10 DÍAS · a 32 °C → 7 DÍAS · a 48 °C → 2 DÍAS.","Supervivencia M2");
+Q("su2","¿Cómo se purifica el agua hirviéndola en altura?",["3 minutos siempre","De 5 a un máximo de 15 minutos, agregando 1 minuto más por cada 300 metros de altura","30 minutos","No se puede hervir en altura"],1,"Hervir el agua entre 3 y 5 minutos y luego filtrar las cenizas. EN ALTURA: hervirla de 5 a un máximo de 15 minutos y ADICIONAR 1 MINUTO MÁS CADA 300 METROS DE ALTURA. Otras formas: pastillas de cloro o gotas de yodo, filtros improvisados y sedimentación.","Supervivencia M2");
+Q("su2","¿Cuántas gotas de yodo se agregan por litro de agua para purificarla?",["1 gota","3 gotas por litro, o 6 si el agua está muy sucia, dejándola media hora en reposo","10 gotas","20 gotas"],1,"Pastillas de cloro o gotas de yodo (halazone o iodine): agregar 3 GOTAS DE YODO POR LITRO de agua, o 6 SI SON MUY SUCIAS, agitar hasta que se mezcle bien y dejarla MEDIA HORA EN REPOSO antes de beberla.","Supervivencia M2");
+Q("su2","¿Cuál de estas recomendaciones sobre el agua es CORRECTA?",["Beber el líquido lechoso de las plantas","El vuelo de las aves al anochecer y al amanecer conduce a las aguadas","Beber agua de mar en pequeñas cantidades","Beber orina si no hay agua"],1,"El vuelo de las aves al anochecer y al amanecer CONDUCE A LAS AGUADAS, y los rastros de animales llevan a sus abrevaderos. NUNCA beber agua salada ni orina, y NO beber el líquido lechoso de las plantas. Beber preferentemente al anochecer y al amanecer.","Supervivencia M2");
+Q("su2","¿En qué consiste la REGLA DE COMESTIBILIDAD?",["Comer solo lo conocido","Ingerir una porción del tamaño de una nuez y esperar 8 horas; si no hay náuseas ni vómitos, comer una porción del tamaño del puño y esperar otras 8 horas","Cocinar todo por 1 hora","Probar con la lengua solamente"],1,"Regla de comestibilidad: siempre trate de COCINAR el posible alimento · ingiera una pequeña cantidad DEL TAMAÑO DE UNA NUEZ y espere 8 HORAS · si no hay náuseas ni vómitos, coma otra porción DEL TAMAÑO DEL PUÑO y espere 8 HORAS MÁS · si no hay malestar, coma una porción mayor.","Supervivencia M2");
+Q("su2","¿Qué NO se debe ingerir según las reglas de alimentación en supervivencia?",["Aves","Algas marinas, peces de colores y formas extrañas, y agua de mar","Alimentos cocinados","Raciones del kit"],1,"NO ingerir ALGAS MARINAS, PECES DE COLORES Y FORMAS extrañas, ni AGUA DE MAR. Las aves son comestibles. Hay que proteger los alimentos de los insectos y consumir 2/3 de las raciones de emergencia.","Supervivencia M2");
+
+Q("su3","¿Cuáles son las acciones inmediatas en supervivencia EN TIERRA?",["Quedarse dentro del avión","Alejarse 100 metros del avión considerando el viento, activar el ELT, improvisar refugio y atender heridos","Buscar el pueblo más cercano","Encender fuego de inmediato"],1,"Acciones inmediatas en tierra: ALEJARSE DEL AVIÓN (100 M) considerando el viento · ACTIVAR EL ELT · improvisar refugio · atender heridos, buscar asistencia médica y tranquilizar. Cuando pase el peligro de fuego: permanecer cerca del área del accidente, rescatar equipo, soltar toboganes para usarlos como refugio y recuperar el kit de supervivencia.","Supervivencia M3");
+Q("su3","En el DESIERTO, ¿cuándo conviene trasladarse si es necesario?",["Al mediodía","Solo de noche","Al amanecer","En cualquier momento"],1,"DESIERTO: permanecer en la sombra el mayor tiempo posible durante el día · mantener la ropa puesta y evitar transpirar (deshidratación) · mantener cabeza y cuello cubiertos · SI ES NECESARIO TRASLADARSE, HACERLO SÓLO DE NOCHE · la presencia de pájaros y animales indica agua · en tormentas de arena, proteger ojos y cubrir boca y nariz.","Supervivencia M3");
+Q("su3","En el TRÓPICO, ¿cuál es el peligro principal?",["La falta de agua","Los insectos, por las enfermedades que transmiten","El frío nocturno","Los desprendimientos"],1,"TRÓPICO: EL PELIGRO SON LOS INSECTOS (enfermedades). Se puede disponer de alimentos y agua, pero hay que hervir el agua o usar tabletas purificadoras y cocer los alimentos. El follaje tupido dificultará el rescate: buscar un claro cercano al avión para hacer señales.","Supervivencia M3");
+Q("su3","En la NIEVE, ¿qué se recomienda respecto del agua?",["Comer nieve directamente","Si dispone de agua, agregar nieve gradualmente; derretir preferentemente hielo","Beber solo agua del kit","No beber hasta el rescate"],1,"NIEVE: evitar el congelamiento manteniendo cuerpo y ropa secos · evitar transpirar para no humedecer la ropa · proteger los ojos · mover permanentemente las extremidades · buscar refugio o cavar zanjas · SI DISPONE DE AGUA, AGREGAR NIEVE GRADUALMENTE; DERRETIR PREFERENTEMENTE HIELO.","Supervivencia M3");
+Q("su3","¿Cuáles son las primeras acciones al terminar el abordaje de la balsa?",["Esperar instrucciones por radio","Cortar la mooring line y alejarse del avión, activar el ELT y tirar el ancla","Repartir el agua","Levantar el toldo"],1,"Acciones inmediatas en el mar (simultáneas, asignadas por la TC a cargo de la balsa): CORTAR MOORING LINE y alejarse del avión · ACTIVAR ELT · TIRAR ANCLA · presentación de la TAC y conteo de sobrevivientes · solicitar médico · rescatar equipo y repartir tabletas de mareo · atender heridos · ATAR LAS BALSAS ENTRE SÍ · mantener higiene · mantener la balsa seca y estable · registro en bitácora.","Supervivencia M3");
+Q("su3","En MARES FRÍOS y CALIENTES, ¿qué peces son comestibles?",["Todos los peces del mar","Camarones y peces que NO tengan colores vivos ni formas extrañas","Solo los peces grandes","Ninguno, solo el kit"],1,"Tanto en mares fríos como calientes: los CAMARONES Y PECES QUE NO TENGAN COLORES VIVOS NI FORMAS EXTRAÑAS son comestibles. En ambos casos se recolecta agua de lluvia y rocío utilizando el toldo.","Supervivencia M3");
+Q("su3","¿Cuál es la diferencia en el uso del toldo entre mares fríos y calientes?",["No hay diferencia","En mares fríos se usa para protegerse del frío; en mares calientes se pone dejando las partes laterales ABIERTAS","En calientes no se usa","En fríos se deja abierto"],1,"MARES FRÍOS: usar el toldo para protegerse del frío y mantener el calor. MARES CALIENTES: poner el toldo DEJANDO LAS PARTES LATERALES ABIERTAS. En ambos: mantener la balsa seca, mover extremidades y proteger piel y ojos.","Supervivencia M3");
+Q("su3","¿Cuáles son los 4 subsistemas de la balsa adicional?",["Balsa, remos, motor y ancla","Una balsa inflable reversible amarilla, dos tubos de flotación con dos sistemas de inflado, un kit de supervivencia y accesorios, y una funda con manillas","Solo la balsa y el kit","Balsa, toldo, agua y comida"],1,"La balsa adicional consiste en 4 subsistemas principales: I) una balsa inflable, REVERSIBLE, de color AMARILLO · II) dos tubos de flotación y dos sistemas de inflado · III) un kit de supervivencia y accesorios · IV) una funda o contenedor con manillas para su traslado.","Supervivencia M3");
+Q("su3","¿Qué contiene el KIT DE SUPERVIVENCIA?",["Solo agua y comida","Elementos de supervivencia, localización, protección, medios de sustento de vida apropiados para el vuelo y equipos para señales pirotécnicas","Solo el toldo","Herramientas de reparación"],1,"El kit de supervivencia es un equipo asociado a las balsas; SU CONTENIDO VARÍA SEGÚN EL FABRICANTE. Contiene elementos de supervivencia, LOCALIZACIÓN, PROTECCIÓN, medios de sustento de vida apropiados para el vuelo y equipos para hacer SEÑALES PIROTÉCNICAS de auxilio.","Supervivencia M3");
+Q("su3","¿Cuáles son los elementos de LOCALIZACIÓN del kit?",["Balde, esponja e inflador","Toldo, barras fosforescentes, bengalas, espejo de señales, linternas, marcador de agua y silbato","Agua y caramelos","Cortaplumas y parches"],1,"Elementos de LOCALIZACIÓN: TOLDO (localización y protección) · BARRAS FOSFORESCENTES · BENGALAS · ESPEJO DE SEÑALES · LINTERNAS · MARCADOR DE AGUA · SILBATO.","Supervivencia M3");
+Q("su3","Al instalar el toldo, ¿cómo se colocan las paletas?",["En cualquier orden","Haciendo coincidir los números de las paletas con los números escritos en el tubo de flotación de la balsa","De izquierda a derecha","Empezando por el mástil"],1,"El toldo trae PALETAS NUMERADAS que DEBEN COINCIDIR CON LOS NÚMEROS ESCRITOS EN LA BALSA (tubo de flotación). Las paletas vienen con velcro para adosarse al tubo y ganchos que se sujetan a un broche. Tiene 1 rampa de abordaje y 1 ventanilla de ventilación que debe coincidir con la rampa. Al final se infla el mástil.","Supervivencia M3");
+Q("su3","¿Cuánto duran las BARRAS FOSFORESCENTES y para qué se usan?",["2 horas; para leer","12 horas; para demarcar áreas en la balsa","24 horas; para señalizar al avión","6 horas; para cocinar"],1,"Las BARRAS FOSFORESCENTES son tubos plásticos transparentes con una duración de 12 HORAS. Su uso es DEMARCAR ÁREAS EN LA BALSA.","Supervivencia M3");
+Q("su3","¿Cuándo se usan las BENGALAS?",["Apenas se aborda la balsa","Cuando se tiene la CERTEZA de que algún tipo de rescate está cerca","Cada 6 horas","Solo de noche"],1,"Las BENGALAS son para hacer señales pirotécnicas CUANDO SE TIENE LA CERTEZA DE QUE ALGÚN TIPO DE RESCATE ESTÁ CERCA. No se malgastan.","Supervivencia M3");
+Q("su3","¿Cuál es el alcance aproximado del ESPEJO DE SEÑALES?",["1 km","5 km","18,5 km","50 km"],2,"El ESPEJO DE SEÑALES se usa de día con sol, e incluso en días brumosos y de noche con luna llena. Su alcance aproximado es de 18,5 KM.","Supervivencia M3");
+Q("su3","¿Qué es el MARCADOR DE AGUA y cuánto dura?",["Un flotador; 24 horas","Polvo compacto colorante amarillo verdoso fosforescente, soluble en agua; dura aproximadamente 3½ horas en mar calmo y es TÓXICO","Una boya; 12 horas","Tinta permanente; 1 semana"],1,"MARCADOR DE AGUA: polvo compacto colorante (AMARILLO VERDOSO FOSFORESCENTE), soluble en agua (nieve o hielo). Duración aproximada de 3½ HORAS EN MAR CALMO. SON TÓXICOS.","Supervivencia M3");
+
+Q("su4","¿Cuáles son los elementos de PROTECCIÓN del kit de supervivencia?",["Bengalas y espejo","Balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manual de la balsa, manual de supervivencia y parches tipo mariposa","Agua y caramelos","Toldo y silbato"],1,"Elementos de PROTECCIÓN: BALDE DE ACHIQUE · CORTAPLUMAS · ESPONJA · INFLADOR · KIT FARMACÉUTICO · MANUAL DE LA BALSA · MANUAL DE SUPERVIVENCIA · PARCHES TIPO MARIPOSA.","Supervivencia M4");
+Q("su4","¿Para qué sirve el BALDE DE ACHIQUE?",["Para cocinar","Para sacar agua de la balsa y también para recolectar agua","Para inflar la balsa","Para guardar alimentos"],1,"BALDE DE ACHIQUE: flexible e impermeable, con borde superior metálico para facilitar su uso. Se utiliza para SACAR AGUA DE LA BALSA y RECOLECTAR AGUA.","Supervivencia M4");
+Q("su4","¿Para qué se usa la ESPONJA del kit?",["Para limpiar el espejo","Para mantener la balsa y las personas SECAS","Para filtrar agua","Para tapar filtraciones"],1,"ESPONJA: fabricada de material orgánico absorbente. Se usa para MANTENER LA BALSA Y LAS PERSONAS SECAS.","Supervivencia M4");
+Q("su4","¿Qué es el PARCHE TIPO MARIPOSA?",["Un vendaje del kit farmacéutico","Dos placas metálicas —una con borde de goma— unidas por un alambre que se ajusta mediante una mariposa, para reparar la balsa","Una señal de localización","Un flotador de emergencia"],1,"PARCHE TIPO MARIPOSA: cada parche tiene dos placas metálicas, una de ellas con un borde de goma, que se une a la otra por un alambre, AJUSTÁNDOSE MEDIANTE UNA MARIPOSA. Sirve para reparar perforaciones de la balsa.","Supervivencia M4");
+Q("su4","¿Qué contiene el MANUAL DE SUPERVIVENCIA de la balsa?",["Solo instrucciones de la balsa","Información en INGLÉS sobre supervivencia en distintos entornos, hojas en blanco al inicio para la bitácora y temas religiosos al final","Mapas de navegación","Recetas de alimentos"],1,"MANUAL DE SUPERVIVENCIA: contiene información EN INGLÉS respecto a supervivencia en diferentes entornos. En su inicio trae HOJAS EN BLANCO DESTINADAS A BITÁCORA y en la parte final contiene TEMAS RELIGIOSOS. El MANUAL DE LA BALSA contiene información de funcionamiento y reparación.","Supervivencia M4");
+Q("su4","¿Para qué es el AGUA del kit de supervivencia y cuándo se bebe?",["Para cocinar; de inmediato","Con fines de primeros auxilios; los adultos sanos no requieren agua hasta después de 24 horas","Para lavarse; cada 6 horas","Solo para los heridos; sin límite"],1,"El AGUA del kit es CON FINES DE PRIMEROS AUXILIOS, disponible en botellas o bolsas plásticas (cantidad variable según el avión). Se raciona. LOS ADULTOS SANOS NO REQUIEREN AGUA HASTA DESPUÉS DE 24 HORAS; antes de tomar la primera ración, conservarla en la boca mucho tiempo, enjuagar y luego tragar.","Supervivencia M4");
+Q("su4","¿Por qué los CARAMELOS son la ración alimenticia de la balsa?",["Porque duran más","Por su alta concentración de glucosa y aporte de energía SIN necesidad de agua","Porque son livianos","Porque calman la sed"],1,"Los CARAMELOS son considerados raciones alimenticias POR SU ALTA CONCENTRACIÓN DE GLUCOSA Y APORTE DE ENERGÍA SIN LA NECESIDAD DE AGUA. Se racionan según la cantidad de personas y la situación, y se ingieren de preferencia DESPUÉS DE 24 HORAS.","Supervivencia M4");
+Q("su4","¿Qué caso histórico ilustra la resiliencia humana en supervivencia?",["El vuelo 1549 en el Hudson","El vuelo 571 de la Fuerza Aérea Uruguaya, estrellado en los Andes el 13 de octubre de 1972","El accidente de Tenerife","El vuelo 232 de United"],1,"El Vuelo 571 de la Fuerza Aérea Uruguaya se estrelló en los Andes el 13/OCT/1972; los sobrevivientes fueron rescatados el 21/DIC/1972. La tragedia de los Andes revela la resiliencia humana: los 16 sobrevivientes («la Sociedad de la Nieve») enfrentaron condiciones extremas, y su COHESIÓN GRUPAL y adaptación son ejemplo de la capacidad de sobreponerse.","Supervivencia M4");
+Q("su4","En el ejercicio de simulación en agua, ¿cuál es el orden de las prioridades a bordo de la balsa?",["Agua, alimento y luego protección","PROTECCIÓN → LOCALIZACIÓN → AGUA/ALIMENTOS","Localización primero siempre","Alimento, agua y refugio"],1,"Las acciones inmediatas en la balsa siguen el orden de prioridades: PROTECCIÓN → LOCALIZACIÓN → AGUA/ALIMENTOS. En la práctica: cortar mooring line, presentarse y contar, recuperar el kit, desplegar ancla, rescatar pasajeros a la deriva con la heaving line, activar ELT, inflar mástil, distribuir elementos del kit y colocar el toldo.","Supervivencia M4");
+Q("su4","¿Con qué se rescata a los pasajeros que quedan a la deriva?",["Con el ancla","Con la heaving line (cuerda de rescate)","Con el balde de achique","Nadando hasta ellos"],1,"Para rescatar pasajeros a la deriva (conscientes e inconscientes) se usa la HEAVING LINE (cuerda de rescate). Forma parte de las acciones inmediatas en la balsa junto con cortar la mooring line, desplegar el ancla y activar el ELT.","Supervivencia M4");
+
+
+
+C("su1","Prioridades de supervivencia","PROTECCIÓN → LOCALIZACIÓN → AGUA → ALIMENTO. Factores personales: control mental, experiencia e ingenio. La TC ejerce liderazgo positivo: ánimo alto y cohesión del grupo.");
+C("su2","Señales tierra/aire","Señales de ~6 x 4 m, cavadas como trincheras para dar sombra. Triángulo de fuego: 3 fogatas a 15-30 m. HUMO de día (negro con restos del avión, blanco con hojas verdes) y FUEGO de noche. Avión que entendió: alabeo de día, dos destellos de noche.");
+C("su2","Agua en supervivencia","Sin agua se sobrevive 8 a 10 días (10 °C: 10 días · 32 °C: 7 · 48 °C: 2). NO beber la primera ración hasta las 24 horas; luego 500 cm³ por día. Hervir 3-5 min (en altura hasta 15, +1 min cada 300 m) o 3 gotas de yodo por litro, media hora de reposo.");
+C("su2","Regla de comestibilidad","Cocinar siempre. Porción del tamaño de una NUEZ → esperar 8 horas → si no hay náuseas, porción del tamaño del PUÑO → esperar 8 horas más → si no hay malestar, comer normal. Nunca algas, peces de colores o formas extrañas, ni agua de mar.");
+C("su3","Acciones inmediatas · TIERRA","Alejarse 100 m del avión considerando el viento · activar el ELT · improvisar refugio · atender heridos. Pasado el peligro de fuego: quedarse cerca del accidente, soltar toboganes como refugio y recuperar el kit.");
+C("su3","Acciones inmediatas · MAR","Cortar mooring line y alejarse · activar ELT · tirar ancla · presentarse y contar sobrevivientes · rescatar el kit y repartir tabletas de mareo · atender heridos · atar las balsas entre sí · bitácora.");
+C("su3","Elementos de localización del kit","Toldo (paletas numeradas que coinciden con el tubo de flotación) · barras fosforescentes (12 h) · bengalas (solo con rescate cerca) · espejo de señales (alcance 18,5 km) · linternas · marcador de agua (3½ h, tóxico) · silbato.");
+C("su4","Elementos de protección del kit","Balde de achique · cortaplumas · esponja · inflador · kit farmacéutico · manual de la balsa · manual de supervivencia (en inglés, con bitácora al inicio) · parche tipo mariposa para reparar la balsa.");
+C("su4","Agua y alimento de la balsa","Agua con fines de primeros auxilios: los adultos sanos esperan 24 horas; la primera ración se retiene en la boca antes de tragar. Alimento: caramelos, por su alta glucosa y energía SIN necesidad de agua.");
+
+M("sup",[
+ ["su1",[
+  ["Qué es sobrevivir","Capacidad de sobrevivir con los medios naturales y artificiales que se posee. La determinación de sobrevivir es VITAL."],
+  ["Las 4 prioridades","Protección → Localización → Agua → Alimento."],
+  ["Factores personales","Control mental (dominar la situación) · Experiencia (práctica) · Ingenio (crear soluciones)."],
+  ["Rol de la TC","Liderazgo positivo: mantener el ánimo alto, la cohesión del grupo y el uso correcto del equipo."],
+  ["Obstáculos","Comunes: ansiedad, dolor, frío, sed, hambre, fatiga, falta de sueño. Mentales: desconocimiento, miedo, terreno y clima."]
+ ]],
+ ["su2",[
+  ["Código tierra/aire","Señales OACI de ~6 x 4 m, cavadas como trincheras. Piedras, troncos, ramas o nieve, mejor si van con fuego."],
+  ["Medios de señalización","Radioeléctricos (ELT, PLB, EPIRB) · pirotécnicos (bengalas) · codificados (espejo, paños) · no codificados (silbato, linterna)."],
+  ["Triángulo de fuego","3 fogatas a 15-30 m entre sí = pedido de auxilio. Humo de día, fuego de noche."],
+  ["Refugios","Nunca en lecho seco de río. En nieve, entrada opuesta al viento. Con fuego dentro, SIEMPRE ventilar: monóxido de carbono. Regla JAG."],
+  ["Agua","8 a 10 días de resistencia. Primera ración a las 24 h. Purificar hirviendo, con yodo, filtrando o sedimentando. Nunca agua salada ni orina."],
+  ["Alimento","Regla de comestibilidad: nuez → 8 h → puño → 8 h → porción mayor. Cocinar siempre. Consumir 2/3 de las raciones."]
+ ]],
+ ["su3",[
+  ["En tierra","Alejarse 100 m del avión, activar ELT, refugio y heridos. Luego rescatar equipo y usar los toboganes como refugio."],
+  ["Desierto","Sombra de día, ropa puesta, cabeza y cuello cubiertos, trasladarse SOLO de noche."],
+  ["Trópico y nieve","Trópico: los insectos son el peligro; buscar un claro para señales. Nieve: cuerpo y ropa secos, proteger ojos, mover extremidades."],
+  ["En el mar","Cortar mooring line, ELT, ancla, contar sobrevivientes, atar balsas y llevar bitácora."],
+  ["Balsa adicional","Balsa reversible amarilla + 2 tubos de flotación con 2 sistemas de inflado + kit de supervivencia + funda con manillas."],
+  ["Localización","Toldo con paletas numeradas · barras fosforescentes 12 h · bengalas solo con rescate cerca · espejo 18,5 km · marcador de agua 3½ h y tóxico."]
+ ]],
+ ["su4",[
+  ["Protección","Balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manuales y parche tipo mariposa."],
+  ["Parche mariposa","Dos placas metálicas unidas por un alambre que se ajusta con una mariposa, para reparar la balsa."],
+  ["Agua","Primeros auxilios. Los adultos sanos esperan 24 horas; retener la primera ración en la boca antes de tragar."],
+  ["Alimento","Caramelos: alta glucosa y energía sin necesitar agua. Racionar e ingerir de preferencia tras 24 horas."],
+  ["Caso Andes 1972","Vuelo 571 uruguayo: 16 sobrevivientes rescatados el 21/12/1972 tras 72 días. Ejemplo de cohesión grupal y resiliencia."]
+ ]]
+]);
+
 /* ---------- ESTADO ---------- */
 const KEY="oyr-pia-v2";
 let S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{}};
@@ -2293,9 +2403,9 @@ function Wheel(rid){
       </div>
       <div class="wheelbox">
         <div class="pointer"></div>
-        <svg viewBox="-110 -110 220 220" aria-label="Ruleta de módulos"><g id="wheelG"></g>
-          <circle r="26" fill="var(--glass-strong)" stroke="var(--line)" stroke-width="2"></circle>
-          <text y="7" text-anchor="middle" font-size="20">${r.ic}</text>
+        <svg viewBox="0 0 220 220" aria-label="Ruleta de módulos"><g id="wheelG"></g>
+          <circle cx="110" cy="110" r="26" fill="var(--glass-strong)" stroke="var(--line)" stroke-width="2"></circle>
+          <text x="110" y="117" text-anchor="middle" font-size="20">${r.ic}</text>
         </svg>
       </div>
       <button class="spin-btn" id="spinBtn">Girar</button>
@@ -2305,17 +2415,18 @@ function Wheel(rid){
   const g=el.querySelector("#wheelG");
   const N=mods.length, step=360/N;
   const pal=["#4A7FC1","#2E9E8F","#7D6BC6","#E8850C","#C05572","#4E8FA8"];
+  const CX=110, CY=110;   /* centro real del viewBox: el giro pivotea aquí */
   mods.forEach((mo,i)=>{
     const a0=(i*step-90)*Math.PI/180, a1=((i+1)*step-90)*Math.PI/180, R=104;
-    const x0=Math.cos(a0)*R,y0=Math.sin(a0)*R,x1=Math.cos(a1)*R,y1=Math.sin(a1)*R;
+    const x0=CX+Math.cos(a0)*R,y0=CY+Math.sin(a0)*R,x1=CX+Math.cos(a1)*R,y1=CY+Math.sin(a1)*R;
     const large=step>180?1:0;
     const p=document.createElementNS("http://www.w3.org/2000/svg","path");
-    p.setAttribute("d",`M0 0 L${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`);
+    p.setAttribute("d",`M${CX} ${CY} L${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`);
     p.style.fill=pal[i%pal.length];
     p.style.stroke="var(--sky-mid)";p.setAttribute("stroke-width","2.5");
     g.appendChild(p);
     const mid=(i*step+step/2-90)*Math.PI/180, r2=66;
-    const tx=(Math.cos(mid)*r2).toFixed(1), ty=(Math.sin(mid)*r2).toFixed(1);
+    const tx=(CX+Math.cos(mid)*r2).toFixed(1), ty=(CY+Math.sin(mid)*r2).toFixed(1);
     const t=document.createElementNS("http://www.w3.org/2000/svg","text");
     t.setAttribute("x",tx);t.setAttribute("y",ty);
     t.setAttribute("text-anchor","middle");t.setAttribute("dominant-baseline","middle");
