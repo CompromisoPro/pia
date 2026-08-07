@@ -651,6 +651,66 @@ mark{background:var(--accent-soft);color:var(--accent);font-weight:700;padding:0
 .timer-bar i{display:block;height:100%;width:100%;border-radius:99px;
   background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1s linear}
 
+
+/* ============ aeropuertos ============ */
+.chile-mapa{position:relative;margin-top:14px;padding:4px 0 4px 0}
+.chile-mapa::before{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;margin-left:-1.5px;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2),var(--accent));
+  opacity:.35;border-radius:99px;
+}
+.cl-fila{
+  position:relative;display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;
+  padding:9px 12px;margin-bottom:7px;cursor:pointer;font:inherit;color:inherit;
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:var(--shadow);
+  transition:transform .14s ease,border-color .14s ease;
+}
+.cl-fila:hover{border-color:var(--accent)}
+.cl-fila.abierto{border-color:var(--accent);background:var(--accent-soft)}
+.cl-fila::after{
+  content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;background:var(--accent);border:2px solid var(--sky-mid);opacity:0;
+}
+.cl-sig{
+  font-family:ui-monospace,Consolas,monospace;font-size:15px;font-weight:800;letter-spacing:.08em;
+  color:var(--accent);flex:none;min-width:44px;
+}
+.cl-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.cl-info b{font-size:14.5px}
+.cl-info small{font-size:11.5px;color:var(--muted);max-height:0;overflow:hidden;transition:max-height .25s ease}
+.cl-fila.abierto .cl-info small{max-height:40px}
+.cl-reg{font-size:15px;flex:none;opacity:.7}
+
+.geo-regiones{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.geo-region{
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:13px;
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:var(--shadow);overflow:hidden;
+}
+.geo-reg-t{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:left;cursor:pointer;
+  background:none;border:none;color:inherit;font:650 14.5px system-ui,sans-serif;padding:13px 15px;
+}
+.geo-reg-t span{
+  margin-left:auto;font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--muted);
+  background:var(--inner);border:1px solid var(--line);border-radius:99px;padding:2px 9px;
+}
+.geo-cells{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:7px;
+  max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 12px;
+}
+.geo-region.open .geo-cells{max-height:1400px;padding:0 12px 13px}
+.geo-cell{
+  display:flex;flex-direction:column;gap:1px;text-align:left;cursor:pointer;font:inherit;color:inherit;
+  background:var(--inner);border:1px solid var(--line);border-radius:10px;padding:9px 10px;
+}
+.geo-cell:hover{border-color:var(--accent)}
+.geo-cell .gc-s{font-family:ui-monospace,Consolas,monospace;font-size:15px;font-weight:800;color:var(--accent);letter-spacing:.06em}
+.geo-cell .gc-c{font-size:13px;font-weight:650}
+.geo-cell .gc-n{font-size:10.5px;color:var(--muted);line-height:1.3}
+.geo-ciudad{font-size:clamp(26px,7vw,36px);font-weight:800;line-height:1.15;color:var(--accent);margin:6px 0 10px;text-wrap:balance}
+.geo-nombre{font-size:13px;color:var(--muted);margin-top:5px}
+
 /* ============ ajuste móvil: mismo look, menos costo de GPU ============ */
 @media (max-width: 520px){
   .board,.q-card,.result-hero{backdrop-filter:blur(9px) saturate(1.15);-webkit-backdrop-filter:blur(9px) saturate(1.15)}
@@ -2398,7 +2458,8 @@ function Home(){
     grid.appendChild(b);
   });
   const modes=el.querySelector(".modes");
-  [["ABC","📻","Alfabeto aeronáutico","Alfa, Bravo, Charlie… con audio, deletreo de siglas reales y contrarreloj.","Entrenador",()=>go(Alfabeto)],
+  [["GEO","🌐","Siglas de aeropuertos","Chile de norte a sur y los destinos del mundo, con práctica y contrarreloj.","Geografía",()=>go(Aeropuertos)],
+   ["ABC","📻","Alfabeto aeronáutico","Alfa, Bravo, Charlie… con audio, deletreo de siglas reales y contrarreloj.","Entrenador",()=>go(Alfabeto)],
    ["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar)],
    ["PSP","🛂","Mi pasaporte",`Progreso de los ${RAMOS.length} ramos, insignias, historial y respaldo.`,"Progreso",()=>go(Passport)],
    ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones fase por fase e informe final.","Simulador",()=>go(SimIntro)],
@@ -2889,14 +2950,14 @@ function Passport(){
     try{
       const S2=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^OYR\d\./,"")))));
       if(!S2||typeof S2!=="object"||!S2.stats)throw 0;
-      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0}},S2);
+      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0}},S2);
       if(Array.isArray(S.exams))S.exams={oyr:S.exams};
       save();toast("Progreso restaurado ✔");go(Passport);
     }catch(e){toast("Ese código no es válido");}
   });
   el.querySelector("#reset").addEventListener("click",()=>{
     if(confirm("¿Segura que quieres borrar todo el progreso? Esto no se puede deshacer.")){
-      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0}};save();
+      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0}};save();
       session={streak:0,points:0};go(Passport);
     }
   });
@@ -3388,6 +3449,299 @@ function AlfaReloj(){
       <p class="sub">aciertos en 60 segundos${st.recordReloj>aciertos?` · tu récord es ${st.recordReloj}`:" · ¡nuevo récord! 🎉"}</p>
       <button class="next-btn" id="otra">Otra vuelta →</button></div>`;
     zona.querySelector("#otra").addEventListener("click",()=>go(AlfaReloj));
+    if(aciertos>=20)confetti();
+  }
+  timer=setInterval(()=>{
+    if(!vivo)return;
+    seg--;tt.textContent=seg+"s · "+aciertos+" aciertos";
+    barra.style.width=(seg/60*100)+"%";
+    if(seg<=0)fin();
+  },1000);
+  view.appendChild(el);
+  const obs=new MutationObserver(()=>{if(!document.body.contains(el)){vivo=false;clearInterval(timer);obs.disconnect();}});
+  obs.observe(view,{childList:true});
+  ronda();
+}
+
+
+/* ================= AEROPUERTOS · SIGLAS IATA ================= */
+/* [sigla, ciudad, nombre del aeropuerto, región] */
+const AEROP=[
+ /* --- Chile, de norte a sur (los de su material) --- */
+ ["ARI","Arica","Chacalluta","cln"],
+ ["IQQ","Iquique","Diego Aracena","cln"],
+ ["CJC","Calama","El Loa","cln"],
+ ["ANF","Antofagasta","Cerro Moreno","cln"],
+ ["ESR","El Salvador","El Salvador Bajo","cln"],
+ ["CPO","Copiapó","Desierto de Atacama","cln"],
+ ["LSC","La Serena","La Florida","cln"],
+ ["SCL","Santiago","Arturo Merino Benítez","clc"],
+ ["CCP","Concepción","Carriel Sur","clc"],
+ ["ZCO","Temuco","La Araucanía","cls"],
+ ["ZPC","Pucón","Pucón","cls"],
+ ["ZAL","Valdivia","Pichoy","cls"],
+ ["ZOS","Osorno","Cañal Bajo","cls"],
+ ["PMC","Puerto Montt","El Tepual","cls"],
+ ["CYQ","Coyhaique","Teniente Vidal","cla"],
+ ["BBA","Balmaceda","Balmaceda","cla"],
+ ["PNT","Puerto Natales","Teniente Julio Gallardo","cla"],
+ ["PUQ","Punta Arenas","Carlos Ibáñez del Campo","cla"],
+ ["IPC","Isla de Pascua","Mataveri","cli"],
+ /* --- Sudamérica --- */
+ ["EZE","Buenos Aires","Ministro Pistarini · Ezeiza","sam"],
+ ["AEP","Buenos Aires","Aeroparque Jorge Newbery","sam"],
+ ["COR","Córdoba","Ing. Ambrosio Taravella","sam"],
+ ["MDZ","Mendoza","El Plumerillo","sam"],
+ ["LIM","Lima","Jorge Chávez","sam"],
+ ["CUZ","Cusco","Alejandro Velasco Astete","sam"],
+ ["MVD","Montevideo","Carrasco","sam"],
+ ["ASU","Asunción","Silvio Pettirossi","sam"],
+ ["LPB","La Paz","El Alto","sam"],
+ ["VVI","Santa Cruz","Viru Viru","sam"],
+ ["GRU","São Paulo","Guarulhos","sam"],
+ ["GIG","Río de Janeiro","Galeão","sam"],
+ ["BSB","Brasilia","Presidente Juscelino Kubitschek","sam"],
+ ["BOG","Bogotá","El Dorado","sam"],
+ ["MDE","Medellín","José María Córdova","sam"],
+ ["UIO","Quito","Mariscal Sucre","sam"],
+ ["GYE","Guayaquil","José Joaquín de Olmedo","sam"],
+ ["CCS","Caracas","Simón Bolívar · Maiquetía","sam"],
+ /* --- Norte y Centroamérica --- */
+ ["MIA","Miami","Miami International","nam"],
+ ["JFK","Nueva York","John F. Kennedy","nam"],
+ ["LAX","Los Ángeles","Los Angeles International","nam"],
+ ["ORD","Chicago","O'Hare","nam"],
+ ["ATL","Atlanta","Hartsfield-Jackson","nam"],
+ ["DFW","Dallas","Dallas-Fort Worth","nam"],
+ ["MEX","Ciudad de México","Benito Juárez","nam"],
+ ["CUN","Cancún","Cancún International","nam"],
+ ["PTY","Panamá","Tocumen","nam"],
+ ["SJO","San José","Juan Santamaría","nam"],
+ ["HAV","La Habana","José Martí","nam"],
+ ["YYZ","Toronto","Pearson","nam"],
+ /* --- Europa --- */
+ ["MAD","Madrid","Adolfo Suárez Madrid-Barajas","eur"],
+ ["BCN","Barcelona","Josep Tarradellas El Prat","eur"],
+ ["LIS","Lisboa","Humberto Delgado","eur"],
+ ["CDG","París","Charles de Gaulle","eur"],
+ ["LHR","Londres","Heathrow","eur"],
+ ["FCO","Roma","Leonardo da Vinci · Fiumicino","eur"],
+ ["MXP","Milán","Malpensa","eur"],
+ ["FRA","Fráncfort","Frankfurt am Main","eur"],
+ ["MUC","Múnich","Franz Josef Strauss","eur"],
+ ["AMS","Ámsterdam","Schiphol","eur"],
+ ["ZRH","Zúrich","Zúrich","eur"],
+ ["IST","Estambul","Istanbul Airport","eur"],
+ /* --- Resto del mundo --- */
+ ["PPT","Papeete","Faa'a · Tahití","res"],
+ ["AKL","Auckland","Auckland","res"],
+ ["SYD","Sídney","Kingsford Smith","res"],
+ ["DXB","Dubái","Dubai International","res"],
+ ["DOH","Doha","Hamad International","res"],
+ ["NRT","Tokio","Narita","res"],
+ ["HND","Tokio","Haneda","res"],
+ ["HKG","Hong Kong","Chek Lap Kok","res"],
+ ["SIN","Singapur","Changi","res"],
+ ["JNB","Johannesburgo","O. R. Tambo","res"]
+];
+const REGIONES=[
+ {id:"cln",n:"Chile · Norte",ic:"🏜"},
+ {id:"clc",n:"Chile · Centro",ic:"🏙"},
+ {id:"cls",n:"Chile · Sur",ic:"🌲"},
+ {id:"cla",n:"Chile · Austral",ic:"🐧"},
+ {id:"cli",n:"Chile · Insular",ic:"🗿"},
+ {id:"sam",n:"Sudamérica",ic:"🌎"},
+ {id:"nam",n:"Norte y Centroamérica",ic:"🗽"},
+ {id:"eur",n:"Europa",ic:"🏰"},
+ {id:"res",n:"Resto del mundo",ic:"🌏"}
+];
+const ES_CHILE=r=>r.indexOf("cl")===0;
+function geoStats(){return S.geo||(S.geo={best:0,fallos:{},recordReloj:0});}
+
+/* ================= PANTALLA PRINCIPAL ================= */
+function Aeropuertos(){
+  const st=geoStats();
+  const nCL=AEROP.filter(a=>ES_CHILE(a[3])).length;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Siglas IATA · ${AEROP.length} aeropuertos</div>
+    <h2>🌐 Siglas de aeropuertos</h2>
+    <p class="sub">Los ${nCL} de Chile de norte a sur, más los destinos internacionales. Toca cualquiera para ver el nombre completo.</p>
+    <div class="stats-strip" style="margin-top:14px">
+      <div class="stat"><b>${st.best}</b><span>Mejor racha</span></div>
+      <div class="stat"><b>${st.recordReloj||0}</b><span>Récord 60s</span></div>
+      <div class="stat"><b>${Object.keys(st.fallos).length}</b><span>Por afianzar</span></div>
+    </div>
+    <div class="modes" style="margin-top:16px"></div>
+    <h2 style="margin-top:24px">🇨🇱 Chile de norte a sur</h2>
+    <p class="sub">La franja completa: así se ordenan en el mapa.</p>
+    <div class="chile-mapa"></div>
+    <h2 style="margin-top:24px">Internacionales</h2>
+    <div class="geo-regiones"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const modes=el.querySelector(".modes");
+  [["PRA","🎯","Práctica","Te doy la sigla y eliges la ciudad, o al revés. Puedes practicar solo Chile o el mundo entero.","Ida y vuelta",()=>go(GeoPractica)],
+   ["REL","⏱","Contrarreloj","60 segundos adivinando siglas. ¿Cuántas sacas?","Récord personal",()=>go(GeoReloj)]
+  ].forEach(([code,icon,t,d,tag,fn])=>{
+    const b=document.createElement("button");b.className="pass";
+    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
+      <span class="pass-stub"><span class="big">${icon}</span><span>${code}</span><span>IATA</span></span>`;
+    b.addEventListener("click",fn);modes.appendChild(b);
+  });
+  /* mapa vertical de Chile */
+  const mapa=el.querySelector(".chile-mapa");
+  AEROP.filter(a=>ES_CHILE(a[3])).forEach(([s,c,nom,rg],i)=>{
+    const reg=REGIONES.find(x=>x.id===rg);
+    const f=document.createElement("button");f.className="cl-fila"+(i%2?" der":"");
+    f.innerHTML=`<span class="cl-sig">${s}</span>
+      <span class="cl-info"><b>${esc(c)}</b><small>${esc(nom)}</small></span>
+      <span class="cl-reg">${reg?reg.ic:""}</span>`;
+    f.addEventListener("click",()=>{
+      f.classList.toggle("abierto");
+      if(typeof decir==="function"&&f.classList.contains("abierto"))decir(s.split("").join(" "));
+    });
+    mapa.appendChild(f);
+  });
+  /* regiones internacionales */
+  const cont=el.querySelector(".geo-regiones");
+  REGIONES.filter(r=>!ES_CHILE(r.id)).forEach(r=>{
+    const lista=AEROP.filter(a=>a[3]===r.id);
+    const box=document.createElement("div");box.className="geo-region";
+    box.innerHTML=`<button class="geo-reg-t">${r.ic} ${esc(r.n)}<span>${lista.length}</span></button>
+      <div class="geo-cells"></div>`;
+    const cells=box.querySelector(".geo-cells");
+    lista.forEach(([s,c,nom])=>{
+      const b=document.createElement("button");b.className="geo-cell";
+      b.innerHTML=`<span class="gc-s">${s}</span><span class="gc-c">${esc(c)}</span><span class="gc-n">${esc(nom)}</span>`;
+      b.addEventListener("click",()=>{if(typeof decir==="function")decir(s.split("").join(" "));});
+      cells.appendChild(b);
+    });
+    box.querySelector(".geo-reg-t").addEventListener("click",()=>box.classList.toggle("open"));
+    cont.appendChild(box);
+  });
+  view.appendChild(el);
+}
+
+/* ================= PRÁCTICA ================= */
+function GeoPractica(ambito){
+  const st=geoStats();
+  if(!ambito){
+    const el=document.createElement("div");el.className="screen";
+    el.innerHTML=`<button class="backbtn">← Aeropuertos</button>
+      <div class="eyebrow">Práctica</div>
+      <h2>¿Qué quieres practicar?</h2>
+      <div class="modes" style="margin-top:16px"></div>`;
+    el.querySelector(".backbtn").addEventListener("click",()=>go(Aeropuertos));
+    const m=el.querySelector(".modes");
+    [["🇨🇱","Solo Chile",`Los ${AEROP.filter(a=>ES_CHILE(a[3])).length} aeropuertos nacionales — los que más vas a volar.`,"chile"],
+     ["🌎","Internacionales",`Los ${AEROP.filter(a=>!ES_CHILE(a[3])).length} destinos del resto del mundo.`,"inter"],
+     ["🌐","Todos",`Los ${AEROP.length} juntos, sin filtro.`,"todos"]
+    ].forEach(([ic,t,d,k])=>{
+      const b=document.createElement("button");b.className="pass";
+      b.innerHTML=`<span class="pass-main"><h3>${ic} ${t}</h3><p>${d}</p></span>
+        <span class="pass-stub"><span class="big">${ic}</span><span>IATA</span></span>`;
+      b.addEventListener("click",()=>go(GeoPractica,k));m.appendChild(b);
+    });
+    view.appendChild(el);return;
+  }
+  const pool=AEROP.filter(a=>ambito==="todos"||(ambito==="chile"?ES_CHILE(a[3]):!ES_CHILE(a[3])));
+  let racha=0;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Elegir</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">🎯 ${ambito==="chile"?"Chile":ambito==="inter"?"Internacionales":"Todos"}</span>
+      <span class="q-count" id="rr">RACHA 0</span>
+    </div>
+    <div class="q-card"><div class="alfa-zona"></div></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(GeoPractica));
+  const zona=el.querySelector(".alfa-zona"), rr=el.querySelector("#rr");
+  function ronda(){
+    let tot=0;const w=pool.map(([s])=>{const x=1+(st.fallos[s]||0)*2.5;tot+=x;return x;});
+    let r=Math.random()*tot, idx=0;
+    for(let i=0;i<pool.length;i++){r-=w[i];if(r<=0){idx=i;break;}}
+    const [sig,ciu,nom]=pool[idx];
+    const inverso=Math.random()<.45;
+    const otras=shuffle(pool.filter(x=>x[0]!==sig&&x[1]!==ciu)).slice(0,3);
+    const ops=shuffle([pool[idx]].concat(otras));
+    zona.innerHTML=`<div class="alfa-preg">${inverso?"¿Cuál es la sigla de…?":"¿Qué ciudad es?"}</div>
+      <div class="${inverso?"geo-ciudad":"alfa-big"}">${inverso?esc(ciu):sig}</div>
+      <div class="alfa-opts"></div><div class="alfa-after"></div>`;
+    const cont=zona.querySelector(".alfa-opts");
+    let listo=false;
+    ops.forEach(([os,oc])=>{
+      const b=document.createElement("button");b.className="alfa-op";
+      b.textContent=inverso?os:oc;
+      b.addEventListener("click",()=>{
+        if(listo)return;listo=true;
+        const ok=os===sig;
+        [...cont.children].forEach(x=>{
+          x.disabled=true;
+          if(x.textContent===(inverso?sig:ciu))x.classList.add("ok");
+          else if(x===b&&!ok)x.classList.add("no");
+          else x.classList.add("dim");
+        });
+        if(ok){racha++;if(st.fallos[sig]){st.fallos[sig]--;if(st.fallos[sig]<=0)delete st.fallos[sig];}
+          if(racha>st.best)st.best=racha;}
+        else{racha=0;st.fallos[sig]=(st.fallos[sig]||0)+1;}
+        save();rr.textContent="RACHA "+racha;
+        const after=zona.querySelector(".alfa-after");
+        after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔":"✘"} ${sig} · ${esc(ciu)}</div>
+          <div class="geo-nombre">${esc(nom)}</div>
+          <button class="next-btn">Siguiente →</button>`;
+        after.querySelector(".next-btn").addEventListener("click",ronda);
+        after.querySelector(".next-btn").focus();
+      });
+      cont.appendChild(b);
+    });
+  }
+  view.appendChild(el);ronda();
+}
+
+/* ================= CONTRARRELOJ ================= */
+function GeoReloj(){
+  const st=geoStats();
+  let seg=60, aciertos=0, vivo=true, timer=null;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Aeropuertos</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">⏱ Contrarreloj</span>
+      <span class="q-count" id="tt">60s · 0 aciertos</span>
+    </div>
+    <div class="timer-bar"><i></i></div>
+    <div class="q-card"><div class="alfa-zona"></div></div>`;
+  const salir=()=>{vivo=false;if(timer)clearInterval(timer);go(Aeropuertos);};
+  el.querySelector(".backbtn").addEventListener("click",salir);
+  const zona=el.querySelector(".alfa-zona"), tt=el.querySelector("#tt"),
+        barra=el.querySelector(".timer-bar i");
+  function ronda(){
+    if(!vivo)return;
+    const [sig,ciu]=AEROP[Math.floor(Math.random()*AEROP.length)];
+    const otras=shuffle(AEROP.filter(x=>x[0]!==sig&&x[1]!==ciu)).slice(0,3);
+    const ops=shuffle([[sig,ciu]].concat(otras));
+    zona.innerHTML=`<div class="alfa-big">${sig}</div><div class="alfa-opts"></div>`;
+    const cont=zona.querySelector(".alfa-opts");
+    ops.forEach(([os,oc])=>{
+      const b=document.createElement("button");b.className="alfa-op";b.textContent=oc;
+      b.addEventListener("click",()=>{
+        if(!vivo)return;
+        if(os===sig){aciertos++;b.classList.add("ok");}
+        else{b.classList.add("no");st.fallos[sig]=(st.fallos[sig]||0)+1;seg=Math.max(0,seg-2);}
+        tt.textContent=seg+"s · "+aciertos+" aciertos";
+        setTimeout(ronda,180);
+      });
+      cont.appendChild(b);
+    });
+  }
+  function fin(){
+    vivo=false;clearInterval(timer);
+    const nuevo=aciertos>(st.recordReloj||0);
+    if(nuevo)st.recordReloj=aciertos;
+    save();
+    zona.innerHTML=`<div style="text-align:center">
+      <div class="score">${aciertos}</div>
+      <p class="sub">aciertos en 60 segundos${nuevo?" · ¡nuevo récord! 🎉":` · tu récord es ${st.recordReloj}`}</p>
+      <button class="next-btn" id="otra">Otra vuelta →</button></div>`;
+    zona.querySelector("#otra").addEventListener("click",()=>go(GeoReloj));
     if(aciertos>=20)confetti();
   }
   timer=setInterval(()=>{
