@@ -340,6 +340,67 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
 }
 .flash-nav button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
 
+/* ============ ensayo de desarrollo ============ */
+.ens-head{margin-bottom:14px}
+.ens-bar{height:5px;border-radius:4px;background:var(--glass);border:1px solid var(--glass-border);overflow:hidden;margin-top:7px}
+.ens-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .35s}
+.ens-q{
+  display:flex;gap:12px;align-items:flex-start;background:var(--glass);border:1.5px solid var(--glass-border);
+  border-radius:14px;box-shadow:var(--shadow);padding:16px 15px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.ens-q p{font:700 17px/1.45 system-ui,sans-serif;margin:0;flex:1}
+.ens-ta{
+  width:100%;box-sizing:border-box;margin-top:10px;padding:12px;border-radius:12px;resize:vertical;
+  background:var(--glass);border:1.5px solid var(--glass-border);color:var(--ink);
+  font:400 14.5px/1.55 system-ui,sans-serif;
+}
+.ens-ta:focus{outline:none;border-color:var(--accent)}
+.ens-go,.ens-next{
+  width:100%;margin-top:12px;padding:14px;border-radius:13px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+  font:750 15px system-ui,sans-serif;box-shadow:var(--shadow);
+}
+.ens-pts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ens-pt{
+  display:flex;gap:11px;align-items:flex-start;text-align:left;cursor:pointer;
+  background:var(--glass);border:1.5px solid var(--glass-border);border-radius:12px;
+  padding:12px 13px;color:var(--ink);font:500 14.5px/1.5 system-ui,sans-serif;
+}
+.ens-box{
+  flex:0 0 auto;width:21px;height:21px;border-radius:6px;display:grid;place-items:center;
+  border:1.5px solid var(--glass-border);background:var(--glass-strong);
+  color:transparent;font:800 12px system-ui,sans-serif;margin-top:1px;
+}
+.ens-pt.on{border-color:color-mix(in srgb,var(--ok) 60%,transparent)}
+.ens-pt.on .ens-box{background:var(--ok);border-color:transparent;color:#fff}
+.ens-mine,.ens-modelo{
+  margin-top:12px;padding:13px 14px;border-radius:13px;
+  background:var(--glass);border:1.5px solid var(--glass-border);
+}
+.ens-mine p,.ens-modelo p{margin:6px 0 0;font-size:14px;line-height:1.62;white-space:pre-wrap}
+.ens-modelo{border-left:3px solid var(--accent)}
+.ens-res{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ens-row{
+  display:flex;gap:11px;align-items:center;text-align:left;cursor:pointer;
+  background:var(--glass);border:1.5px solid var(--glass-border);border-left-width:4px;
+  border-radius:12px;padding:11px 13px;color:var(--ink);
+}
+.ens-row.ok{border-left-color:var(--ok)}
+.ens-row.mid{border-left-color:var(--warn,#E8850C)}
+.ens-row.bad{border-left-color:var(--bad,#C05572)}
+.ens-rt{flex:1;font:600 13.5px/1.45 system-ui,sans-serif}
+.ens-pct{font:800 13px ui-monospace,Consolas,monospace;color:var(--muted)}
+.cuest-sep{
+  margin:20px 0 -4px;font:700 11px ui-monospace,Consolas,monospace;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.cuest-reset{
+  width:100%;margin-top:12px;padding:11px;border-radius:11px;cursor:pointer;
+  background:none;border:1.5px dashed var(--glass-border);color:var(--muted);
+  font:600 13px system-ui,sans-serif;
+}
+
 /* ============ cuestionario oficial ============ */
 .cuest-list{display:flex;flex-direction:column;gap:9px;margin-top:16px}
 .cuest-item{
@@ -2364,6 +2425,37 @@ Q("su4","¿En qué momento se recomienda ingerir las raciones alimentarias?",["A
 Q("su3","¿Qué acción NO es correcta durante una supervivencia en el mar?",["Cortar la mooring line","Alejarse del avión","Apagar el ELT","Tirar el ancla"],2,"El ELT JAMÁS se apaga: es lo que permite ser localizado (emite 48 horas en 121.5, 243 y 406.25 MHz). Las acciones correctas sí incluyen cortar la mooring line, alejarse del avión, tirar el ancla, contarse, atar las balsas entre sí y mantener la balsa seca.","Cuestionario oficial · pregunta 38");
 Q("su3","¿Qué color caracteriza generalmente a las balsas adicionales?",["Naranja","Rojo","Amarillo","Verde"],2,"La balsa adicional es inflable, REVERSIBLE y de color AMARILLO, con dos tubos de flotación, dos sistemas de inflado, kit de supervivencia y una funda con manillas para trasladarla.","Cuestionario oficial · pregunta 39");
 Q("su4","¿Qué elemento permite solicitar rescate tanto de día como de noche?",["El silbato","La bengala","El manual de supervivencia","El inflador"],1,"La BENGALA: produce humo visible de día y luz de noche. Se usa solo cuando se tiene la CERTEZA de que el rescate está cerca, porque son limitadas.","Cuestionario oficial · pregunta 40");
+/* --- Las 30 preguntas de DESARROLLO del cuestionario, en formato alternativa --- */
+Q("su1","Frente a una situación catastrófica, ¿cómo debe actuar el líder y por qué es clave su rol?",["Adelantarse a buscar ayuda por su cuenta mientras el grupo espera","Ejercer un LIDERAZGO POSITIVO: mantener la moral alta, asignar tareas, velar por la seguridad y mantener la cohesión del grupo","Limitarse a repartir el agua y el alimento en partes iguales","Esperar en silencio las instrucciones del equipo de rescate"],1,"El líder ejerce LIDERAZGO POSITIVO: mantiene el ánimo alto y evita la baja moral (la motivación por vivir es vital), organiza y asigna tareas, vela por la seguridad, da el correcto uso al equipo, mantiene la cohesión, cuenta a los sobrevivientes y lleva la bitácora. Se apoya en el control mental, la experiencia y el ingenio. La tragedia de los Andes (vuelo 571, 1972) es el ejemplo: la cohesión permitió sobrevivir 72 días.","Cuestionario oficial · desarrollo 1");
+Q("su1","¿Cuáles son las prioridades de supervivencia y por qué importa ese orden?",["Alimento, agua, refugio y señales: primero hay que recuperar fuerzas","Protección, localización, agua y alimento: el medio ambiente mata antes que el hambre","Localización, protección, alimento y agua: lo urgente es que nos vean","Agua, alimento, protección y localización: sin hidratación no se hace nada"],1,"El orden es 1) PROTECCIÓN (refugio y abrigo), 2) LOCALIZACIÓN (señales, ELT, código tierra/aire), 3) AGUA (se sobrevive 8 a 10 días sin ella) y 4) ALIMENTO (se vive semanas sin comer). El orden importa porque de nada sirve tener comida si el frío o el calor acaban contigo antes de que te encuentren.","Cuestionario oficial · desarrollo 2");
+Q("su3","¿Por qué en el trópico se busca una zona despejada CERCANA a la aeronave para hacer señales?",["Porque el follaje tupido impide ver el avión y a los sobrevivientes desde el aire, pero el avión sigue siendo la referencia del rescate","Porque conviene alejarse lo más posible del avión por el riesgo de incendio","Porque en el trópico las señales solo funcionan sobre terreno húmedo","Porque el claro permite armar el refugio con mejor ventilación"],0,"En el trópico el FOLLAJE TUPIDO dificulta el rescate: desde el aire no se ve nada bajo la vegetación. Por eso se busca un claro CERCANO al avión, sin alejarse, porque el avión es la referencia para el rescate y la fuente de recursos. Además el peligro principal en el trópico son los insectos por las enfermedades que transmiten: hay que hervir el agua o usar tabletas y cocer los alimentos.","Cuestionario oficial · desarrollo 3");
+Q("su2","En la activación del ELT Rescue 406 S en tierra, ¿con cuánta agua se mezcla el saco de sal y cómo se sostiene?",["Con medio litro, y se deja acostado sobre el suelo","Con 1 litro de agua, té o café, y se sostiene VERTICAL para que el líquido no escurra","Con 2 litros de agua salada, y se cuelga de la antena","Con 1 litro de agua, y se sumerge completamente"],1,"Procedimiento: romper el sello para liberar la antena, retirar la cuerda, desplegar la bolsa plástica, remover el saco de sal y mezclarlo con 1 LITRO (media bolsa) de agua, té o café. Se inserta la parte inferior del ELT asegurando que la solución cubra los orificios del costado del cilindro, y se deja en un espacio libre sostenido VERTICAL. Emite por 48 horas en 121.5, 243 y 406.25 MHz.","Cuestionario oficial · desarrollo 4");
+Q("su2","Con condiciones meteorológicas extremas, ¿por qué el refugio va antes que el señalamiento?",["Porque las señales solo se ven con buen tiempo","Porque la PROTECCIÓN es la primera prioridad: la exposición mata en horas, antes de que llegue el rescate","Porque el refugio sirve además como señal visible desde el aire","Porque el equipo de señales debe mantenerse seco dentro del refugio"],1,"La PROTECCIÓN es la primera prioridad. Con frío, calor extremo, viento o lluvia la exposición puede matar en horas, mucho antes del rescate, y un sobreviviente con hipotermia o deshidratación severa ya no puede hacer señales ni tomar decisiones. El refugio además da seguridad psicológica y evita la baja moral. Protegido el grupo se pasa al señalamiento; en la práctica ambas cosas se organizan en paralelo asignando tareas.","Cuestionario oficial · desarrollo 5");
+Q("su4","¿Cuál es el uso correcto del agua del kit en las primeras horas tras la emergencia?",["Repartirla de inmediato en partes iguales entre todos","Es para PRIMEROS AUXILIOS: los adultos sanos no requieren agua hasta después de las 24 horas","Beberla toda el primer día para evitar que se contamine","Reservarla solo para preparar los alimentos"],1,"El agua del kit viene en botellas o bolsas plásticas, en cantidad variable según el avión, y es CON FINES DE PRIMEROS AUXILIOS. Los ADULTOS SANOS NO REQUIEREN AGUA HASTA DESPUÉS DE LAS 24 HORAS: se raciona según la cantidad de personas y la situación. Antes de tragar la primera ración hay que conservarla en la boca y enjuagar. Del 2° al 6° día corresponden unos 500 cm³ por día y por persona, y su cuidado se asigna a dos adultos.","Cuestionario oficial · desarrollo 6");
+Q("su4","¿Cuáles son las dos funciones del balde de achique en la balsa?",["Sacar el agua que entra y recolectar agua de lluvia y rocío","Achicar agua y servir de ancla flotante","Recolectar agua y almacenar las raciones alimentarias","Sacar agua y transportar a los heridos"],0,"El balde es flexible e impermeable, con un borde superior metálico que facilita su uso. Sirve para SACAR EL AGUA que entra a la balsa —manteniéndola seca y estable, lo que previene la hipotermia— y para RECOLECTAR agua de lluvia y rocío, que junto con el toldo es la fuente de agua dulce en el mar. Es un elemento de PROTECCIÓN del kit.","Cuestionario oficial · desarrollo 7");
+Q("su2","¿Cuánta agua corresponde por día y por persona del segundo al sexto día?",["250 cm³","500 cm³","1 litro","1,5 litros"],1,"Del 2° al 6° día corresponden unos 500 cm³ por día y por persona, después de esperar 24 horas para la primera ración. Se bebe preferentemente al anochecer y al amanecer, de preferencia antes de dormir. NUNCA agua salada, orina ni el líquido lechoso de las plantas. Hay que evitar transpirar y, con calor, llevar la nuca cubierta y mojada. Se sobrevive 8 a 10 días sin agua (10 días a 10 °C, 7 a 32 °C y solo 2 a 48 °C).","Cuestionario oficial · desarrollo 8");
+Q("su3","¿Cuáles son las acciones inmediatas en una supervivencia en TIERRA?",["Alejarse ~100 m del avión según el viento, activar el ELT, improvisar refugio y atender a los heridos","Buscar agua, encender fuego, comer y esperar","Caminar hacia el poblado más cercano llevando el kit","Contar sobrevivientes, repartir el alimento y dormir hasta el amanecer"],0,"1) ALEJARSE DEL AVIÓN unos 100 metros considerando la dirección del viento (riesgo de fuego y combustible). 2) ACTIVAR EL ELT. 3) IMPROVISAR UN REFUGIO. 4) ATENDER A LOS HERIDOS y tranquilizar. Pasado el peligro de fuego: permanecer cerca del área del accidente (el avión es la referencia del rescate), rescatar equipo, soltar los toboganes y usarlos como refugio, y recuperar el kit de supervivencia.","Cuestionario oficial · desarrollo 9");
+Q("su3","¿Cuáles son las características principales de una balsa adicional?",["Rígida, de color naranja, con motor auxiliar","Inflable, REVERSIBLE y de color AMARILLO, con dos tubos de flotación y dos sistemas de inflado","Inflable, de color rojo, con un solo tubo de flotación","Rígida, amarilla, con toldo fijo no desmontable"],1,"Se incorpora en aviones equipados con toboganes que operan rutas extendidas sobre agua. Consta de 4 subsistemas: una balsa inflable REVERSIBLE de color AMARILLO; dos tubos de flotación y dos sistemas de inflado; un kit de supervivencia y accesorios; y una funda o contenedor con manillas para su traslado. Lleva toldo sujeto con 8 varillas y mástil central metálico extensible. En el A320 se llevan 4 balsas adicionales en overhead bins, de 46-69 personas cada una.","Cuestionario oficial · desarrollo 10");
+Q("su3","¿Cómo es el proceso de inflado de una balsa adicional?",["Manual desde el inicio, con el inflador del kit, y demora unos 3 minutos","AUTOMÁTICO en unos 5 segundos; si falla, manual con la manilla roja PULL TO INFLATE","Automático en 30 segundos, sin respaldo manual","Se infla sola al contacto con el agua, en 1 minuto"],1,"El inflado es AUTOMÁTICO y demora aproximadamente 5 SEGUNDOS: al liberar el dispositivo, este cae y abre la válvula de inflado, llenando los dos tubos de flotación mediante sus dos sistemas de inflado. Si no se infla automáticamente, se infla MANUALMENTE tirando la manilla roja PULL TO INFLATE. Para mantener la presión durante la supervivencia se usa el INFLADOR manual del kit, que sirve para los tubos y para el mástil.","Cuestionario oficial · desarrollo 11");
+Q("su3","¿En qué consiste el chequeo prevuelo de la balsa adicional?",["Inflarla parcialmente para verificar que no tenga fugas","Verificar que esté a bordo en su ubicación asignada, asegurada, accesible y con su kit, informando toda discrepancia al Capitán","Contar los elementos del kit uno por uno y firmar el acta","Solo verificar que el sello del contenedor no esté roto"],1,"Se verifica que esté A BORDO en su ubicación asignada (overhead bin designado según el plano de equipos de emergencia), ASEGURADA y ACCESIBLE, con su contenedor o funda completo e íntegro junto a su kit de supervivencia. Como todo equipo de emergencia, el chequeo busca asegurar CANTIDAD, UBICACIÓN Y OPERATIVIDAD, y cualquier discrepancia se informa al Capitán, quien determina las acciones a seguir.","Cuestionario oficial · desarrollo 12");
+Q("su4","Sobre el kit de supervivencia, ¿qué es correcto respecto de su contenido?",["Es idéntico en todos los aviones por norma OACI","VARÍA SEGÚN EL FABRICANTE y se organiza según las prioridades: localización, protección, agua y alimento","Contiene solo elementos de localización","Lo define cada tripulante antes del vuelo"],1,"El kit es el equipo asociado a las balsas y su contenido VARÍA SEGÚN EL FABRICANTE. Se organiza según las prioridades: LOCALIZACIÓN (toldo, barras fosforescentes, bengalas, espejo de señales, linternas, marcador de agua y silbato); PROTECCIÓN (balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manual de la balsa, manual de supervivencia y parches tipo mariposa); AGUA para primeros auxilios y ALIMENTO (caramelos). Su finalidad es cubrir los medios de sustento de vida y permitir señales pirotécnicas de auxilio.","Cuestionario oficial · desarrollo 13");
+Q("su4","¿Qué proporción de las raciones de emergencia se consume y qué se hace con el resto?",["Se consume la mitad y se guarda la mitad","Se consumen 2/3 y se guarda el resto","Se consume todo el primer día para no perderlo","Se consume 1/3 y se guardan 2/3"],1,"Se raciona según la cantidad de personas y la situación, consumiendo 2/3 de las raciones de emergencia y guardando el resto, porque no se sabe cuánto tardará el rescate. Además, a MENOR GASTO DE ENERGÍA menos alimento se necesita, así que conviene reducir el trabajo físico. Si hay agua suficiente se hacen dos comidas diarias, y si hay alimentos naturales disponibles se priorizan, reservando las raciones del kit. Se puede vivir semanas sin alimento, pero no sin agua.","Cuestionario oficial · desarrollo 14");
+Q("su4","¿Por qué las raciones alimentarias se ingieren recién después de las 24 horas?",["Porque el estómago necesita ese tiempo para recuperarse del impacto","Porque la digestión consume agua, que es el recurso realmente crítico","Porque las raciones deben hidratarse durante 24 horas","Porque así se espera a que llegue el rescate sin gastarlas"],1,"La razón es fisiológica: el organismo tolera bien ese período sin alimento y, sobre todo, la DIGESTIÓN CONSUME AGUA, que es el recurso crítico (8 a 10 días de supervivencia sin ella frente a semanas sin comida). Por eso las raciones son caramelos: aportan alta concentración de glucosa y energía SIN NECESIDAD DE AGUA. Comer antes gastaría reservas hídricas sin beneficio real.","Cuestionario oficial · desarrollo 15");
+Q("su4","¿Para qué sirve el parche tipo mariposa del kit de supervivencia?",["Para sellar el toldo cuando se rompe una varilla","Para reparar perforaciones: dos placas metálicas unidas por un alambre que se ajusta con una mariposa","Para unir dos balsas entre sí","Para fijar el espejo de señales al mástil"],1,"El parche tipo mariposa consta de dos placas metálicas —una con borde de goma— unidas por un alambre que se ajusta con una mariposa, y sirve para reparar perforaciones de la balsa. Es un elemento de PROTECCIÓN, junto con el balde de achique, el cortaplumas plegable, la esponja absorbente, el inflador manual, el kit farmacéutico (con las pastillas de mareo), el manual de la balsa y el manual de supervivencia.","Cuestionario oficial · desarrollo 16");
+Q("su3","¿Cuáles son las acciones inmediatas en una supervivencia en el MAR?",["Cortar la mooring line, activar el ELT, tirar el ancla, contarse y atar las balsas entre sí","Remar hacia la costa más cercana antes de que anochezca","Mantener la balsa amarrada al avión hasta que se hunda","Repartir el agua y esperar sin moverse"],0,"Terminado el abordaje, la TC asigna las tareas y se ejecutan en forma SIMULTÁNEA: cortar la MOORING LINE con el cuchillo y alejarse del avión; ACTIVAR EL ELT; TIRAR EL ANCLA; presentación de la TAC y CONTEO de sobrevivientes; solicitar médico; rescatar el equipo y repartir tabletas de mareo; atender heridos y rescatar a los que están a la deriva con la heaving line; tranquilizar; ATAR LAS BALSAS ENTRE SÍ; mantener la higiene y la balsa seca y estable; y llevar la bitácora.","Cuestionario oficial · desarrollo 17");
+Q("su3","Durante un ditching, ¿qué particularidad tiene la apertura de la puerta respecto de una evacuación en tierra?",["Se abre solo la mitad de la puerta","Se DESCONECTA el tobogán (FOR DITCHING ONLY) antes de verificar la salida","Se abre sin encender las luces de emergencia","Se abre únicamente desde el exterior"],1,"En amaraje, tras chequear las condiciones exteriores y detectar agua, el TAC se pone el chaleco ordenando «PÓNGASE EL CHALECO SALVAVIDAS / PUT LIFE VEST ON». Iniciada la evacuación: encender luces de emergencia, resetear el EVAC CMD, abrir la puerta, DESCONECTAR EL TOBOGÁN (FOR DITCHING ONLY) y verificar salida habilitada. Órdenes: «SUELTEN CINTURONES, DEJEN TODO» y «SALGAN POR ACÁ, INFLEN EL CHALECO SALVAVIDAS». Los chalecos se inflan AL SALIR, nunca dentro de la cabina.","Cuestionario oficial · desarrollo 18");
+Q("su2","¿Cómo se compone el triángulo de fuego y a qué distancia van sus fogatas?",["Tres fogatas separadas entre 15 y 30 metros","Tres fogatas separadas entre 3 y 5 metros","Cuatro fogatas separadas 10 metros","Dos fogatas separadas 50 metros"],0,"El triángulo de fuego es una señal internacional de PEDIDO DE AUXILIO formada por TRES fogatas en triángulo, separadas entre 15 y 30 METROS. La altura de cada hoguera no debe superar el tamaño de una persona, para armarla cómodamente. Se usa HUMO DE DÍA y FUEGO DE NOCHE, controlando el contraste: humo NEGRO quemando restos de la aeronave y humo BLANCO agregando hojas verdes, musgo o rociando agua sobre el fuego.","Cuestionario oficial · desarrollo 19");
+Q("su3","Sobre el uso del chaleco salvavidas, ¿qué es correcto?",["Se infla dentro de la cabina para ganar tiempo","Se infla AL SALIR del avión, con la manija roja o soplando por la boquilla","Solo tiene inflado automático; si falla, queda inservible","Se ajusta a la cintura por la espalda"],1,"Se saca de su bolsa sellada, se pasa sobre la cabeza y se ajusta la cinta a la cintura POR DELANTE. Inflado AUTOMÁTICO: manija roja. Inflado ORAL o MANUAL: soplar por la boquilla (1 o 2 según el modelo), que completa o reemplaza al automático. Los adultos lo inflan AL SALIR del avión, nunca dentro. Es amarillo para pasajeros y rojo fosforescente para tripulación, con luz que se activa al contacto con el agua. Para un menor con chaleco de adulto: pasar la cinta entre las piernas; el de infante (menos de 15 kg) se amarra al chaleco del adulto.","Cuestionario oficial · desarrollo 20");
+Q("su2","La señal «↑» construida con medios naturales significa:",["Necesitamos ayuda","Necesitamos ayuda médica","Procedemos en esta dirección","Todo bien, no necesitamos nada"],2,"La flecha «↑» del código internacional OACI tierra/aire significa PROCEDEMOS EN ESTA DIRECCIÓN: indica al rescate el rumbo que tomó el grupo si tuvo que abandonar el lugar. Se construye con medios naturales —piedras, troncos, ramas, tierra o nieve— de más de 3 metros de longitud (idealmente unos 6 m de largo por 4 de ancho), cavando los signos como trincheras y amontonando el material a los costados para aumentar la sombra y el contraste. Ojo: «necesitamos ayuda» es la V y «ayuda médica» es la X.","Cuestionario oficial · desarrollo 21");
+Q("su4","¿Qué contiene el Manual de Supervivencia del kit y para qué sirven sus primeras hojas?",["Está en español y sus primeras hojas traen el índice de la balsa","Está en inglés; al inicio trae hojas en blanco para la BITÁCORA y al final temas religiosos","Contiene solo mapas de rutas oceánicas","Es el mismo manual de la balsa, con instrucciones de reparación"],1,"Contiene información EN INGLÉS sobre supervivencia en los distintos entornos (tierra, mar, desierto, nieve, trópico). En su INICIO trae HOJAS EN BLANCO destinadas a la BITÁCORA, donde se registra el conteo de sobrevivientes y los eventos, algo clave para el rescate y el registro posterior. En su PARTE FINAL contiene temas religiosos, orientados al apoyo anímico. Es distinto del MANUAL DE LA BALSA, que trata su funcionamiento y reparación.","Cuestionario oficial · desarrollo 22");
+Q("su1","¿Qué significa la regla JAG y cómo se aplica?",["Juntar, Aislar y Guardar: separar a los heridos del resto","JUNTE, ACUMULE y GUARDE: recolectar todo lo aprovechable, ordenarlo y racionarlo","Jerarquía, Autoridad y Grupo: la cadena de mando en supervivencia","Justificar, Actuar y Grabar: el registro de la bitácora"],1,"JAG = JUNTE - ACUMULE - GUARDE, la regla para administrar los recursos. JUNTE: recolectar todo lo aprovechable —restos de la aeronave, equipo de emergencia, kit, agua de lluvia y rocío, material combustible—. ACUMULE: reunirlo y ordenarlo en un lugar protegido. GUARDE: administrarlo y racionarlo, porque no se sabe cuánto durará la espera. Nada se descarta: un tobogán es refugio, una lata es espejo de señales y una tela aísla del suelo.","Cuestionario oficial · desarrollo 23");
+Q("su2","Si se hace fuego dentro de un refugio, ¿qué precaución es imprescindible?",["Mantenerlo encendido toda la noche","Dejar SIEMPRE buena ventilación, porque las llamas producen monóxido de carbono","Ubicarlo justo en la entrada para tapar el viento","Rodearlo con nieve para que no se propague"],1,"Al hacer fuego dentro de un refugio hay que dejar SIEMPRE buena ventilación, porque las llamas producen MONÓXIDO DE CARBONO. Otras reglas: no acampar en el lecho seco de ríos; evitar zonas ventosas o de drenaje pobre; aislar del suelo húmedo y dormir sobre plataformas improvisadas; en nieve cavar un pozo, aislar el piso y hacer la entrada OPUESTA al viento; y no entrar a una cueva sin pala y pico. Se evalúa el tipo de protección necesaria, el tiempo de permanencia, la cantidad de ocupantes y heridos, y los recursos y herramientas disponibles.","Cuestionario oficial · desarrollo 24");
+Q("su1","En Chile, ¿de quién depende el servicio de búsqueda y rescate (SAR)?",["De Carabineros de Chile","De la Fuerza Aérea de Chile","De la Dirección General de Aeronáutica Civil directamente","De la propia línea aérea"],1,"En Chile el SAR (Servicio Aéreo de Rescate) depende de la FUERZA AÉREA y trabaja con el servicio de alerta del control de tránsito aéreo. Factores que retrasan el rescate: no haber activado el ELT; alejarse del lugar del accidente (el avión es lo más visible desde el aire); vegetación tupida o terreno que oculte a los sobrevivientes; señales pequeñas o sin contraste; mal tiempo y poca visibilidad; y desconocimiento de la posición exacta. Por eso: activar el ELT, permanecer cerca, hacer señales grandes y mantener el grupo unido y contado.","Cuestionario oficial · desarrollo 25");
+Q("su2","Respecto de las fuentes naturales de agua, ¿qué es correcto?",["El agua de rocío y lluvia se puede beber sin tratar, pero la de plantas no","TODA agua de fuente natural debe purificarse: hervir 3 a 5 minutos o tratar con yodo","El agua de mar se puede beber si se filtra con un paño","La nieve se puede comer directamente porque ya está purificada"],1,"Fuentes naturales: rocío, nieve, lluvia, agua de plantas y de rocas; en el mar, lluvia y rocío recolectados con el toldo y el balde. En el desierto algunos cactus almacenan agua —para distinguirlos, observar el proceder de los pájaros—. TODA agua natural debe PURIFICARSE: hervir 3 a 5 minutos (en altura hasta 15, sumando 1 minuto por cada 300 m), o 3 gotas de yodo por litro (6 si está muy sucia) dejándola reposar media hora, o filtrar y sedimentar. NUNCA agua salada, orina ni líquido lechoso de plantas. La nieve no se come directa: se derrite, y se prefiere el hielo.","Cuestionario oficial · desarrollo 26");
+Q("su2","¿Cuánto debe reposar el agua tratada con tabletas potabilizadoras antes de beberla?",["Se puede beber de inmediato","Media hora","Dos horas","Doce horas"],1,"Las tabletas potabilizadoras están en el KIT DE SUPERVIVENCIA y se usan cuando no es posible hervir el agua: se agregan, se agita hasta que se mezclen bien y se deja REPOSAR MEDIA HORA antes de beber. Con yodo el criterio es 3 GOTAS POR LITRO, o 6 si el agua está muy sucia. Si tiene sedimentos, conviene filtrarla o dejarla sedimentar antes. Nunca se bebe sin purificar: el riesgo de enfermedad agravaría la deshidratación.","Cuestionario oficial · desarrollo 27");
+Q("su4","Sobre el marcador de agua del kit de supervivencia, ¿qué es correcto?",["Es un polvo amarillo verdoso fosforescente, dura unas 3½ horas en mar calmo y es TÓXICO","Es una pintura permanente que se aplica al toldo de la balsa","Es un tinte rojo que dura 24 horas y es inocuo","Es un dispositivo electrónico que emite en 406 MHz"],0,"El marcador de agua es un polvo colorante amarillo verdoso fosforescente soluble en agua, dura unas 3½ horas en mar calmo y es TÓXICO. Es un elemento de LOCALIZACIÓN, junto con el toldo (paletas numeradas que coinciden con el tubo de flotación, velcros, rampa de abordaje, ventanilla y mástil), las barras fosforescentes (12 horas, para demarcar áreas), las bengalas (solo con certeza de rescate cerca), el espejo de señales (alcance ~18,5 km), las linternas y el silbato con cuerda de seguridad.","Cuestionario oficial · desarrollo 28");
+Q("su1","¿Por qué es importante contar y organizar a los sobrevivientes tras una emergencia?",["Solo para efectos del informe posterior de la aerolínea","Para saber si falta alguien, entregar una cifra exacta al rescate, priorizar heridos y mantener la cohesión del grupo","Para determinar cuántas balsas se deben inflar","Para decidir quién asume el liderazgo del grupo"],1,"Tras la evacuación es obligación de la tripulación mantener a los pasajeros JUNTOS y CONTARLOS. Permite saber si falta alguien y organizar su búsqueda a tiempo, entregar una cifra exacta al equipo de rescate, detectar heridos que requieren atención prioritaria, asignar tareas y roles, y mantener la cohesión evitando la dispersión y la baja moral. En el mar se hace apenas se aborda la balsa: la TC se presenta, da instrucciones para contarse y ANOTA EN LA BITÁCORA los sobrevivientes y los eventos.","Cuestionario oficial · desarrollo 29");
+Q("su3","En una emergencia prevista en agua, ¿a qué altura se avisa «PRÓXIMOS AL AMARAJE» y a cuál «BRACE FOR IMPACT»?",["A 5.000 pies y a 1.000 pies","A 2.000 pies y a 500 pies","A 1.000 pies y a 200 pies","A 10.000 pies y a 2.000 pies"],1,"En la emergencia PREVISTA hay tiempo: tras el TESTI del comandante se prepara la cabina (fraseología, instrucción a los ABP, aseguramiento), se avisa «PRÓXIMOS AL AMARAJE» a 2.000 PIES y «BRACE FOR IMPACT» a 500 PIES, con la orden «PROTÉJASE… BRACE, BRACE» a viva voz hasta detenerse. Luego: chequear condiciones exteriores, «PÓNGASE EL CHALECO SALVAVIDAS», abrir la puerta, desconectar el tobogán (FOR DITCHING ONLY), «SUELTEN CINTURONES, DEJEN TODO» y «SALGAN POR ACÁ, INFLEN EL CHALECO SALVAVIDAS, SUBAN A LA BALSA», más «USTED Y USTED, AYUDEN EN LA BALSA». Antes de salir verifica que no quede nadie en su zona.","Cuestionario oficial · desarrollo 30");
 
 
 
@@ -2650,7 +2742,7 @@ function RamoHome(rid){
     <div class="modes"></div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
   const modes=el.querySelector(".modes");
-  [...(CUESTIONARIOS[rid]?[["CUE","📋","Cuestionario oficial",`Las ${CUESTIONARIOS[rid].desarrollo.length} preguntas de desarrollo del cuestionario del curso, con respuesta modelo, más las de alternativas.`,"Lo que viene en la prueba",()=>go(Cuestionario,rid),"cuest"]]:[]),
+  [...(CUESTIONARIOS[rid]?[["CUE","📋","Cuestionario oficial",`Las ${CUESTIONARIOS[rid].desarrollo.length} preguntas de desarrollo del cuestionario del curso, con respuesta modelo. Ensáyalas en voz alta o practicalas en alternativas.`,"Lo que viene en la prueba",()=>go(Cuestionario,rid),"cuest"]]:[]),
    ["RUL","🎡","Ruleta",`Partida de 2 minutos: gira, responde contra el reloj y suma puntos. O modo libre, sin apuro.`,"Competitivo",()=>go(Wheel,rid)],
    ["EST","📚","Estudio por módulo","Recorre un módulo completo a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(ModPick,rid)],
    ["EXM","🎓","Examen","20 preguntas del ramo completo, o examen de un módulo suelto. Con nota y revisión.","Simulacro",()=>go(ExamStart,rid)],
@@ -2734,36 +2826,208 @@ const CUESTIONARIOS={
  ]}
 };
 
+/* ====== ENSAYO DE DESARROLLO: puntos clave que evalúan en cada pregunta ====== */
+const DESARROLLO_PUNTOS={sup:[
+/*1*/["Ejercer un LIDERAZGO POSITIVO: mantener la moral alta y evitar la baja moral","Organizar el grupo y asignar tareas a los sobrevivientes","Velar por la seguridad y dar el correcto uso al equipo de supervivencia","Mantener la cohesión, contar a los sobrevivientes y llevar la bitácora","Control mental, experiencia e ingenio; la determinación de sobrevivir es vital"],
+/*2*/["1) PROTECCIÓN — refugio y abrigo","2) LOCALIZACIÓN — señales, ELT, código tierra/aire","3) AGUA — se sobrevive 8 a 10 días sin ella","4) ALIMENTO — se vive semanas sin comer","El orden importa: el medio ambiente mata antes que el hambre"],
+/*3*/["El follaje tupido impide ver el avión y a los sobrevivientes desde el aire","Buscar un claro CERCANO al avión, sin alejarse de él","El avión es la referencia del rescate y la fuente de recursos","En el trópico el peligro principal son los insectos y las enfermedades que transmiten","Hervir el agua o usar tabletas purificadoras, y cocer los alimentos"],
+/*4*/["Romper el sello para liberar la antena","Retirar la cuerda, desplegar la bolsa plástica y remover el saco de sal","Mezclar la sal con 1 LITRO de agua, té o café","Insertar la parte inferior del ELT: la solución debe cubrir los orificios del costado","Dejarlo en espacio libre y sostenerlo VERTICAL para que no escurra","Emite 48 horas en 121.5, 243 y 406.25 MHz"],
+/*5*/["La PROTECCIÓN es la primera prioridad","Con clima extremo la exposición mata en horas, antes de que llegue el rescate","Un sobreviviente con hipotermia o deshidratación ya no puede hacer señales ni decidir","El refugio también da seguridad psicológica y evita la baja moral","Protegido el grupo, se pasa al señalamiento; en la práctica se asignan tareas en paralelo"],
+/*6*/["El agua del kit es con fines de PRIMEROS AUXILIOS","Viene en botellas o bolsas plásticas, en cantidad variable según el avión","Los adultos sanos NO requieren agua hasta después de las 24 horas","Se raciona según la cantidad de personas y la situación","Conservarla en la boca y enjuagar antes de tragar la primera ración","Del 2° al 6° día, unos 500 cm³ por día y por persona; su cuidado se asigna a dos adultos"],
+/*7*/["Es flexible e impermeable, con borde superior metálico","SACAR el agua que entra a la balsa, para mantenerla seca y estable","RECOLECTAR agua de lluvia y rocío, junto con el toldo","Mantener la balsa seca previene la hipotermia","Es un elemento de PROTECCIÓN del kit"],
+/*8*/["NUNCA beber agua salada, orina ni el líquido lechoso de las plantas","Esperar 24 HORAS antes de la primera ración","500 cm³ por día y por persona del 2° al 6° día","Beber al anochecer y al amanecer, de preferencia antes de dormir","Evitar transpirar; con calor, nuca cubierta y mojada, sin exponerse al sol","Las aves al amanecer/anochecer conducen a las aguadas y los rastros de animales a los abrevaderos"],
+/*9*/["ALEJARSE DEL AVIÓN unos 100 metros, según la dirección del viento","ACTIVAR EL ELT","IMPROVISAR UN REFUGIO","ATENDER A LOS HERIDOS y tranquilizar","Pasado el peligro de fuego: permanecer cerca del área del accidente","Rescatar equipo, soltar los toboganes como refugio y recuperar el kit de supervivencia"],
+/*10*/["Va en aviones con toboganes que operan rutas extendidas sobre agua","Balsa inflable, REVERSIBLE y de color AMARILLO","Dos tubos de flotación y dos sistemas de inflado","Kit de supervivencia y accesorios","Funda o contenedor con manillas para su traslado","Toldo con 8 varillas y mástil central metálico extensible"],
+/*11*/["El inflado es AUTOMÁTICO","Demora aproximadamente 5 SEGUNDOS","El dispositivo cae y abre la válvula, llenando los dos tubos de flotación","Si falla, inflado MANUAL con la manilla roja PULL TO INFLATE","El INFLADOR del kit mantiene la presión de tubos y mástil"],
+/*12*/["Verificar que esté A BORDO en su ubicación asignada (overhead bin del plano de equipos)","Que esté ASEGURADA y ACCESIBLE","Contenedor o funda íntegro, con su kit de supervivencia asociado","El chequeo busca CANTIDAD, UBICACIÓN Y OPERATIVIDAD","Toda discrepancia se informa al Capitán, que determina las acciones"],
+/*13*/["Es el equipo asociado a las balsas y su contenido VARÍA SEGÚN EL FABRICANTE","Se organiza según las prioridades de supervivencia","LOCALIZACIÓN: toldo, barras fosforescentes, bengalas, espejo, linternas, marcador de agua y silbato","PROTECCIÓN: balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manuales y parche mariposa","AGUA para primeros auxilios y ALIMENTO (caramelos)","Finalidad: medios de sustento de vida y señales pirotécnicas de auxilio"],
+/*14*/["No se sabe cuánto tardará el rescate y las raciones son limitadas","Racionar según la cantidad de personas y la situación","Consumir 2/3 de las raciones de emergencia y guardar el resto","A MENOR GASTO DE ENERGÍA, menos alimento se necesita: reducir el trabajo físico","Con agua suficiente, dos comidas diarias","Priorizar los alimentos naturales disponibles y reservar las raciones del kit"],
+/*15*/["DESPUÉS DE LAS 24 HORAS","La DIGESTIÓN CONSUME AGUA, que es el recurso realmente crítico","Se sobrevive 8 a 10 días sin agua, pero semanas sin alimento","Las raciones son caramelos: glucosa y energía SIN necesidad de agua","Comer antes gastaría reservas hídricas sin beneficio real"],
+/*16*/["BALDE DE ACHIQUE: flexible e impermeable con borde metálico","CORTAPLUMAS: plegable, multiuso","ESPONJA: material orgánico absorbente, mantiene secas la balsa y las personas","INFLADOR: manual, mantiene tubos de flotación y mástil","KIT FARMACÉUTICO: incluye las pastillas de mareo","MANUAL DE LA BALSA (funcionamiento y reparación) y MANUAL DE SUPERVIVENCIA","PARCHE TIPO MARIPOSA: dos placas metálicas unidas por un alambre con mariposa, para perforaciones"],
+/*17*/["Cortar la MOORING LINE con el cuchillo y alejarse del avión","ACTIVAR EL ELT","TIRAR EL ANCLA","Presentación de la TAC y CONTEO de sobrevivientes; solicitar médico","Rescatar el equipo y repartir tabletas de mareo","Atender heridos y rescatar a los que están a la deriva con la heaving line","ATAR LAS BALSAS ENTRE SÍ","Mantener la higiene, la balsa seca y estable, y llevar la bitácora"],
+/*18*/["Orden «PROTÉJASE, PROTÉJASE… BRACE, BRACE» hasta que el avión se detenga","Avión detenido y motores apagados: chequear condiciones exteriores","Al detectar agua, ponerse el chaleco y ordenar «PÓNGASE EL CHALECO SALVAVIDAS / PUT LIFE VEST ON»","Encender luces de emergencia, resetear el EVAC CMD y abrir la puerta","DESCONECTAR EL TOBOGÁN (FOR DITCHING ONLY) y verificar salida habilitada","«SUELTEN CINTURONES, DEJEN TODO / RELEASE SEAT BELTS, LEAVE EVERYTHING»","«SALGAN POR ACÁ, INFLEN EL CHALECO SALVAVIDAS / GET OUT THIS WAY, INFLATE LIFE VEST»","Los chalecos se inflan AL SALIR, nunca dentro de la cabina"],
+/*19*/["Es una señal internacional de PEDIDO DE AUXILIO","TRES fogatas dispuestas en triángulo","Separadas entre 15 y 30 METROS una de otra","Altura no mayor al tamaño de una persona, para armarlas cómodamente","HUMO de día y FUEGO de noche","Humo NEGRO quemando restos de la aeronave; humo BLANCO con hojas verdes, musgo o agua"],
+/*20*/["Sacarlo de su bolsa sellada y pasarlo sobre la cabeza","Ajustar la cinta a la cintura por delante","Inflado AUTOMÁTICO: accionar la manija roja","Inflado ORAL o MANUAL: soplar por la boquilla (1 o 2 según el modelo), completa o reemplaza al automático","Los adultos lo inflan AL SALIR del avión, nunca dentro","Amarillo para pasajeros, rojo fosforescente para tripulación, con luz que se activa con el agua","Infante o menor con chaleco de adulto: cinta entre las piernas; el de infante (menos de 15 kg) se amarra al del adulto"],
+/*21*/["Pertenece al código internacional OACI tierra/aire","Significa PROCEDEMOS EN ESTA DIRECCIÓN","Indica al rescate el rumbo que tomó el grupo si abandonó el lugar","Se construye con medios naturales: piedras, troncos, ramas, tierra o nieve","Más de 3 metros de longitud (idealmente unos 6 m de largo por 4 de ancho)","Cavar los signos como trincheras y amontonar el material a los costados para dar sombra y contraste"],
+/*22*/["Contiene información EN INGLÉS sobre supervivencia en los distintos entornos","Al INICIO trae HOJAS EN BLANCO destinadas a la BITÁCORA","En la bitácora se registra el conteo de sobrevivientes y los eventos","En su PARTE FINAL contiene temas religiosos, de apoyo anímico","Es un elemento de protección del kit","Es distinto del MANUAL DE LA BALSA, que trata su funcionamiento y reparación"],
+/*23*/["JAG = JUNTE · ACUMULE · GUARDE","Es la regla para administrar los recursos","JUNTE: recolectar todo lo aprovechable (restos, equipo, agua de lluvia, combustible)","ACUMULE: reunirlo y ordenarlo en un lugar protegido","GUARDE: administrarlo y racionarlo, porque no se sabe cuánto durará la espera","Nada se descarta: un tobogán es refugio, una lata es espejo, una tela aísla del suelo"],
+/*24*/["Qué tipo de protección se necesita: frío, calor, viento o lluvia","Tiempo de permanencia: permanente o transitorio","Cantidad de ocupantes y sobre todo de heridos","Recursos disponibles: equipo, restos de la aeronave y ambiente circundante","Herramientas con que se cuenta","NO acampar en el lecho seco de ríos; evitar zonas ventosas o de drenaje pobre","Aislar del suelo húmedo y dormir sobre plataformas improvisadas","En nieve: cavar un pozo, aislar el piso y hacer la entrada OPUESTA al viento","Si se hace fuego dentro, SIEMPRE ventilación: las llamas producen MONÓXIDO DE CARBONO"],
+/*25*/["El objetivo de la supervivencia es resistir hasta que llegue el rescate","Por eso la LOCALIZACIÓN es la segunda prioridad","En Chile el SAR depende de la Fuerza Aérea, con el servicio de alerta del control de tránsito aéreo","Retrasa: no haber activado el ELT","Retrasa: alejarse del lugar del accidente (el avión es lo más visible desde el aire)","Retrasa: vegetación tupida o terreno que oculte a los sobrevivientes","Retrasa: señales pequeñas o sin contraste, mal tiempo, poca visibilidad y posición desconocida"],
+/*26*/["Fuentes: ROCÍO, NIEVE, LLUVIA, agua contenida en PLANTAS y en ROCAS","En el mar: lluvia y rocío recolectados con el toldo y el balde de achique","En el desierto algunos cactus y plantas almacenan agua: observar el proceder de los pájaros","TODA agua natural debe PURIFICARSE antes de beber","Hervir 3 a 5 minutos; en altura hasta 15, sumando 1 minuto por cada 300 m","Yodo: 3 gotas por litro, 6 si está muy sucia, media hora de reposo; o filtrar y sedimentar","NUNCA agua salada, orina ni líquido lechoso de las plantas","La nieve no se come directa: derretirla, y preferir hielo"],
+/*27*/["Se encuentran en el KIT DE SUPERVIVENCIA, junto a las desalinizadoras","Sirven cuando no es posible hervir el agua","Agregar la tableta y agitar hasta que se mezcle bien","Dejar REPOSAR MEDIA HORA antes de beber","Alternativa: 3 gotas de yodo por litro, 6 si el agua está muy sucia","Si tiene sedimentos, filtrarla o dejarla sedimentar antes","Nunca beber sin purificar: el riesgo de enfermedad agrava la deshidratación"],
+/*28*/["TOLDO: paletas numeradas que coinciden con el tubo de flotación, velcros, rampa de abordaje, ventanilla y mástil","BARRAS FOSFORESCENTES: tubos plásticos de 12 horas, para demarcar áreas","BENGALAS: pirotécnicas, solo con CERTEZA de que el rescate está cerca","ESPEJO DE SEÑALES: de día con sol, con bruma e incluso de noche con luna llena; alcance ~18,5 km","LINTERNAS","MARCADOR DE AGUA: polvo amarillo verdoso fosforescente, ~3½ horas en mar calmo, es TÓXICO","SILBATO con cuerda de seguridad, para llamar la atención"],
+/*29*/["Es obligación de la tripulación tras la evacuación: mantenerlos JUNTOS y CONTARLOS","Permite saber si falta alguien y organizar su búsqueda a tiempo","Entregar una cifra exacta al equipo de rescate","Detectar heridos que necesitan atención prioritaria","Asignar tareas y roles: kit, señales, refugio, cuidado del agua","Mantener la cohesión, evitando la dispersión y la baja moral","En el mar se hace al abordar la balsa: presentación, conteo y anotación en la BITÁCORA"],
+/*30*/["En la emergencia PREVISTA hay tiempo: TESTI, preparación de cabina e instrucción a los ABP","Aviso «PRÓXIMOS AL AMARAJE» a 2.000 pies y «BRACE FOR IMPACT» a 500 pies","«PROTÉJASE… BRACE, BRACE» a viva voz hasta que se detenga","Detenido: chequear condiciones exteriores y «PÓNGASE EL CHALECO SALVAVIDAS / PUT LIFE VEST ON»","Abrir la puerta, DESCONECTAR el tobogán (FOR DITCHING ONLY) y verificar salida habilitada","«SUELTEN CINTURONES, DEJEN TODO / RELEASE SEAT BELTS, LEAVE EVERYTHING»","«SALGAN POR ACÁ, INFLEN EL CHALECO SALVAVIDAS, SUBAN A LA BALSA»","«USTED Y USTED, AYUDEN EN LA BALSA» a los dos primeros","Verificar que no quede nadie en su zona antes de salir","Ya en la balsa, dirige las acciones inmediatas y asume el liderazgo"]
+]};
+
+function devScores(rid){S.dev=S.dev||{};return S.dev[rid]=S.dev[rid]||{};}
+function devFlojas(rid){
+  const sc=devScores(rid), n=CUESTIONARIOS[rid].desarrollo.length, out=[];
+  for(let i=0;i<n;i++)if(sc[i]===undefined||sc[i]<70)out.push(i);
+  return out;
+}
+
+/* ---------- pantalla de inicio del ensayo ---------- */
+function EnsayoDev(rid){
+  const c=CUESTIONARIOS[rid], N=c.desarrollo.length;
+  const sc=devScores(rid), hechas=Object.keys(sc).length;
+  const flojas=devFlojas(rid);
+  const prom=hechas?Math.round(Object.values(sc).reduce((a,b)=>a+b,0)/hechas):0;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Cuestionario</button>
+    <div class="eyebrow">${esc(c.fuente)}</div>
+    <h2>🎯 Ensayo de desarrollo</h2>
+    <p class="sub">Así se practica una pregunta de desarrollo: te sale la pregunta sola, la respondes <b>en voz alta como en la prueba</b>, y recién ahí aparecen los <b>puntos clave</b> que evalúan. Marcas los que dijiste y la app te dice qué se te quedó en el tintero — con la explicación completa al lado.</p>
+    <div class="stats-strip" style="margin-top:14px">
+      <div class="stat"><b>${hechas}/${N}</b><span>Ensayadas</span></div>
+      <div class="stat"><b>${prom}%</b><span>Promedio</span></div>
+      <div class="stat"><b>${flojas.length}</b><span>Por afirmar</span></div>
+    </div>
+    <div class="modes" style="margin-top:16px"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Cuestionario,rid));
+  const modes=el.querySelector(".modes");
+  [["🎯","Ronda corta","8 preguntas al azar. Ideal para una pasada rápida antes de la prueba.","8 preguntas",()=>lanzarEnsayo(rid,shuffle(rangoN(N)).slice(0,8))],
+   ["📋","Ensayo completo",`Las ${N} preguntas del cuestionario, en orden, como si te las tomaran todas.`,`${N} preguntas`,()=>lanzarEnsayo(rid,rangoN(N))],
+   ["🩹","Las que me faltan",flojas.length?`${flojas.length} pregunta${flojas.length===1?"":"s"} que aún no dominas o no has ensayado.`:"Ya tienes todas afirmadas. ¡Impecable!",`${flojas.length} pendientes`,()=>{
+      if(!flojas.length){toast("No te queda ninguna floja 💪");return;}
+      lanzarEnsayo(rid,shuffle(flojas));
+    }]
+  ].forEach(([ic,t,d,tag,fn])=>{
+    const b=document.createElement("button");b.className="pass";
+    b.innerHTML=`<span class="pass-main"><h3>${ic} ${t}</h3><p>${esc(d)}</p><span class="tagline">${tag}</span></span>
+      <span class="pass-stub"><span class="big">${ic}</span><span>ENS</span><span>${rid.toUpperCase()}</span></span>`;
+    b.addEventListener("click",fn);modes.appendChild(b);
+  });
+  view.appendChild(el);
+}
+function rangoN(n){const a=[];for(let i=0;i<n;i++)a.push(i);return a;}
+function lanzarEnsayo(rid,idxs){ensayoPaso(rid,idxs,0,[]);}
+
+/* ---------- una pregunta del ensayo ---------- */
+function ensayoPaso(rid,idxs,n,res){
+  if(n>=idxs.length){go(EnsayoDone,{rid,idxs,res});return;}
+  const i=idxs[n], d=CUESTIONARIOS[rid].desarrollo[i];
+  const preg=d[0], modelo=d[1], pts=DESARROLLO_PUNTOS[rid][i];
+  view.innerHTML="";window.scrollTo({top:0});
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Salir del ensayo</button>
+    <div class="ens-head">
+      <div class="eyebrow">Ensayo · ${n+1} de ${idxs.length}</div>
+      <div class="ens-bar"><i style="width:${Math.round(n/idxs.length*100)}%"></i></div>
+    </div>
+    <div class="ens-q"><span class="cq-n">${i+1}</span><p>${esc(preg)}</p></div>
+    <div class="ens-f1">
+      <p class="sub">Respóndela en voz alta, completa, como si te la estuvieran tomando. Si quieres dejarla escrita para compararla, escríbela acá.</p>
+      <textarea class="ens-ta" rows="4" placeholder="Opcional · tu respuesta"></textarea>
+      <button class="ens-go">Ya la respondí · ver los puntos clave →</button>
+    </div>
+    <div class="ens-f2" hidden>
+      <p class="sub">Marca los puntos que <b>sí</b> dijiste. Los que dejes sin marcar son justo los que tienes que reforzar.</p>
+      <div class="ens-pts"></div>
+      <div class="ens-mine" hidden><div class="eyebrow">Lo que escribiste</div><p></p></div>
+      <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(modelo)}</p></div>
+      <button class="ens-next">Siguiente →</button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Cuestionario,rid));
+  const f1=el.querySelector(".ens-f1"), f2=el.querySelector(".ens-f2"),
+        ta=el.querySelector(".ens-ta"), cont=el.querySelector(".ens-pts");
+  const marcados=new Set();
+  pts.forEach((p,k)=>{
+    const b=document.createElement("button");b.className="ens-pt";b.type="button";
+    b.innerHTML=`<span class="ens-box">✓</span><span>${esc(p)}</span>`;
+    b.addEventListener("click",()=>{
+      if(marcados.has(k)){marcados.delete(k);b.classList.remove("on");}
+      else{marcados.add(k);b.classList.add("on");}
+      el.querySelector(".ens-next").textContent=
+        `Siguiente → (${marcados.size}/${pts.length})`;
+    });
+    cont.appendChild(b);
+  });
+  el.querySelector(".ens-go").addEventListener("click",()=>{
+    const txt=(ta.value||"").trim();
+    if(txt){const m=el.querySelector(".ens-mine");m.hidden=false;m.querySelector("p").textContent=txt;}
+    f1.hidden=true;f2.hidden=false;window.scrollTo({top:0});
+  });
+  el.querySelector(".ens-next").addEventListener("click",()=>{
+    const pct=Math.round(marcados.size/pts.length*100);
+    const sc=devScores(rid);
+    sc[i]=Math.max(sc[i]||0,pct);save();
+    res.push({i,pct,total:pts.length,dichos:marcados.size});
+    ensayoPaso(rid,idxs,n+1,res);
+  });
+  view.appendChild(el);
+}
+
+/* ---------- resumen del ensayo ---------- */
+function EnsayoDone(r){
+  const c=CUESTIONARIOS[r.rid];
+  const prom=Math.round(r.res.reduce((a,b)=>a+b.pct,0)/r.res.length);
+  const nice=prom>=75;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`
+    <div class="result-hero">
+      <div class="eyebrow">Ensayo de desarrollo</div>
+      <div class="score">${prom}%</div>
+      <p class="sub">${nice
+        ?"Muy bien: estás diciendo la mayoría de los puntos que evalúan. Repasa los que quedaron abajo y quedas lista."
+        :"Vas encaminada. Mira abajo cuáles se te escaparon y vuelve a ensayarlas: la idea es decirlas completas, no reconocerlas."}</p>
+      <span class="stamp ${nice?"ok":"bad"}">${nice?"Respuestas sólidas":"Falta afirmar"}</span>
+    </div>
+    <div class="ens-res"></div>
+    <div class="flash-nav">
+      <button id="again">Repetir ensayo</button>
+      <button class="primary" id="menu">Volver al cuestionario</button>
+    </div>`;
+  const lista=el.querySelector(".ens-res");
+  r.res.slice().sort((a,b)=>a.pct-b.pct).forEach(x=>{
+    const nivel=x.pct>=75?"ok":x.pct>=40?"mid":"bad";
+    const row=document.createElement("button");row.className="ens-row "+nivel;
+    row.innerHTML=`<span class="cq-n">${x.i+1}</span>
+      <span class="ens-rt">${esc(c.desarrollo[x.i][0])}</span>
+      <span class="ens-pct">${x.dichos}/${x.total}</span>`;
+    row.addEventListener("click",()=>lanzarEnsayo(r.rid,[x.i]));
+    lista.appendChild(row);
+  });
+  el.querySelector("#again").addEventListener("click",()=>lanzarEnsayo(r.rid,r.idxs));
+  el.querySelector("#menu").addEventListener("click",()=>go(Cuestionario,r.rid));
+  view.appendChild(el);
+  if(nice)confetti();
+}
+
 /* ---------- vista del cuestionario ---------- */
 function Cuestionario(rid){
   const c=CUESTIONARIOS[rid], r=RAMO_BY_ID[rid];
   S.cuest=S.cuest||{};S.cuest[rid]=S.cuest[rid]||{};
   const vis=S.cuest[rid];
-  const trivia=qsOf(rid).filter(q=>/Cuestionario/i.test(q.s));
+  const trivia=qsOf(rid).filter(q=>/Cuestionario oficial · pregunta/.test(q.s));
+  const deriv=qsOf(rid).filter(q=>/Cuestionario oficial · desarrollo/.test(q.s));
+  const alts=trivia.concat(deriv);
   const el=document.createElement("div");el.className="screen";
   const repasadas=Object.keys(vis).length;
   el.innerHTML=`<button class="backbtn">← ${esc(r.n)}</button>
     <div class="eyebrow">${esc(c.fuente)}</div>
     <h2>📋 ${esc(c.n)}</h2>
-    <p class="sub">Las <b>${c.desarrollo.length} preguntas de desarrollo</b> del cuestionario, con una respuesta modelo armada desde tu material. Lee la pregunta, respóndela mentalmente y recién ahí ábrela para comparar.</p>
+    <p class="sub">El cuestionario completo, con una respuesta modelo armada desde tu material. Para practicarlo tienes dos caminos: el <b>ensayo de desarrollo</b>, donde respondes en voz alta y compruebas si dijiste los puntos que evalúan, y las <b>alternativas</b>, que son las mismas ${c.desarrollo.length} preguntas más las ${trivia.length} de trivia, cada una con su explicación.</p>
     <div class="stats-strip" style="margin-top:14px">
       <div class="stat"><b id="cRep">${repasadas}</b><span>Repasadas</span></div>
       <div class="stat"><b>${c.desarrollo.length}</b><span>De desarrollo</span></div>
-      <div class="stat"><b>${trivia.length}</b><span>De alternativas</span></div>
+      <div class="stat"><b>${alts.length}</b><span>De alternativas</span></div>
     </div>
     <div class="flash-nav" style="margin-top:14px">
-      <button id="reset">Marcar todas sin repasar</button>
-      <button class="primary" id="quiz">Practicar las de alternativas →</button>
+      <button id="alts">Practicar en alternativas</button>
+      <button class="primary" id="ensayo">🎯 Ensayo de desarrollo</button>
     </div>
+    <div class="cuest-sep">Las ${c.desarrollo.length} preguntas de desarrollo, con su respuesta completa</div>
     <div class="cuest-list"></div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(RamoHome,rid));
-  el.querySelector("#quiz").addEventListener("click",()=>{
-    if(!trivia.length){toast("Aún no hay preguntas de alternativas");return;}
-    runSeq(shuffle(trivia),"cuest",rid,null);
+  el.querySelector("#ensayo").addEventListener("click",()=>go(EnsayoDev,rid));
+  el.querySelector("#alts").addEventListener("click",()=>{
+    if(!alts.length){toast("Aún no hay preguntas de alternativas");return;}
+    runSeq(shuffle(alts),"cuest",rid,null);
   });
-  el.querySelector("#reset").addEventListener("click",()=>{
-    S.cuest[rid]={};save();go(Cuestionario,rid);
-  });
+  const btnReset=document.createElement("button");
+  btnReset.className="cuest-reset";btnReset.textContent="Marcar todas sin repasar";
+  btnReset.addEventListener("click",()=>{S.cuest[rid]={};save();go(Cuestionario,rid);});
   const lista=el.querySelector(".cuest-list"), cRep=el.querySelector("#cRep");
   c.desarrollo.forEach(([p,resp],i)=>{
     const b=document.createElement("div");b.className="cuest-item"+(vis[i]?" hecha":"");
@@ -2779,6 +3043,7 @@ function Cuestionario(rid){
     });
     lista.appendChild(b);
   });
+  el.appendChild(btnReset);
   view.appendChild(el);
 }
 
