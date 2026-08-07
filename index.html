@@ -586,6 +586,71 @@ footer .heart{color:var(--accent)}
 mark{background:var(--accent-soft);color:var(--accent);font-weight:700;padding:0 2px;border-radius:3px}
 .search-empty{text-align:center;color:var(--muted);font-size:14px;padding:26px 10px}
 
+
+/* ============ alfabeto aeronáutico ============ */
+.alfa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:14px}
+.alfa-cell{
+  display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;font:inherit;color:inherit;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:10px 6px;
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:var(--shadow);
+  transition:transform .14s ease,border-color .14s ease;
+}
+.alfa-cell:hover{transform:translateY(-2px);border-color:var(--accent)}
+.alfa-cell.sonando{border-color:var(--accent);background:var(--accent-soft)}
+.alfa-cell.flojo{border-color:var(--bad)}
+.alfa-cell .ac-l{font-size:22px;font-weight:800;line-height:1.1;color:var(--accent)}
+.alfa-cell .ac-p{font-size:13.5px;font-weight:650}
+.alfa-cell .ac-f{font-family:ui-monospace,Consolas,monospace;font-size:10px;color:var(--muted);letter-spacing:.03em}
+
+.alfa-zona,.spell-zona{text-align:center}
+.alfa-preg{font-size:14px;color:var(--muted);margin-bottom:6px}
+.alfa-big{
+  font-size:clamp(56px,17vw,84px);font-weight:800;line-height:1.05;letter-spacing:-.02em;
+  color:var(--accent);margin:4px 0 10px;
+}
+.alfa-oir{
+  background:var(--inner);border:1.5px solid var(--glass-border);border-radius:99px;
+  padding:8px 18px;font:600 13.5px system-ui,sans-serif;color:var(--ink);cursor:pointer;margin-bottom:6px;
+}
+.alfa-opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.alfa-opts.chips{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+.alfa-op{
+  background:var(--inner);border:1.5px solid var(--line);border-radius:12px;padding:14px 10px;
+  font:650 15.5px system-ui,sans-serif;color:var(--ink);cursor:pointer;
+  transition:border-color .12s ease,background .12s ease;
+}
+.alfa-op:hover:not(:disabled){border-color:var(--accent)}
+.alfa-op:disabled{cursor:default}
+.alfa-op.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.alfa-op.no{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.alfa-op.dim{opacity:.45}
+.alfa-op.usado{opacity:.3}
+.chip-op{padding:10px 8px;font-size:14px}
+.alfa-after{margin-top:14px}
+.alfa-after .verdict{justify-content:center}
+.alfa-undo{
+  display:block;margin:12px auto 0;background:none;border:none;color:var(--muted);
+  font:13px system-ui,sans-serif;text-decoration:underline;cursor:pointer;
+}
+
+.spell-sigla{
+  font-family:ui-monospace,Consolas,monospace;font-size:clamp(34px,10vw,46px);font-weight:800;
+  letter-spacing:.14em;color:var(--accent);margin:2px 0 2px;
+}
+.spell-desc{font-size:13px;color:var(--muted);margin-bottom:12px}
+.spell-slots{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:6px}
+.spell-slot{
+  min-width:76px;padding:9px 11px;border-radius:10px;font:650 13.5px system-ui,sans-serif;
+  background:var(--inner);border:1.5px dashed var(--line);color:var(--muted);
+}
+.spell-slot i{font-style:normal;font-family:ui-monospace,Consolas,monospace;font-weight:800;opacity:.5}
+.spell-slot.lleno{border-style:solid;border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+
+.timer-bar{height:5px;border-radius:99px;background:var(--inner);border:1px solid var(--line);
+  overflow:hidden;margin-bottom:12px}
+.timer-bar i{display:block;height:100%;width:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1s linear}
+
 /* ============ ajuste móvil: mismo look, menos costo de GPU ============ */
 @media (max-width: 520px){
   .board,.q-card,.result-hero{backdrop-filter:blur(9px) saturate(1.15);-webkit-backdrop-filter:blur(9px) saturate(1.15)}
@@ -2333,7 +2398,8 @@ function Home(){
     grid.appendChild(b);
   });
   const modes=el.querySelector(".modes");
-  [["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar)],
+  [["ABC","📻","Alfabeto aeronáutico","Alfa, Bravo, Charlie… con audio, deletreo de siglas reales y contrarreloj.","Entrenador",()=>go(Alfabeto)],
+   ["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar)],
    ["PSP","🛂","Mi pasaporte",`Progreso de los ${RAMOS.length} ramos, insignias, historial y respaldo.`,"Progreso",()=>go(Passport)],
    ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones fase por fase e informe final.","Simulador",()=>go(SimIntro)],
    ["♥","💌","Carga especial","Hay una encomienda registrada a tu nombre en la bodega. Se abre con un código de 8 dígitos.","Solo para Pía",()=>go(Secret)]
@@ -2823,14 +2889,14 @@ function Passport(){
     try{
       const S2=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^OYR\d\./,"")))));
       if(!S2||typeof S2!=="object"||!S2.stats)throw 0;
-      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{}},S2);
+      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0}},S2);
       if(Array.isArray(S.exams))S.exams={oyr:S.exams};
       save();toast("Progreso restaurado ✔");go(Passport);
     }catch(e){toast("Ese código no es válido");}
   });
   el.querySelector("#reset").addEventListener("click",()=>{
     if(confirm("¿Segura que quieres borrar todo el progreso? Esto no se puede deshacer.")){
-      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{}};save();
+      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0}};save();
       session={streak:0,points:0};go(Passport);
     }
   });
@@ -3019,6 +3085,321 @@ function Buscar(){
   vacio();
   view.appendChild(el);
   input.focus();
+}
+
+
+/* ================= ALFABETO AERONÁUTICO (OACI) ================= */
+const ALFA=[
+ ["A","Alfa","AL-fa"],["B","Bravo","BRA-vo"],["C","Charlie","CHAR-li"],["D","Delta","DEL-ta"],
+ ["E","Echo","E-co"],["F","Foxtrot","FOX-trot"],["G","Golf","GOLF"],["H","Hotel","ho-TEL"],
+ ["I","India","IN-dia"],["J","Juliett","YU-liet"],["K","Kilo","KI-lo"],["L","Lima","LI-ma"],
+ ["M","Mike","MAIK"],["N","November","no-VEM-ber"],["O","Oscar","OS-car"],["P","Papa","pa-PÁ"],
+ ["Q","Quebec","que-BEC"],["R","Romeo","RO-mio"],["S","Sierra","si-E-rra"],["T","Tango","TAN-go"],
+ ["U","Uniform","IU-ni-form"],["V","Victor","VIC-tor"],["W","Whiskey","UIS-ki"],["X","X-ray","EX-rei"],
+ ["Y","Yankee","IAN-ki"],["Z","Zulu","ZU-lu"]
+];
+const ALFA_NUM=[
+ ["0","Cero","ZE-ro"],["1","Uno","UAN"],["2","Dos","TU"],["3","Tres","TRI"],["4","Cuatro","FÓ-uer"],
+ ["5","Cinco","FAIF"],["6","Seis","SIX"],["7","Siete","SE-ven"],["8","Ocho","EIT"],["9","Nueve","NAI-ner"]
+];
+/* siglas reales del curso y de la operación en Chile */
+const SIGLAS=[
+ ["SCL","Santiago · Arturo Merino Benítez"],["CCP","Concepción · Carriel Sur"],
+ ["PMC","Puerto Montt · El Tepual"],["PUQ","Punta Arenas · Carlos Ibáñez"],
+ ["ANF","Antofagasta · Cerro Moreno"],["IQQ","Iquique · Diego Aracena"],
+ ["ARI","Arica · Chacalluta"],["CJC","Calama · El Loa"],["ZCO","Temuco · La Araucanía"],
+ ["ZAL","Valdivia · Pichoy"],["LSC","La Serena · La Florida"],["BBA","Balmaceda"],
+ ["EZE","Buenos Aires · Ministro Pistarini"],["LIM","Lima · Jorge Chávez"],
+ ["MDZ","Mendoza · El Plumerillo"],["MVD","Montevideo · Carrasco"],["MIA","Miami"],
+ ["PBE","Equipo de protección ante humo"],["ELT","Radiobaliza de emergencia"],
+ ["DEA","Desfibrilador externo automático"],["FAK","Botiquín de primeros auxilios"],
+ ["CLB","Cabin Log Book"],["UMR","Ubicación de Mínimo Riesgo"],["PSV","Período de Servicio de Vuelo"],
+ ["EGA","Emergencias generales"],["TAC","Tripulante Auxiliar de Cabina"],
+ ["INAD","Pasajero inadmisible"],["DEPA","Deportado con escolta"],["WCHC","Pax que no camina"],
+ ["NOTOC","Notificación de cargas al capitán"],["MEDIF","Certificado médico de vuelo"],
+ ["TESTI","Información esencial de la emergencia"],["CCBAW","Matrícula chilena"],["CCAZG","Matrícula chilena"]
+];
+const ALFA_MAP={};ALFA.concat(ALFA_NUM).forEach(([l,p,f])=>ALFA_MAP[l]={p,f});
+
+/* ---------- audio: voz del navegador, sin librerías ---------- */
+let vozAlfa=null, vozLista=false;
+function cargarVoz(){
+  if(vozLista||typeof speechSynthesis==="undefined")return;
+  const vs=speechSynthesis.getVoices();
+  if(!vs.length)return;
+  vozAlfa=vs.find(v=>/en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;
+  vozLista=true;
+}
+if(typeof speechSynthesis!=="undefined"){
+  cargarVoz();
+  speechSynthesis.addEventListener("voiceschanged",()=>{vozLista=false;cargarVoz();});
+}
+function decir(txt){
+  if(typeof speechSynthesis==="undefined")return false;
+  try{
+    cargarVoz();
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    if(vozAlfa){u.voice=vozAlfa;u.lang=vozAlfa.lang;}else{u.lang="en-US";}
+    u.rate=.85;
+    speechSynthesis.speak(u);
+    return true;
+  }catch(e){return false;}
+}
+
+function alfaStats(){return S.alfa||(S.alfa={best:0,fallos:{},vistas:0});}
+
+/* ================= PANTALLA PRINCIPAL ================= */
+function Alfabeto(){
+  const st=alfaStats();
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Menú</button>
+    <div class="eyebrow">Alfabeto aeronáutico · OACI 1944</div>
+    <h2>📻 Alfa, Bravo, Charlie…</h2>
+    <p class="sub">El alfabeto radiofónico existe para que no se confundan letras parecidas en la radio. Toca cualquier letra para escucharla.</p>
+    <div class="stats-strip" style="margin-top:14px">
+      <div class="stat"><b>${st.best}</b><span>Mejor racha</span></div>
+      <div class="stat"><b>${Object.keys(st.fallos).length}</b><span>Por afianzar</span></div>
+    </div>
+    <div class="alfa-grid"></div>
+    <h2 style="margin-top:22px">Números</h2>
+    <p class="sub">En radio se pronuncian distinto para no confundirlos.</p>
+    <div class="alfa-grid num"></div>
+    <h2 style="margin-top:22px">Entrena</h2>
+    <div class="modes"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
+  const grid=el.querySelector(".alfa-grid"), gnum=el.querySelectorAll(".alfa-grid")[1];
+  const pinta=(arr,cont)=>arr.forEach(([l,p,f])=>{
+    const b=document.createElement("button");b.className="alfa-cell";
+    if(st.fallos[l])b.classList.add("flojo");
+    b.innerHTML=`<span class="ac-l">${l}</span><span class="ac-p">${p}</span><span class="ac-f">${f}</span>`;
+    b.addEventListener("click",()=>{decir(p);b.classList.add("sonando");setTimeout(()=>b.classList.remove("sonando"),450);});
+    cont.appendChild(b);
+  });
+  pinta(ALFA,grid); pinta(ALFA_NUM,gnum);
+  const modes=el.querySelector(".modes");
+  [["PRA","⚡","Práctica","Te muestro una letra y eliges su palabra — o al revés. Con racha y repetición de las que te cuestan.","Ida y vuelta",()=>go(AlfaPractica)],
+   ["DEL","🔤","Deletreo","Deletrea siglas reales del curso: SCL, NOTOC, WCHC, una matrícula. Como en la radio de verdad.","Lo que usarás",()=>go(AlfaDeletreo)],
+   ["REL","⏱","Contrarreloj","60 segundos. ¿Cuántas letras aciertas seguidas antes de que suene la campana?","Récord personal",()=>go(AlfaReloj)]
+  ].forEach(([code,icon,t,d,tag,fn])=>{
+    const b=document.createElement("button");b.className="pass";
+    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
+      <span class="pass-stub"><span class="big">${icon}</span><span>${code}</span><span>OACI</span></span>`;
+    b.addEventListener("click",fn);modes.appendChild(b);
+  });
+  view.appendChild(el);
+}
+
+/* ================= PRÁCTICA ================= */
+function AlfaPractica(){
+  const st=alfaStats();
+  let racha=0, aciertos=0, total=0;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Alfabeto</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">⚡ Práctica</span>
+      <span class="q-count" id="rr">RACHA 0</span>
+    </div>
+    <div class="q-card"><div class="alfa-zona"></div></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Alfabeto));
+  const zona=el.querySelector(".alfa-zona"), rr=el.querySelector("#rr");
+  const pool=ALFA.concat(ALFA_NUM);
+  function ronda(){
+    /* pondera: las falladas salen más */
+    let tot=0;const w=pool.map(([l])=>{const x=1+(st.fallos[l]||0)*2.5;tot+=x;return x;});
+    let r=Math.random()*tot, idx=0;
+    for(let i=0;i<pool.length;i++){r-=w[i];if(r<=0){idx=i;break;}}
+    const [l,p]=pool[idx];
+    const inverso=Math.random()<.45;
+    const otras=shuffle(pool.filter(x=>x[0]!==l)).slice(0,3);
+    const ops=shuffle([pool[idx]].concat(otras));
+    zona.innerHTML=`
+      <div class="alfa-preg">${inverso?"¿Qué letra es…?":"¿Cómo se dice?"}</div>
+      <div class="alfa-big">${inverso?p:l}</div>
+      ${inverso?"":`<button class="alfa-oir" type="button">🔊 Escuchar</button>`}
+      <div class="alfa-opts"></div>
+      <div class="alfa-after"></div>`;
+    const oir=zona.querySelector(".alfa-oir");
+    if(oir)oir.addEventListener("click",()=>decir(p));
+    const cont=zona.querySelector(".alfa-opts");
+    let listo=false;
+    ops.forEach(([ol,op])=>{
+      const b=document.createElement("button");b.className="alfa-op";
+      b.textContent=inverso?ol:op;
+      b.addEventListener("click",()=>{
+        if(listo)return;listo=true;total++;
+        const ok=ol===l;
+        [...cont.children].forEach(x=>{
+          x.disabled=true;
+          const esta=x.textContent===(inverso?l:p);
+          if(esta)x.classList.add("ok");
+          else if(x===b&&!ok)x.classList.add("no");
+          else x.classList.add("dim");
+        });
+        if(ok){
+          aciertos++;racha++;
+          if(st.fallos[l]){st.fallos[l]--;if(st.fallos[l]<=0)delete st.fallos[l];}
+          if(racha>st.best){st.best=racha;}
+          decir(p);
+        }else{
+          racha=0;st.fallos[l]=(st.fallos[l]||0)+1;
+        }
+        st.vistas++;save();
+        rr.textContent="RACHA "+racha;
+        const after=zona.querySelector(".alfa-after");
+        after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔ "+l+" es "+p:"✘ "+l+" es "+p}</div>
+          <button class="next-btn">Siguiente →</button>`;
+        after.querySelector(".next-btn").addEventListener("click",ronda);
+        after.querySelector(".next-btn").focus();
+      });
+      cont.appendChild(b);
+    });
+  }
+  view.appendChild(el);
+  ronda();
+}
+
+/* ================= DELETREO ================= */
+function AlfaDeletreo(){
+  const st=alfaStats();
+  let n=0, ok=0;
+  const lote=shuffle(SIGLAS).slice(0,8);
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Alfabeto</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">🔤 Deletreo</span>
+      <span class="q-count" id="cc">1/${lote.length}</span>
+    </div>
+    <div class="q-card"><div class="spell-zona"></div></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Alfabeto));
+  const zona=el.querySelector(".spell-zona"), cc=el.querySelector("#cc");
+  function ronda(){
+    if(n>=lote.length){
+      zona.innerHTML=`<div style="text-align:center">
+        <div class="score">${ok}/${lote.length}</div>
+        <p class="sub">${ok===lote.length?"Perfecto: deletreas como tripulante ✈":"Buen entrenamiento — repite y se te queda."}</p>
+        <button class="next-btn" id="otra">Otra tanda →</button></div>`;
+      zona.querySelector("#otra").addEventListener("click",()=>go(AlfaDeletreo));
+      if(ok===lote.length)confetti();
+      return;
+    }
+    const [sig,desc]=lote[n];
+    cc.textContent=(n+1)+"/"+lote.length;
+    const letras=sig.split("");
+    let puestas=[];
+    const opciones=shuffle(letras.map(l=>ALFA_MAP[l].p).concat(
+      shuffle(ALFA.filter(a=>letras.indexOf(a[0])<0)).slice(0,4).map(a=>a[1])));
+    zona.innerHTML=`
+      <div class="alfa-preg">Deletrea esta sigla</div>
+      <div class="spell-sigla">${sig}</div>
+      <div class="spell-desc">${esc(desc)}</div>
+      <div class="spell-slots"></div>
+      <div class="alfa-opts chips"></div>
+      <div class="alfa-after"></div>`;
+    const slots=zona.querySelector(".spell-slots"), cont=zona.querySelector(".alfa-opts");
+    function pintaSlots(){
+      slots.innerHTML="";
+      letras.forEach((l,i)=>{
+        const d=document.createElement("span");d.className="spell-slot";
+        if(puestas[i]){d.textContent=puestas[i];d.classList.add("lleno");}
+        else d.innerHTML=`<i>${l}</i>`;
+        slots.appendChild(d);
+      });
+    }
+    pintaSlots();
+    opciones.forEach(p=>{
+      const b=document.createElement("button");b.className="alfa-op chip-op";b.textContent=p;
+      b.addEventListener("click",()=>{
+        if(puestas.length>=letras.length)return;
+        puestas.push(p);b.disabled=true;b.classList.add("usado");
+        decir(p);
+        pintaSlots();
+        if(puestas.length===letras.length){
+          const correcto=letras.every((l,i)=>puestas[i]===ALFA_MAP[l].p);
+          if(correcto)ok++; else letras.forEach(l=>{st.fallos[l]=(st.fallos[l]||0)+1;});
+          save();
+          [...cont.children].forEach(x=>x.disabled=true);
+          const after=zona.querySelector(".alfa-after");
+          const sol=letras.map(l=>ALFA_MAP[l].p).join(" · ");
+          after.innerHTML=`<div class="verdict ${correcto?"ok":"bad"}">${correcto?"✔ Impecable":"✘ Era: "+sol}</div>
+            <button class="next-btn">${n<lote.length-1?"Siguiente sigla →":"Ver resultado ✈"}</button>`;
+          after.querySelector(".next-btn").addEventListener("click",()=>{n++;ronda();});
+          if(correcto)setTimeout(()=>decir(sol.replace(/ · /g," ")),300);
+        }
+      });
+      cont.appendChild(b);
+    });
+    const undo=document.createElement("button");undo.className="alfa-undo";undo.textContent="↶ Borrar último";
+    undo.addEventListener("click",()=>{
+      if(!puestas.length||zona.querySelector(".alfa-after").innerHTML)return;
+      const q=puestas.pop();
+      const btn=[...cont.children].find(x=>x.textContent===q&&x.disabled);
+      if(btn){btn.disabled=false;btn.classList.remove("usado");}
+      pintaSlots();
+    });
+    zona.querySelector(".alfa-after").before(undo);
+  }
+  view.appendChild(el);
+  ronda();
+}
+
+/* ================= CONTRARRELOJ ================= */
+function AlfaReloj(){
+  const st=alfaStats();
+  let seg=60, aciertos=0, vivo=true, timer=null;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Alfabeto</button>
+    <div class="q-meta">
+      <span class="chip" style="background:var(--accent)">⏱ Contrarreloj</span>
+      <span class="q-count" id="tt">60s · 0 aciertos</span>
+    </div>
+    <div class="timer-bar"><i></i></div>
+    <div class="q-card"><div class="alfa-zona"></div></div>`;
+  const salir=()=>{vivo=false;if(timer)clearInterval(timer);go(Alfabeto);};
+  el.querySelector(".backbtn").addEventListener("click",salir);
+  const zona=el.querySelector(".alfa-zona"), tt=el.querySelector("#tt"),
+        barra=el.querySelector(".timer-bar i");
+  const pool=ALFA.concat(ALFA_NUM);
+  function ronda(){
+    if(!vivo)return;
+    const [l,p]=pool[Math.floor(Math.random()*pool.length)];
+    const otras=shuffle(pool.filter(x=>x[0]!==l)).slice(0,3);
+    const ops=shuffle([[l,p]].concat(otras));
+    zona.innerHTML=`<div class="alfa-big">${l}</div><div class="alfa-opts"></div>`;
+    const cont=zona.querySelector(".alfa-opts");
+    ops.forEach(([ol,op])=>{
+      const b=document.createElement("button");b.className="alfa-op";b.textContent=op;
+      b.addEventListener("click",()=>{
+        if(!vivo)return;
+        if(ol===l){aciertos++;b.classList.add("ok");}
+        else{b.classList.add("no");st.fallos[l]=(st.fallos[l]||0)+1;seg=Math.max(0,seg-2);}
+        tt.textContent=seg+"s · "+aciertos+" aciertos";
+        setTimeout(ronda,180);
+      });
+      cont.appendChild(b);
+    });
+  }
+  function fin(){
+    vivo=false;clearInterval(timer);
+    if(aciertos>(st.recordReloj||0))st.recordReloj=aciertos;
+    save();
+    zona.innerHTML=`<div style="text-align:center">
+      <div class="score">${aciertos}</div>
+      <p class="sub">aciertos en 60 segundos${st.recordReloj>aciertos?` · tu récord es ${st.recordReloj}`:" · ¡nuevo récord! 🎉"}</p>
+      <button class="next-btn" id="otra">Otra vuelta →</button></div>`;
+    zona.querySelector("#otra").addEventListener("click",()=>go(AlfaReloj));
+    if(aciertos>=20)confetti();
+  }
+  timer=setInterval(()=>{
+    if(!vivo)return;
+    seg--;tt.textContent=seg+"s · "+aciertos+" aciertos";
+    barra.style.width=(seg/60*100)+"%";
+    if(seg<=0)fin();
+  },1000);
+  view.appendChild(el);
+  const obs=new MutationObserver(()=>{if(!document.body.contains(el)){vivo=false;clearInterval(timer);obs.disconnect();}});
+  obs.observe(view,{childList:true});
+  ronda();
 }
 
 
