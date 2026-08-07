@@ -248,8 +248,8 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
   width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;
   border-top:20px solid var(--accent);filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));z-index:2;
 }
-#wheelG{
-  transition:transform 3.4s cubic-bezier(.12,.67,.14,.99);
+#wheelG,.wheelG{
+  transition:transform 3.4s cubic-bezier(.12,.67,.14,.99);  /* la duración la ajusta cada modo */
   transform-box:view-box;transform-origin:110px 110px;  /* centro exacto del viewBox 0 0 220 220 */
   will-change:transform;
 }
@@ -724,6 +724,78 @@ mark{background:var(--accent-soft);color:var(--accent);font-weight:700;padding:0
 @keyframes newPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.78;transform:scale(.96)}}
 .pass h3 .tag-new{margin-left:7px;vertical-align:2px}
 @media (prefers-reduced-motion: reduce){.tag-new{animation:none}}
+
+
+/* ============ ruleta competitiva ============ */
+.game-hud{display:flex;gap:9px;margin-bottom:10px}
+.gh-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:13px;padding:9px 6px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--shadow);
+}
+.gh-item b{font-size:21px;font-variant-numeric:tabular-nums;line-height:1.1}
+.gh-item span{font-size:9.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  font-family:ui-monospace,Consolas,monospace;margin-top:2px}
+.gh-item.pts b{color:var(--accent)}
+.gh-item.urgente b{color:var(--bad);animation:tic .9s ease-in-out infinite}
+@keyframes tic{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}
+
+.game-zona{display:flex;flex-direction:column;align-items:center}
+.wheelbox.chico{width:min(210px,54vw);transition:width .45s ease,opacity .3s ease}
+.wheelbox.chico.mini{width:min(96px,26vw);opacity:.75}
+.game-preg{width:100%;margin-top:12px}
+.game-espera{text-align:center;color:var(--muted);font-size:14px;padding:14px 0;font-style:italic}
+.game-chip{
+  display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;
+  color:#fff;font-weight:700;margin-bottom:8px;
+}
+.game-q{font-size:16.5px;font-weight:650;line-height:1.4;text-wrap:balance;margin-bottom:11px}
+.game-opts{display:flex;flex-direction:column;gap:7px}
+.game-op{
+  width:100%;text-align:left;background:var(--glass);border:1.5px solid var(--glass-border);
+  border-radius:11px;padding:11px 13px;font:15px system-ui,sans-serif;color:var(--ink);cursor:pointer;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);line-height:1.35;
+  transition:border-color .1s ease,background .1s ease;
+}
+.game-op:hover:not(:disabled){border-color:var(--accent)}
+.game-op:disabled{cursor:default}
+.game-op.ok{background:var(--ok-soft);border-color:var(--ok)}
+.game-op.no{background:var(--bad-soft);border-color:var(--bad)}
+.game-op.dim{opacity:.45}
+
+.game-flash{position:fixed;left:0;right:0;top:32%;pointer-events:none;z-index:60;text-align:center}
+.flash-pts{
+  display:inline-block;font-weight:800;font-size:30px;letter-spacing:-.01em;
+  animation:flotar 900ms ease-out forwards;text-shadow:0 3px 14px rgba(0,0,0,.35);
+}
+.flash-pts.bien{color:var(--ok)}
+.flash-pts.mal{color:var(--bad)}
+.flash-pts.mult{color:var(--accent);font-size:24px}
+@keyframes flotar{
+  0%{opacity:0;transform:translateY(14px) scale(.85)}
+  22%{opacity:1;transform:translateY(0) scale(1.06)}
+  100%{opacity:0;transform:translateY(-42px) scale(1)}
+}
+@media (prefers-reduced-motion: reduce){.flash-pts{animation-duration:.4s}.gh-item.urgente b{animation:none}}
+
+.rank{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.rank-row{
+  display:flex;align-items:center;gap:11px;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:10px 13px;
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:var(--shadow);
+}
+.rank-row.propio{border-color:var(--accent)}
+.rk-pos{
+  flex:none;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;
+  justify-content:center;background:var(--accent-soft);color:var(--accent);
+  font:800 13px ui-monospace,Consolas,monospace;
+}
+.rank-row:first-child .rk-pos{background:var(--gold);color:#3A2A08}
+.rk-info{flex:1;min-width:0;display:flex;flex-direction:column}
+.rk-info b{font-size:15px;font-variant-numeric:tabular-nums}
+.rk-info small{font-size:11.5px;color:var(--muted)}
+.rk-fecha{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--muted);flex:none}
 
 /* ============ ajuste móvil: mismo look, menos costo de GPU ============ */
 @media (max-width: 520px){
@@ -2532,7 +2604,7 @@ function RamoHome(rid){
     <div class="modes"></div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Home));
   const modes=el.querySelector(".modes");
-  [["RUL","🎡","Ruleta del ramo",`Gira y responde: la suerte (y tus puntos débiles) eligen el módulo de ${r.n}.`,"Modo clásico",()=>go(Wheel,rid)],
+  [["RUL","🎡","Ruleta",`Partida de 2 minutos: gira, responde contra el reloj y suma puntos. O modo libre, sin apuro.`,"Competitivo",()=>go(Wheel,rid)],
    ["EST","📚","Estudio por módulo","Recorre un módulo completo a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(ModPick,rid)],
    ["EXM","🎓","Examen","20 preguntas del ramo completo, o examen de un módulo suelto. Con nota y revisión.","Simulacro",()=>go(ExamStart,rid)],
    ["MAP","🗺","Mapa conceptual",`Todo ${r.n} en una pantalla: los ${r.mods.length} módulos y sus conceptos clave conectados.`,"Vista de conjunto",()=>go(Mapa,rid),"mapa"],
@@ -2548,44 +2620,33 @@ function RamoHome(rid){
   el.querySelectorAll("[data-count]").forEach(animCount);
 }
 
-/* ================= RULETA ================= */
-let wheelRot=0;
-function Wheel(rid){
-  const r=RAMO_BY_ID[rid], mods=r.mods;
-  const el=document.createElement("div");el.className="screen";
-  el.innerHTML=`
-    <button class="backbtn">← ${esc(r.n)}</button>
-    <div class="eyebrow">Modo ruleta · ${esc(r.n)}</div>
-    <h2>Gira y responde</h2>
-    <p class="sub">La ruleta favorece un poquito tus módulos más débiles.</p>
-    <div class="wheelwrap">
-      <div class="hud">
-        <div class="stat"><b id="hudStreak">${session.streak}</b><span>Racha</span></div>
-        <div class="stat"><b id="hudPts">${session.points}</b><span>Puntos</span></div>
-        <div class="stat"><b>${S.best}</b><span>Récord</span></div>
-      </div>
-      <div class="wheelbox">
-        <div class="pointer"></div>
-        <svg viewBox="0 0 220 220" aria-label="Ruleta de módulos"><g id="wheelG"></g>
-          <circle cx="110" cy="110" r="26" fill="var(--glass-strong)" stroke="var(--line)" stroke-width="2"></circle>
-          <text x="110" y="117" text-anchor="middle" font-size="20">${r.ic}</text>
-        </svg>
-      </div>
-      <button class="spin-btn" id="spinBtn">Girar</button>
-    </div>`;
-  el.querySelector(".backbtn").addEventListener("click",()=>go(RamoHome,rid));
-  view.appendChild(el);
-  const g=el.querySelector("#wheelG");
-  const N=mods.length, step=360/N;
-  const pal=["#4A7FC1","#2E9E8F","#7D6BC6","#E8850C","#C05572","#4E8FA8"];
-  const CX=110, CY=110;   /* centro real del viewBox: el giro pivotea aquí */
+/* ================= RULETA · PARTIDA DE 2 MINUTOS ================= */
+const PARTIDA_SEG=120;
+const PAL_RULETA=["#4A7FC1","#2E9E8F","#7D6BC6","#E8850C","#C05572","#4E8FA8"];
+function rulStats(){return S.ruleta||(S.ruleta={best:0,top:[]});}
+/* puntaje: base + bonus por rapidez, todo por el multiplicador de racha */
+function multRuleta(racha){return Math.min(4,1+Math.floor(racha/3)*0.5);}
+function bonusVeloz(secs){return Math.max(0,Math.round(100-secs*12));}
+function puntosRuleta(secs,rachaTrasAcierto){
+  return Math.round((100+bonusVeloz(secs))*multRuleta(rachaTrasAcierto));
+}
+
+/* dibuja la rueda dentro de un contenedor dado */
+function dibujarRueda(cont,mods,ic){
+  cont.innerHTML=`<div class="pointer"></div>
+    <svg viewBox="0 0 220 220" aria-label="Ruleta de módulos"><g class="wheelG"></g>
+      <circle cx="110" cy="110" r="26" fill="var(--glass-strong)" stroke="var(--line)" stroke-width="2"></circle>
+      <text x="110" y="117" text-anchor="middle" font-size="20">${ic}</text>
+    </svg>`;
+  const g=cont.querySelector(".wheelG");
+  const N=mods.length, step=360/N, CX=110, CY=110;
   mods.forEach((mo,i)=>{
     const a0=(i*step-90)*Math.PI/180, a1=((i+1)*step-90)*Math.PI/180, R=104;
     const x0=CX+Math.cos(a0)*R,y0=CY+Math.sin(a0)*R,x1=CX+Math.cos(a1)*R,y1=CY+Math.sin(a1)*R;
     const large=step>180?1:0;
     const p=document.createElementNS("http://www.w3.org/2000/svg","path");
     p.setAttribute("d",`M${CX} ${CY} L${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`);
-    p.style.fill=pal[i%pal.length];
+    p.style.fill=PAL_RULETA[i%PAL_RULETA.length];
     p.style.stroke="var(--sky-mid)";p.setAttribute("stroke-width","2.5");
     g.appendChild(p);
     const mid=(i*step+step/2-90)*Math.PI/180, r2=66;
@@ -2598,21 +2659,223 @@ function Wheel(rid){
     t.textContent=(mo.n.length>16?mo.n.slice(0,15)+"…":mo.n).toUpperCase();
     g.appendChild(t);
   });
+  return g;
+}
+/* gira hacia un módulo y avisa al terminar */
+let wheelRot=0;
+function girar(g,idx,N,dur,cb){
+  const step=360/N;
+  const jitter=(Math.random()*(step*.6)-step*.3);
+  const target=-(idx*step+step/2)+jitter;
+  const cur=((wheelRot%360)+360)%360;
+  const vueltas=dur<2?3:5;
+  wheelRot+=vueltas*360+((((target-cur)%360)+360)%360);
+  g.style.transitionDuration=dur+"s";
   g.style.transform=`rotate(${wheelRot}deg)`;
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(cb,reduced?120:dur*1000);
+}
+/* elige módulo ponderando los más débiles */
+function moduloDebil(mods){
+  let tot=0;const ws=mods.map(mo=>{const w=1+(100-mastery(mo.id).pct)/40;tot+=w;return w;});
+  let r=Math.random()*tot;
+  for(let i=0;i<mods.length;i++){r-=ws[i];if(r<=0)return i;}
+  return 0;
+}
+
+/* ---------- pantalla de inicio ---------- */
+function Wheel(rid){
+  const r=RAMO_BY_ID[rid], st=rulStats();
+  const mias=(st.top||[]).filter(p=>p.r===rid);
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← ${esc(r.n)}</button>
+    <div class="eyebrow">Ruleta · ${esc(r.n)}</div>
+    <h2>🎡 Partida de 2 minutos</h2>
+    <p class="sub">Gira, responde y suma. Mientras más rápido contestes y más racha lleves, más valen tus aciertos. Cada error te cuesta 3 segundos.</p>
+    <div class="stats-strip" style="margin-top:14px">
+      <div class="stat"><b>${st.best||0}</b><span>Tu récord</span></div>
+      <div class="stat"><b>${mias.length?Math.max(...mias.map(p=>p.p)):0}</b><span>En este ramo</span></div>
+      <div class="stat"><b>${(st.top||[]).length}</b><span>Partidas top</span></div>
+    </div>
+    <div class="modes" style="margin-top:16px">
+      <button class="pass" id="jugar">
+        <span class="pass-main"><h3>🏁 Empezar partida</h3><p>120 segundos contra el reloj. Suma todo lo que puedas.</p>
+        <span class="tagline">Competitivo</span></span>
+        <span class="pass-stub"><span class="big">🏁</span><span>2:00</span><span>${r.id.toUpperCase()}</span></span>
+      </button>
+      <button class="pass" id="libre">
+        <span class="pass-main"><h3>🌱 Modo libre</h3><p>Sin reloj ni puntaje: gira y estudia con calma, con la explicación de cada respuesta.</p>
+        <span class="tagline">Sin presión</span></span>
+        <span class="pass-stub"><span class="big">🌱</span><span>LIBRE</span><span>${r.id.toUpperCase()}</span></span>
+      </button>
+    </div>
+    ${(st.top||[]).length?`<h2 style="margin-top:24px">🏆 Tus mejores partidas</h2><div class="rank"></div>`:""}`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(RamoHome,rid));
+  el.querySelector("#jugar").addEventListener("click",()=>go(WheelGame,rid));
+  el.querySelector("#libre").addEventListener("click",()=>go(WheelLibre,rid));
+  const rank=el.querySelector(".rank");
+  if(rank)(st.top||[]).forEach((p,i)=>{
+    const ra=RAMO_BY_ID[p.r];
+    const d=document.createElement("div");d.className="rank-row"+(p.r===rid?" propio":"");
+    d.innerHTML=`<span class="rk-pos">${i+1}</span>
+      <span class="rk-info"><b>${p.p} pts</b><small>${ra?ra.ic+" "+esc(ra.n):""} · ${p.a}/${p.t} aciertos · racha ${p.mr}</small></span>
+      <span class="rk-fecha">${p.d}</span>`;
+    rank.appendChild(d);
+  });
+  view.appendChild(el);
+}
+
+/* ---------- PARTIDA ---------- */
+function WheelGame(rid){
+  const r=RAMO_BY_ID[rid], mods=r.mods, st=rulStats();
+  let seg=PARTIDA_SEG, pts=0, racha=0, mejorRacha=0, aciertos=0, total=0;
+  let vivo=true, timer=null, t0=0, esperando=false;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Abandonar</button>
+    <div class="game-hud">
+      <div class="gh-item"><b id="ghT">2:00</b><span>Tiempo</span></div>
+      <div class="gh-item pts"><b id="ghP">0</b><span>Puntos</span></div>
+      <div class="gh-item"><b id="ghM">×1</b><span>Multiplicador</span></div>
+    </div>
+    <div class="timer-bar"><i></i></div>
+    <div class="game-zona">
+      <div class="wheelbox chico"></div>
+      <div class="game-preg"></div>
+    </div>
+    <div class="game-flash"></div>`;
+  const salir=()=>{vivo=false;if(timer)clearInterval(timer);go(Wheel,rid);};
+  el.querySelector(".backbtn").addEventListener("click",salir);
+  const caja=el.querySelector(".wheelbox"), zonaP=el.querySelector(".game-preg"),
+        ghT=el.querySelector("#ghT"), ghP=el.querySelector("#ghP"), ghM=el.querySelector("#ghM"),
+        barra=el.querySelector(".timer-bar i"), flash=el.querySelector(".game-flash");
+  const g=dibujarRueda(caja,mods,r.ic);
+  const mult=()=>multRuleta(racha);
+  const pinta=()=>{
+    const m=Math.floor(seg/60), s=seg%60;
+    ghT.textContent=m+":"+String(s).padStart(2,"0");
+    ghP.textContent=pts;
+    ghM.textContent="×"+mult().toString().replace(".0","");
+    barra.style.width=(seg/PARTIDA_SEG*100)+"%";
+    ghT.parentElement.classList.toggle("urgente",seg<=15);
+  };
+  function avisar(txt,clase){
+    const d=document.createElement("div");d.className="flash-pts "+clase;d.textContent=txt;
+    flash.appendChild(d);setTimeout(()=>d.remove(),900);
+  }
+  function turno(){
+    if(!vivo)return;
+    esperando=false;
+    zonaP.innerHTML=`<div class="game-espera">Girando…</div>`;
+    caja.classList.remove("mini");
+    const idx=moduloDebil(mods);
+    girar(g,idx,mods.length,1.15,()=>{
+      if(!vivo)return;
+      caja.classList.add("mini");
+      preguntar(mods[idx]);
+    });
+  }
+  function preguntar(mo){
+    if(!vivo)return;
+    const q=pickQ(mo.id);
+    const orden=shuffle(q.o.map((_,k)=>k));
+    t0=Date.now();esperando=true;
+    zonaP.innerHTML=`<div class="game-chip" style="background:${r.col}">${esc(mo.n)}</div>
+      <div class="game-q">${esc(q.q)}</div><div class="game-opts"></div>`;
+    const cont=zonaP.querySelector(".game-opts");
+    let listo=false;
+    orden.forEach((oi,k)=>{
+      const b=document.createElement("button");b.className="game-op";
+      b.textContent=q.o[oi];
+      b.addEventListener("click",()=>{
+        if(listo||!vivo)return;listo=true;esperando=false;
+        const ok=oi===q.a, secs=(Date.now()-t0)/1000;
+        total++;record(q,ok);
+        [...cont.children].forEach((x,j)=>{
+          x.disabled=true;
+          if(orden[j]===q.a)x.classList.add("ok");
+          else if(j===k&&!ok)x.classList.add("no");
+          else x.classList.add("dim");
+        });
+        if(ok){
+          aciertos++;racha++;if(racha>mejorRacha)mejorRacha=racha;
+          const veloz=bonusVeloz(secs);
+          const suma=puntosRuleta(secs,racha);
+          pts+=suma;
+          avisar("+"+suma+(veloz>60?" ⚡":""),"bien");
+          if(racha>0&&racha%3===0)avisar("¡×"+mult().toString().replace(".0","")+"!","mult");
+        }else{
+          racha=0;seg=Math.max(0,seg-3);
+          avisar("−3s","mal");
+        }
+        pinta();
+        setTimeout(()=>{if(vivo)turno();},ok?700:1100);
+      });
+      cont.appendChild(b);
+    });
+  }
+  function fin(){
+    vivo=false;clearInterval(timer);
+    const nuevo=pts>(st.best||0);
+    if(nuevo)st.best=pts;
+    st.top=(st.top||[]).concat([{d:todayStr(),r:rid,p:pts,a:aciertos,t:total,mr:mejorRacha}])
+      .sort((a,b)=>b.p-a.p).slice(0,5);
+    if(mejorRacha>S.best)S.best=mejorRacha;
+    save();checkAch();
+    const acc=total?Math.round(aciertos/total*100):0;
+    el.querySelector(".game-hud").style.display="none";
+    el.querySelector(".timer-bar").style.display="none";
+    el.querySelector(".game-zona").innerHTML=`
+      <div class="result-hero" style="margin-top:0">
+        <div class="eyebrow">Partida terminada · ${esc(r.n)}</div>
+        <div class="score">${pts}</div>
+        <p class="sub">puntos · ${aciertos} de ${total} correctas (${acc}%) · mejor racha ${mejorRacha}</p>
+        <span class="stamp ${nuevo?"ok":"bad"}">${nuevo?"¡Nuevo récord!":"Récord "+(st.best||0)}</span>
+        <p class="sub" style="margin-top:12px">${nuevo?"Le ganaste a tu mejor versión 👑":pts>=(st.best||0)*.8?"Cerquísima — otra vuelta y lo bajas.":"A seguir sumando: cada racha de 3 te sube el multiplicador."}</p>
+      </div>
+      <div class="flash-nav" style="margin-top:16px">
+        <button id="otra">Revancha</button>
+        <button class="primary" id="volver">Volver</button>
+      </div>`;
+    el.querySelector("#otra").addEventListener("click",()=>go(WheelGame,rid));
+    el.querySelector("#volver").addEventListener("click",()=>go(Wheel,rid));
+    if(nuevo)confetti();
+  }
+  timer=setInterval(()=>{
+    if(!vivo)return;
+    seg--;pinta();
+    if(seg<=0)fin();
+  },1000);
+  view.appendChild(el);
+  const obs=new MutationObserver(()=>{if(!document.body.contains(el)){vivo=false;clearInterval(timer);obs.disconnect();}});
+  obs.observe(view,{childList:true});
+  pinta();turno();
+}
+
+/* ---------- MODO LIBRE (el de siempre, con explicaciones) ---------- */
+function WheelLibre(rid){
+  const r=RAMO_BY_ID[rid], mods=r.mods;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← Ruleta</button>
+    <div class="eyebrow">Modo libre · ${esc(r.n)}</div>
+    <h2>Gira y responde</h2>
+    <p class="sub">Sin reloj. La ruleta favorece tus módulos más débiles y cada respuesta trae su explicación.</p>
+    <div class="wheelwrap">
+      <div class="hud">
+        <div class="stat"><b>${session.streak}</b><span>Racha</span></div>
+        <div class="stat"><b>${S.best}</b><span>Récord de racha</span></div>
+      </div>
+      <div class="wheelbox"></div>
+      <button class="spin-btn" id="spinBtn">Girar</button>
+    </div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(Wheel,rid));
+  view.appendChild(el);
+  const g=dibujarRueda(el.querySelector(".wheelbox"),mods,r.ic);
   el.querySelector("#spinBtn").addEventListener("click",()=>{
     const btn=el.querySelector("#spinBtn");btn.disabled=true;
-    let tot=0;const ws=mods.map(mo=>{const w=1+(100-mastery(mo.id).pct)/40;tot+=w;return w;});
-    let rr=Math.random()*tot,idx=0;
-    for(let i=0;i<N;i++){rr-=ws[i];if(rr<=0){idx=i;break;}}
-    const jitter=(Math.random()*(step*0.6)-step*0.3);
-    const target=-(idx*step+step/2)+jitter;
-    const cur=((wheelRot%360)+360)%360;
-    wheelRot+=5*360+((((target-cur)%360)+360)%360);
-    g.style.transform=`rotate(${wheelRot}deg)`;
-    const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setTimeout(()=>{
-      go(Question,{sel:mods[idx].id,mode:"wheel",rid,onNext:()=>go(Wheel,rid)});
-    },reduced?150:3500);
+    const idx=moduloDebil(mods);
+    girar(g,idx,mods.length,3.4,()=>{
+      go(Question,{sel:mods[idx].id,mode:"wheel",rid,onNext:()=>go(WheelLibre,rid)});
+    });
   });
 }
 
@@ -2986,14 +3249,14 @@ function Passport(){
     try{
       const S2=JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^OYR\d\./,"")))));
       if(!S2||typeof S2!=="object"||!S2.stats)throw 0;
-      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0}},S2);
+      S=Object.assign({stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0},ruleta:{best:0,top:[]}},S2);
       if(Array.isArray(S.exams))S.exams={oyr:S.exams};
       save();toast("Progreso restaurado ✔");go(Passport);
     }catch(e){toast("Ese código no es válido");}
   });
   el.querySelector("#reset").addEventListener("click",()=>{
     if(confirm("¿Segura que quieres borrar todo el progreso? Esto no se puede deshacer.")){
-      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0}};save();
+      S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{},alfa:{best:0,fallos:{},vistas:0},geo:{best:0,fallos:{},recordReloj:0},ruleta:{best:0,top:[]}};save();
       session={streak:0,points:0};go(Passport);
     }
   });
