@@ -711,6 +711,20 @@ mark{background:var(--accent-soft);color:var(--accent);font-weight:700;padding:0
 .geo-ciudad{font-size:clamp(26px,7vw,36px);font-weight:800;line-height:1.15;color:var(--accent);margin:6px 0 10px;text-wrap:balance}
 .geo-nombre{font-size:13px;color:var(--muted);margin-top:5px}
 
+
+/* ============ etiqueta NUEVO ============ */
+.tag-new{
+  display:inline-flex;align-items:center;flex:none;
+  font-family:ui-monospace,Consolas,monospace;font-size:9px;letter-spacing:.14em;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
+  padding:3px 7px;border-radius:99px;text-transform:uppercase;
+  box-shadow:0 2px 9px rgba(232,93,31,.45);
+  animation:newPulse 2.4s ease-in-out infinite;
+}
+@keyframes newPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.78;transform:scale(.96)}}
+.pass h3 .tag-new{margin-left:7px;vertical-align:2px}
+@media (prefers-reduced-motion: reduce){.tag-new{animation:none}}
+
 /* ============ ajuste móvil: mismo look, menos costo de GPU ============ */
 @media (max-width: 520px){
   .board,.q-card,.result-hero{backdrop-filter:blur(9px) saturate(1.15);-webkit-backdrop-filter:blur(9px) saturate(1.15)}
@@ -2374,6 +2388,28 @@ function animCount(el){
   requestAnimationFrame(tick);
 }
 
+
+/* ---------- etiqueta NUEVO: se apaga sola ---------- */
+/* Se muestra mientras la novedad sea reciente Y ella no la haya abierto todavía. */
+const NOVEDADES={
+  geo:"2026-07-27", abc:"2026-07-27", sup:"2026-07-27",
+  bus:"2026-07-26", mapa:"2026-07-26", a320:"2026-07-26", pau:"2026-07-26", prevac:"2026-07-26"
+};
+const DIAS_NUEVO=21;
+function esNuevo(id){
+  const f=NOVEDADES[id];
+  if(!f)return false;
+  if(S.visto&&S.visto[id])return false;                      /* ya la abrió */
+  const dias=(Date.now()-new Date(f+"T00:00:00").getTime())/86400000;
+  return dias>=-1.5&&dias<=DIAS_NUEVO;   /* el margen cubre husos horarios por detrás */
+}
+function tagNuevo(id){return esNuevo(id)?'<span class="tag-new">nuevo</span>':"";}
+function marcarVisto(id){
+  if(!id||!NOVEDADES[id])return;
+  S.visto=S.visto||{};
+  if(!S.visto[id]){S.visto[id]=todayStr();save();}
+}
+
 /* ---------- SELECCIÓN DE PREGUNTAS ---------- */
 let recent=[];
 function pickQ(sel){
@@ -2449,26 +2485,26 @@ function Home(){
     b.innerHTML=`
       <span class="ramo-ic" style="background:${r.col}1f;color:${r.col}">${r.ic}</span>
       <span class="ramo-body">
-        <span class="ramo-top"><b>${r.n}</b>${ok?'<span class="ramo-ok">✈ Aprobado</span>':""}</span>
+        <span class="ramo-top"><b>${r.n}</b>${tagNuevo(r.id)}${ok?'<span class="ramo-ok">✈ Aprobado</span>':""}</span>
         <small>${r.sub}</small>
         <span class="bar"><i style="width:${mm.pct}%;background:${r.col}"></i></span>
         <span class="ramo-meta">${r.mods.length} módulos · ${nq} preguntas <b style="color:${r.col}">${mm.pct}%</b></span>
       </span>`;
-    b.addEventListener("click",()=>go(RamoHome,r.id));
+    b.addEventListener("click",()=>{marcarVisto(r.id);go(RamoHome,r.id);});
     grid.appendChild(b);
   });
   const modes=el.querySelector(".modes");
-  [["GEO","🌐","Siglas de aeropuertos","Chile de norte a sur y los destinos del mundo, con práctica y contrarreloj.","Geografía",()=>go(Aeropuertos)],
-   ["ABC","📻","Alfabeto aeronáutico","Alfa, Bravo, Charlie… con audio, deletreo de siglas reales y contrarreloj.","Entrenador",()=>go(Alfabeto)],
-   ["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar)],
+  [["GEO","🌐","Siglas de aeropuertos","Chile de norte a sur y los destinos del mundo, con práctica y contrarreloj.","Geografía",()=>go(Aeropuertos),"geo"],
+   ["ABC","📻","Alfabeto aeronáutico","Alfa, Bravo, Charlie… con audio, deletreo de siglas reales y contrarreloj.","Entrenador",()=>go(Alfabeto),"abc"],
+   ["BUS","🔎","Buscador","¿Dónde salía lo del PBE? Busca por concepto, sigla o número en todo el curso.","Encuentra rápido",()=>go(Buscar),"bus"],
    ["PSP","🛂","Mi pasaporte",`Progreso de los ${RAMOS.length} ramos, insignias, historial y respaldo.`,"Progreso",()=>go(Passport)],
    ["SIM","🧭","Turno de vuelo","Vive un vuelo completo del briefing al debriefing: decisiones fase por fase e informe final.","Simulador",()=>go(SimIntro)],
    ["♥","💌","Carga especial","Hay una encomienda registrada a tu nombre en la bodega. Se abre con un código de 8 dígitos.","Solo para Pía",()=>go(Secret)]
-  ].forEach(([code,icon,t,d,tag,fn])=>{
+  ].forEach(([code,icon,t,d,tag,fn,nid])=>{
     const b=document.createElement("button");b.className="pass";
-    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
+    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}${tagNuevo(nid)}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
       <span class="pass-stub"><span class="big">${icon}</span><span>${code}</span><span>TAC</span></span>`;
-    b.addEventListener("click",fn);modes.appendChild(b);
+    b.addEventListener("click",()=>{marcarVisto(nid);fn();});modes.appendChild(b);
   });
   view.appendChild(el);
   el.querySelectorAll("[data-count]").forEach(animCount);
@@ -2499,14 +2535,14 @@ function RamoHome(rid){
   [["RUL","🎡","Ruleta del ramo",`Gira y responde: la suerte (y tus puntos débiles) eligen el módulo de ${r.n}.`,"Modo clásico",()=>go(Wheel,rid)],
    ["EST","📚","Estudio por módulo","Recorre un módulo completo a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(ModPick,rid)],
    ["EXM","🎓","Examen","20 preguntas del ramo completo, o examen de un módulo suelto. Con nota y revisión.","Simulacro",()=>go(ExamStart,rid)],
-   ["MAP","🗺","Mapa conceptual",`Todo ${r.n} en una pantalla: los ${r.mods.length} módulos y sus conceptos clave conectados.`,"Vista de conjunto",()=>go(Mapa,rid)],
+   ["MAP","🗺","Mapa conceptual",`Todo ${r.n} en una pantalla: los ${r.mods.length} módulos y sus conceptos clave conectados.`,"Vista de conjunto",()=>go(Mapa,rid),"mapa"],
    ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial del ramo: definiciones, números y fraseologías.","Memoria",()=>go(Flash,rid)],
    ["ERR","🩹","Repasar mis errores",fails?`Tienes ${fails} pregunta${fails===1?"":"s"} pendiente${fails===1?"":"s"} en este ramo.`:"Sin errores pendientes en este ramo. ¡Impecable!","Refuerzo",()=>go(Redo,rid)]
-  ].forEach(([code,icon,t,d,tag,fn])=>{
+  ].forEach(([code,icon,t,d,tag,fn,nid])=>{
     const b=document.createElement("button");b.className="pass";
-    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
+    b.innerHTML=`<span class="pass-main"><h3>${icon} ${t}${tagNuevo(nid)}</h3><p>${d}</p><span class="tagline">${tag}</span></span>
       <span class="pass-stub"><span class="big">${icon}</span><span>${code}</span><span>${r.id.toUpperCase()}</span></span>`;
-    b.addEventListener("click",fn);modes.appendChild(b);
+    b.addEventListener("click",()=>{marcarVisto(nid);fn();});modes.appendChild(b);
   });
   view.appendChild(el);
   el.querySelectorAll("[data-count]").forEach(animCount);
