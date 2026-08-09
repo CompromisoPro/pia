@@ -340,6 +340,76 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
 }
 .flash-nav button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
 
+/* ============ interrogatorio oral ============ */
+.int-hero{
+  background:var(--glass);border:1.5px solid var(--glass-border);border-left:4px solid var(--rc,var(--accent));
+  border-radius:16px;box-shadow:var(--shadow);padding:18px 16px;position:relative;
+  backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+}
+.int-avatar{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:21px;
+  background:var(--glass-strong);border:1.5px solid var(--glass-border);margin-bottom:10px;
+}
+.int-avatar.sm{width:32px;height:32px;font-size:16px;margin:0;border-radius:10px}
+.int-voz{
+  width:100%;margin-top:12px;padding:12px;border-radius:12px;cursor:pointer;
+  background:var(--glass);border:1.5px solid var(--glass-border);color:var(--ink);
+  font:650 13.5px system-ui,sans-serif;
+}
+.int-bar-top{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+.int-who{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.int-who b{display:block;font:800 13px system-ui,sans-serif}
+.int-who i{display:block;font:500 11.5px system-ui,sans-serif;font-style:normal;color:var(--muted)}
+.int-clock{
+  flex:0 0 auto;padding:7px 12px;border-radius:10px;
+  background:var(--glass-strong);border:1.5px solid var(--glass-border);
+  font:800 15px ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;
+}
+.int-clock.urgente{border-color:var(--bad,#C05572);color:var(--bad,#C05572);animation:latir 1s ease-in-out infinite}
+@keyframes latir{50%{transform:scale(1.07)}}
+.int-q{
+  margin-top:14px;background:var(--glass);border:1.5px solid var(--glass-border);
+  border-radius:14px;box-shadow:var(--shadow);padding:16px 15px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.int-q p{font:700 17px/1.45 system-ui,sans-serif;margin:8px 0 0}
+.int-tag{
+  display:inline-block;padding:3px 9px;border-radius:7px;
+  background:var(--glass-strong);border:1px solid var(--glass-border);
+  font:800 10px ui-monospace,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+}
+.int-react{
+  margin-top:12px;padding:12px 14px;border-radius:12px;
+  background:var(--glass);border:1.5px solid var(--glass-border);border-left:3px solid var(--accent);
+  font:600 14px/1.5 system-ui,sans-serif;
+}
+.int-rc{display:block;margin-top:3px;font:500 11.5px system-ui,sans-serif;font-style:normal;color:var(--muted)}
+.int-after{margin-top:4px}
+.acta{
+  background:var(--glass);border:1.5px solid var(--glass-border);border-radius:16px;
+  box-shadow:var(--shadow);padding:18px 16px;text-align:center;
+  backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+}
+.acta.ok{border-top:4px solid var(--ok)}
+.acta.bad{border-top:4px solid var(--bad,#C05572)}
+.acta-top{
+  display:flex;justify-content:space-between;gap:10px;margin-bottom:12px;
+  font:700 9.5px ui-monospace,Consolas,monospace;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);text-align:left;
+}
+.acta-nota{
+  font:800 60px/1 ui-monospace,Consolas,monospace;margin:6px 0 10px;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.acta.ok .acta-nota{color:var(--ok)}
+.acta.bad .acta-nota{color:var(--bad,#C05572)}
+.acta-sello{
+  display:inline-block;padding:5px 14px;border-radius:9px;margin-bottom:10px;
+  border:1.5px solid currentColor;font:800 11.5px system-ui,sans-serif;letter-spacing:.09em;
+}
+.acta.ok .acta-sello{color:var(--ok)}
+.acta.bad .acta-sello{color:var(--bad,#C05572)}
+
 /* ============ ensayo de desarrollo ============ */
 .ens-head{margin-bottom:14px}
 .ens-bar{height:5px;border-radius:4px;background:var(--glass);border:1px solid var(--glass-border);overflow:hidden;margin-top:7px}
@@ -1037,6 +1107,14 @@ const RAMOS = [
      {id:"su2", n:"Señales, refugio, agua y fuego", sub:"M2 · código tierra/aire, purificación, comestibilidad"},
      {id:"su3", n:"En tierra y en mar", sub:"M3 · desierto, trópico, nieve, balsa y localización"},
      {id:"su4", n:"Kit de supervivencia", sub:"M4 · elementos de protección, agua y alimento"}
+   ]},
+  {id:"bys", n:"Búsqueda y Salvamento", full:"BYS · Servicio de Búsqueda y Salvamento Aéreo (SAR)", ic:"🛟", col:"#E2603A", ap:80,
+   sub:"SAR, COSPAS-SARSAT, fases de emergencia y balizas",
+   mods:[
+     {id:"by1", n:"Qué es el SAR y quién lo hace", sub:"Objetivo, Anexo 12, DAR 12, organismos, FIR y regiones"},
+     {id:"by2", n:"COSPAS-SARSAT y sus centros", sub:"Satélites, LUT, MCC y RCC · la cadena de la alerta"},
+     {id:"by3", n:"Fases de emergencia", sub:"INCERFA, ALERFA y DETRESFA"},
+     {id:"by4", n:"Balizas y frecuencias", sub:"ELT, EPIRB, PLB · 406, 121.5 y 243 MHz"}
    ]},
   {id:"tec", n:"Conocimientos Técnicos", full:"Técnicos · Aerodinámica, Meteorología y Navegación", ic:"🛩", col:"#4E8FA8", ap:80,
    sub:"Cómo vuela, qué tiempo hace y dónde estamos",
@@ -2023,6 +2101,132 @@ C("pa5","OVACE","Obstrucción LEVE (tose y habla): NO intervenir, animar a toser
 C("fh7","Neurociencia aplicada","Neuroplasticidad: fortalecimiento sináptico + engramas motores (la repetición crea respuestas automáticas). El cortisol alto daña la memoria operativa y la atención. Las checklists reducen la carga de la memoria de trabajo. Líder en crisis: regulación emocional, decisión ágil, flexibilidad y resiliencia.");
 
 
+/* ================= BYS · BÚSQUEDA Y SALVAMENTO (SAR) ================= */
+/* ---- M1 · Qué es el SAR y quién lo hace ---- */
+Q("by1","¿Qué significa la sigla SAR y cuál es su objetivo principal?",["Safety And Rescue · prevenir accidentes aéreos","Search and Rescue (Búsqueda y Salvamento) · salvar vidas humanas","Servicio Aéreo de Reconocimiento · vigilar el espacio aéreo","Sistema de Alerta y Respuesta · coordinar el tránsito aéreo"],1,"SAR significa SEARCH AND RESCUE, en español BÚSQUEDA Y SALVAMENTO. Su OBJETIVO PRINCIPAL ES SALVAR VIDAS HUMANAS. Es un conjunto de servicios y operaciones organizadas para localizar, asistir y rescatar a personas en peligro.","BYS · SAR");
+Q("by1","¿En qué situaciones actúa el servicio SAR?",["Solo en accidentes de aviación comercial","Accidentes de aeronaves, ditching, personas extraviadas en zonas remotas y desastres naturales","Únicamente en emergencias marítimas","Solo cuando se activa una baliza de 406 MHz"],1,"El SAR actúa en accidentes de aeronaves, DITCHING (amaraje de emergencia), personas extraviadas o atrapadas en zonas remotas, y situaciones de desastre natural u otras emergencias.","BYS · SAR");
+Q("by1","¿Qué norma internacional obliga a los Estados a establecer servicios SAR?",["El Anexo 6 del Convenio de Chicago","El Anexo 12 del Convenio de Chicago","El Anexo 17 sobre seguridad de la aviación","El Anexo 18 sobre mercancías peligrosas"],1,"El SAR se basa en el ANEXO 12 del Convenio sobre Aviación Civil Internacional (Convenio de Chicago, firmado en 1944), que obliga a los Estados miembros de la OACI a establecer servicios de búsqueda y salvamento en sus territorios.","BYS · Anexo 12");
+Q("by1","¿En qué año se firmó el Convenio de Chicago?",["1919","1944","1947","1960"],1,"El Convenio sobre Aviación Civil Internacional, conocido como CONVENIO DE CHICAGO, se firmó en 1944. Su Anexo 12 establece las normas y recomendaciones internacionales para la organización de los servicios SAR en todos los Estados miembros de la OACI.","BYS · Anexo 12");
+Q("by1","¿Por qué se creó el sistema SAR internacional?",["Por el aumento de la piratería aérea en los años 70","Por la necesidad mundial de localizar aeronaves desaparecidas, asistir a personas en peligro y estandarizar procedimientos","Por exigencia de las compañías aseguradoras","Para controlar el tránsito aéreo transoceánico"],1,"Nació de la necesidad mundial de un sistema coordinado y eficiente para localizar aeronaves desaparecidas, brindar asistencia a personas en peligro y estandarizar los procedimientos SAR entre países. La SEGUNDA GUERRA MUNDIAL demostró la importancia de tener una estructura global de rescate, sobre todo con el aumento del tráfico aéreo civil.","BYS · Anexo 12");
+Q("by1","¿Cuántos Estados miembros de la OACI se comprometen a aplicar el Anexo 12?",["87 países","120 países","193 países","Todos los países del mundo sin excepción"],2,"Todos los Estados miembros de la OACI —actualmente 193 países— se comprometen a aplicar el Anexo 12, tanto en la organización interna de su servicio SAR como en la colaboración internacional en operaciones conjuntas.","BYS · Anexo 12");
+Q("by1","Según el Anexo 12, ¿qué debe hacer cada país firmante?",["Solo informar los accidentes ocurridos en su territorio","Establecer un servicio SAR, designar autoridades responsables y contar con medios adecuados","Financiar el sistema COSPAS-SARSAT","Mantener aeronaves militares de rescate permanentemente en vuelo"],1,"Cada país firmante debe establecer un servicio SAR en su territorio, designar autoridades responsables y tener MEDIOS ADECUADOS (aeronaves, comunicaciones, personal capacitado). Además se promueve la cooperación regional entre Estados vecinos mediante Regiones SAR y acuerdos bilaterales o multilaterales.","BYS · Anexo 12");
+Q("by1","¿Qué es el DAR 12 y en qué se basa?",["Un manual interno de cada aerolínea chilena","El Reglamento Aeronáutico de Chile Parte 12, basado en el Anexo 12 de la OACI, que regula el SAR en Chile","Una circular de la Armada sobre rescate marítimo","El reglamento de mercancías peligrosas"],1,"El DAR 12 (Reglamento Aeronáutico de Chile, Parte 12) está basado en el ANEXO 12 DE LA OACI y regula en Chile los procedimientos de Búsqueda y Salvamento. Dentro de él se detallan las FASES DE EMERGENCIA, que permiten categorizar y actuar ante incidentes o accidentes aéreos.","BYS · DAR 12");
+Q("by1","En Chile, ¿quién coordina y regula el servicio SAR?",["La Armada de Chile a través de DIRECTEMAR","La DGAC, a través del Centro Coordinador de Rescate (RCC Chile)","ONEMI y SENAPRED","Carabineros de Chile"],1,"En Chile el SAR es coordinado y regulado por la DIRECCIÓN GENERAL DE AERONÁUTICA CIVIL (DGAC), a través del Centro Coordinador de Rescate (RCC Chile). El RCC Aéreo está a cargo de la FUERZA AÉREA DE CHILE y el RCC Marítimo de la Armada (DIRECTEMAR).","BYS · SAR Chile");
+Q("by1","¿Qué instituciones participan en una operación SAR en Chile?",["Solo la DGAC y la Fuerza Aérea","FACH, Armada, Bomberos, SAMU, Carabineros y ONEMI/SENAPRED, además de la DGAC","Únicamente organismos militares","Solo la aerolínea involucrada y la DGAC"],1,"Además de la DGAC participan la FUERZA AÉREA DE CHILE (FACH), la ARMADA DE CHILE, BOMBEROS, el SAMU y servicios médicos de emergencia, CARABINEROS DE CHILE, y ONEMI/SENAPRED para emergencias mayores. La coordinación interinstitucional es clave para el éxito de la operación.","BYS · SAR Chile");
+Q("by1","¿Quién está a cargo del RCC Aéreo en Chile?",["La Armada de Chile","La Fuerza Aérea de Chile (FACH)","Carabineros de Chile","La aerolínea operadora"],1,"En Chile hay varios RCC según el tipo de emergencia y la zona: el RCC AÉREO está a cargo de la FUERZA AÉREA DE CHILE (FACH) y el RCC MARÍTIMO de la ARMADA DE CHILE (DIRECTEMAR). Ambos coordinan con el MCC de la DGAC.","BYS · SAR Chile");
+Q("by1","¿Qué es una FIR?",["Una frecuencia de radio de emergencia","Región de Información de Vuelo: zona de espacio aéreo asignada a un país","Un tipo de baliza de localización","El informe final de investigación de un accidente"],1,"FIR es la REGIÓN DE INFORMACIÓN DE VUELO: una zona de espacio aéreo asignada a un país, que provee información de vuelo y coordina emergencias. Las FIR son reguladas por la OACI y cada FIR activa su RCC ante emergencias.","BYS · FIR");
+Q("by1","¿Cuántas FIR tiene Chile y cuáles son?",["Dos: Santiago y Punta Arenas","Tres: Antofagasta (norte), Santiago (centro-sur) y Punta Arenas (austral)","Cuatro: Iquique, Antofagasta, Santiago y Puerto Montt","Una sola, la FIR Santiago"],1,"Chile tiene TRES FIR: ANTOFAGASTA (norte), SANTIAGO (centro-sur) y PUNTA ARENAS (austral). Son coordinadas por la DGAC y la FACH, y cada una activa su RCC ante emergencias. Ojo: no confundir con las REGIONES SAR, que son seis.","BYS · FIR");
+Q("by1","¿Cuáles son las Regiones de Búsqueda y Salvamento de Chile?",["Antofagasta, Santiago y Punta Arenas","Iquique, Antofagasta, Santiago, Puerto Montt, Punta Arenas e Isla de Pascua","Arica, Valparaíso, Concepción y Coyhaique","Norte, Centro y Sur"],1,"Para efectos de la operación del Servicio, las Regiones de Búsqueda y Salvamento de Chile son SEIS: IQUIQUE, ANTOFAGASTA, SANTIAGO, PUERTO MONTT, PUNTA ARENAS e ISLA DE PASCUA. Distintas de las tres FIR (Antofagasta, Santiago y Punta Arenas).","BYS · Regiones SAR");
+Q("by1","¿Qué organización internacional regula las FIR?",["La IATA","La OACI (Organización de Aviación Civil Internacional)","COSPAS-SARSAT","La DGAC de cada país"],1,"Las FIR son reguladas por la OACI (Organización de Aviación Civil Internacional). En Chile son coordinadas por la DGAC y la FACH.","BYS · FIR");
+Q("by1","Un piloto al mando que capta señales de socorro, ¿qué debe hacer?",["Continuar su vuelo y reportarlo al aterrizar","Brindar apoyo según su condición de vuelo y seguridad, y notificar lo antes posible al RCC o a los servicios de tránsito aéreo de la DGAC","Descender inmediatamente al lugar y aterrizar","Comunicarlo solo a su compañía"],1,"Todo piloto al mando que observe una aeronave o embarcación en peligro, o capte señales de socorro, deberá BRINDAR APOYO según lo permita su condición de vuelo y seguridad (manteniendo contacto visual o de escucha) y NOTIFICAR LO ANTES POSIBLE al Centro Coordinador de Salvamento (RCC) o a los Servicios de Tránsito Aéreo de la DGAC.","BYS · Cooperación");
+Q("by1","Al notificar una emergencia, ¿qué información debe entregar el piloto?",["Solo la posición geográfica","Tipo e identificación de la aeronave, ubicación, hora, número de personas y condición física de los sobrevivientes","Únicamente la hora del incidente","El plan de vuelo completo de su propia aeronave"],1,"El piloto debe informar: TIPO E IDENTIFICACIÓN de la aeronave o nave involucrada, UBICACIÓN y referencia geográfica, HORA del incidente, NÚMERO DE PERSONAS involucradas, CONDICIÓN FÍSICA de los sobrevivientes y otros detalles relevantes.","BYS · Cooperación");
+Q("by1","¿Por qué los servicios SAR están disponibles también para aeronaves extranjeras?",["Porque las aerolíneas pagan un seguro internacional","Porque el objetivo es salvar vidas humanas sin distinción, y el Anexo 12 obliga a prestar el servicio a toda aeronave en peligro","Porque lo exige la IATA a sus miembros","Solo se prestan a extranjeras si hay convenio bilateral firmado"],1,"El objetivo del SAR es SALVAR VIDAS HUMANAS, sin importar la nacionalidad ni el tipo de operación. El Anexo 12 obliga a los Estados a prestar asistencia a toda aeronave en peligro dentro de su región de responsabilidad, y promueve la cooperación regional mediante acuerdos bilaterales y multilaterales. Además, el uso del sistema COSPAS-SARSAT es gratuito y está disponible para todos los países del mundo.","BYS · Cooperación");
+Q("by1","¿El sistema SAR se limita solo a aeronaves civiles?",["Sí, las militares tienen su propio sistema independiente","No: cubre aeronaves, embarcaciones y personas en tierra, civiles o no","Sí, salvo en tiempos de guerra","Solo cubre aeronaves comerciales de pasajeros"],1,"El SAR no se limita a aeronaves civiles: localiza, asiste y rescata a personas en peligro en TIERRA, MAR O AIRE. Por eso el sistema contempla balizas para aeronaves (ELT), para embarcaciones (EPIRB) y para personas (PLB), y participan instituciones civiles y militares por igual.","BYS · Cooperación");
+
+/* ---- M2 · COSPAS-SARSAT y sus centros ---- */
+Q("by2","¿Qué es el sistema COSPAS-SARSAT?",["Una red de radares de vigilancia del espacio aéreo","Un sistema internacional de búsqueda y salvamento que usa satélites para detectar señales de balizas de emergencia","Un organismo de la OACI que investiga accidentes","Un sistema de comunicaciones entre torres de control"],1,"COSPAS-SARSAT es un SISTEMA INTERNACIONAL DE BÚSQUEDA Y SALVAMENTO que utiliza SATÉLITES para detectar señales de emergencia emitidas por balizas (ELT, EPIRB y PLB). Su objetivo principal es salvar vidas localizando rápidamente a personas en peligro en todo el mundo, en tierra, mar o aire.","BYS · COSPAS-SARSAT");
+Q("by2","¿Qué significan las siglas COSPAS y SARSAT?",["Ambas son siglas en inglés de la NASA","COSPAS es el sistema ruso y SARSAT (Search and Rescue Satellite-Aided Tracking) el desarrollado por EE.UU.","COSPAS es europeo y SARSAT canadiense","Son dos nombres del mismo satélite estadounidense"],1,"COSPAS es el acrónimo ruso de «Sistema Espacial para la Búsqueda de Buques en Peligro», y SARSAT es el sistema desarrollado por EE.UU.: SEARCH AND RESCUE SATELLITE-AIDED TRACKING.","BYS · COSPAS-SARSAT");
+Q("by2","¿Cuándo se inició el proyecto COSPAS-SARSAT y entre qué países?",["En 1944, entre los firmantes del Convenio de Chicago","En 1979, entre Canadá, Estados Unidos, Francia y la Unión Soviética","En 1988, entre los países de la OTAN","En 1982, entre EE.UU. y Rusia únicamente"],1,"En 1979, en plena GUERRA FRÍA, se inicia como proyecto de cooperación entre CANADÁ, ESTADOS UNIDOS, FRANCIA Y LA UNIÓN SOVIÉTICA. En 1982 se detecta la primera señal de emergencia y en 1988 se establece formalmente el Acuerdo Internacional COSPAS-SARSAT, convirtiéndose en un programa humanitario sin fines de lucro.","BYS · COSPAS-SARSAT");
+Q("by2","¿En qué año se detectó la primera señal de emergencia del sistema?",["1979","1982","1988","2009"],1,"En 1982 se detectó la primera señal de emergencia. El proyecto había comenzado en 1979 y el Acuerdo Internacional se formalizó en 1988, como programa humanitario SIN FINES DE LUCRO.","BYS · COSPAS-SARSAT");
+Q("by2","¿Cuál es la función principal del COSPAS-SARSAT?",["Controlar el tránsito aéreo en rutas oceánicas","Detectar, localizar y comunicar alertas de emergencia de balizas que transmiten en frecuencias de socorro como 406 MHz","Investigar las causas de los accidentes aéreos","Emitir los pronósticos meteorológicos para la aviación"],1,"Su función es DETECTAR, LOCALIZAR Y COMUNICAR alertas de emergencia provenientes de balizas que transmiten en frecuencias internacionales de socorro, como los 406 MHz, permitiendo una respuesta rápida de los equipos SAR.","BYS · COSPAS-SARSAT");
+Q("by2","¿Cuántas vidas se han salvado gracias al sistema COSPAS-SARSAT?",["Más de 5.000","Más de 50.000","Más de 500.000","Menos de 1.000"],1,"Más de 50.000 VIDAS han sido salvadas gracias al sistema. Hoy cuenta con más de 40 países miembros, funciona 24/7 y es SIN COSTO para los usuarios en peligro.","BYS · COSPAS-SARSAT");
+Q("by2","¿Cuál es la secuencia correcta de una alerta COSPAS-SARSAT?",["Baliza → RCC → MCC → satélites → medios SAR","Baliza (406 MHz) → satélites → LUT → MCC → RCC → medios SAR","Baliza → torre de control → DGAC → FACH","Satélites → baliza → MCC → aerolínea"],1,"1) Se activa la BALIZA (manual o automáticamente) y emite en 406 MHz. 2) Los SATÉLITES (LEOSAR, GEOSAR, MEOSAR) captan la señal y la retransmiten a las estaciones terrestres (LUT). 3) Los LUT procesan la señal y envían un mensaje con la posición al MCC. 4) El MCC comprueba la veracidad y lo reenvía al RCC correspondiente según la posición y nacionalidad de la baliza. 5) El RCC coordina y moviliza los medios SAR.","BYS · Funcionamiento");
+Q("by2","¿Qué es un LUT en el sistema COSPAS-SARSAT?",["El satélite de órbita media","La estación terrestre que recibe y procesa la señal del satélite","El centro que coordina el rescate","La baliza personal de localización"],1,"El LUT (Local User Terminal) es la ESTACIÓN TERRESTRE que recibe la señal retransmitida por los satélites, la procesa y envía al MCC un mensaje que incluye la POSICIÓN del siniestro.","BYS · Funcionamiento");
+Q("by2","¿Qué es el MCC y cuál es su función?",["Centro de Control de Misión: recibe, procesa y distribuye las señales detectadas por los satélites","Centro de Mando Central de la Fuerza Aérea","Manual de Comunicaciones Críticas","Centro Médico de Coordinación"],0,"El MCC (MISSION CONTROL CENTER · Centro de Control de Misión) es la instalación encargada de RECIBIR, PROCESAR Y DISTRIBUIR las señales de emergencia detectadas por los satélites COSPAS-SARSAT. Recibe las señales en 406 MHz, determina la ubicación probable, envía la información al RCC correspondiente y coordina con otros MCC del mundo. En Chile el MCC opera bajo la DGAC.","BYS · MCC");
+Q("by2","¿Qué es el RCC y cuál es su función?",["Centro Coordinador de Salvamento: organiza, coordina y supervisa las operaciones SAR de una región","Red de Coordinación Civil de emergencias","Registro Central de Comunicaciones aeronáuticas","Centro de Reparación de Componentes"],0,"El RCC (RESCUE COORDINATION CENTER · Centro Coordinador de Salvamento) es la dependencia responsable de ORGANIZAR, COORDINAR Y SUPERVISAR las operaciones SAR dentro de una región determinada (SRR). Recibe las alertas del MCC, EVALÚA Y DECLARA la fase de emergencia (INCERFA, ALERFA o DETRESFA), activa los medios de rescate y coordina con FACH, Armada, Carabineros, SAMU y ONEMI/SENAPRED.","BYS · RCC");
+Q("by2","¿Cuál es la diferencia esencial entre el MCC y el RCC?",["El MCC es chileno y el RCC internacional","El MCC procesa la señal satelital y la deriva; el RCC declara la fase y coordina el rescate en su región","El MCC coordina el rescate y el RCC solo informa","No hay diferencia, son el mismo organismo"],1,"El MCC RECIBE, PROCESA Y DISTRIBUYE la señal satelital, determinando la ubicación probable y derivándola al RCC que corresponda. El RCC es quien EVALÚA Y DECLARA la fase de emergencia y ACTIVA Y COORDINA los medios de rescate en su región. En Chile el MCC opera bajo la DGAC; el RCC Aéreo bajo la FACH y el marítimo bajo la Armada.","BYS · MCC y RCC");
+Q("by2","¿Qué caracteriza a los satélites LEOSAR?",["Órbita baja (~850 km), localizan sin GPS por efecto Doppler y cubren todo el globo incluidos los polos","Órbita fija a 36.000 km, requieren baliza con GPS","Órbita media a 20.000 km, precisión menor a 5 km","Son satélites militares de uso exclusivo de la OTAN"],0,"LEOSAR (Low Earth Orbit): satélites en ÓRBITA BAJA (~850 km). Detectan señales y LOCALIZAN SIN GPS mediante el EFECTO DOPPLER. Tienen cobertura global, incluidos los polos.","BYS · Satélites");
+Q("by2","¿Qué caracteriza a los satélites GEOSAR?",["Órbita baja con efecto Doppler","Satélites fijos a 36.000 km: detección inmediata, pero requieren baliza con GPS y no localizan por sí solos","Órbita media con precisión menor a 5 km","Satélites que solo operan sobre los polos"],1,"GEOSAR (Geostationary): satélites FIJOS a 36.000 km. Dan DETECCIÓN INMEDIATA, pero REQUIEREN que la baliza tenga GPS, porque NO TIENEN CAPACIDAD DE LOCALIZACIÓN POR SÍ SOLOS.","BYS · Satélites");
+Q("by2","¿Qué caracteriza a los satélites MEOSAR?",["Órbita baja, sin GPS","Órbita media (20.000 km), alta precisión y detección en menos de 10 minutos, usando GPS, Galileo y GLONASS","Órbita geoestacionaria fija","Están en desuso desde 2009"],1,"MEOSAR (Medium Orbit): satélites en ÓRBITA MEDIA (20.000 km). Ofrecen ALTA PRECISIÓN y detección rápida (MENOS DE 10 MINUTOS), usando constelaciones como GPS, GALILEO y GLONASS. Es la tecnología actual: ubica a una persona en menos de 10 minutos con precisión menor a 5 km.","BYS · Satélites");
+Q("by2","Con tecnología MEOSAR, ¿en cuánto tiempo y con qué precisión se ubica a una persona?",["En menos de 10 minutos, con precisión menor a 5 km","En una hora, con precisión de 50 km","En 24 horas, con precisión de 1 km","En 30 minutos, con precisión de 20 km"],0,"La tecnología MEOSAR permite ubicar a una persona en MENOS DE 10 MINUTOS con una precisión de MENOS DE 5 KM. El sistema funciona 24/7 y sin costo para los usuarios en peligro.","BYS · Satélites");
+Q("by2","¿Qué relación tiene el COSPAS-SARSAT con las fases de emergencia?",["No tienen relación: son sistemas independientes","La detección de una señal de baliza lleva a declarar DETRESFA, y el sistema permite confirmar o descartar fases y acortar los tiempos de búsqueda","El COSPAS-SARSAT reemplazó a las fases de emergencia","Solo se relaciona con la fase INCERFA"],1,"La DETECCIÓN DE SEÑAL DE BALIZA conduce a la fase DETRESFA. El COSPAS-SARSAT permite ACORTAR LOS TIEMPOS DE BÚSQUEDA, CONFIRMAR O DESCARTAR fases de emergencia y mejorar la coordinación con el RCC, la Fuerza Aérea, la Armada y ONEMI.","BYS · Fases y satélites");
+
+/* ---- M3 · Fases de emergencia ---- */
+Q("by3","¿Cuáles son las tres fases de emergencia aérea, en orden de gravedad?",["ALERFA · INCERFA · DETRESFA","INCERFA · ALERFA · DETRESFA","DETRESFA · ALERFA · INCERFA","INCERFA · DETRESFA · ALERFA"],1,"Las fases, de menor a mayor gravedad, son: 1) INCERFA (fase de INCERTIDUMBRE), 2) ALERFA (fase de ALERTA) y 3) DETRESFA (fase de PELIGRO). Son parte del protocolo internacional SAR y las usan los RCC para clasificar el nivel de gravedad y activar los recursos adecuados.","BYS · Fases");
+Q("by3","¿Qué indica la fase INCERFA?",["Que hay peligro real e inminente para la aeronave","DUDA sobre la seguridad de una aeronave y sus ocupantes","Que la aeronave ya se estrelló","Que la aeronave aterrizó sin novedad"],1,"INCERFA es la FASE DE INCERTIDUMBRE: indica DUDA sobre la seguridad de una aeronave y sus ocupantes.","BYS · INCERFA");
+Q("by3","¿Cuándo se declara la fase INCERFA?",["Cuando se recibe una señal de baliza en 406 MHz","Cuando no hay comunicación en el período esperado o la aeronave no llega 30 minutos después de la hora prevista sin explicación","Cuando se confirma el impacto de la aeronave","Cuando el combustible es insuficiente para llegar a destino"],1,"Se declara cuando NO SE HA RECIBIDO COMUNICACIÓN dentro del período esperado, cuando la aeronave NO HA LLEGADO 30 MINUTOS después de la hora prevista sin explicación, o cuando NO HAY CONFIRMACIÓN de su posición.","BYS · INCERFA");
+Q("by3","En la fase INCERFA, ¿qué acciones se realizan?",["Se movilizan de inmediato todos los medios SAR","Verificación básica: vigilancia e intentos de contacto, sin movilizar aún medios de rescate","Se declara el luto oficial y se notifica a los familiares","Se cierra el espacio aéreo de la FIR"],1,"En INCERFA se inicia una VIGILANCIA e INTENTOS DE CONTACTO —verificación básica— pero AÚN NO SE MOVILIZAN los recursos de rescate.","BYS · INCERFA");
+Q("by3","¿Cuántos minutos de retraso sin explicación gatillan la fase INCERFA?",["10 minutos","30 minutos","60 minutos","120 minutos"],1,"La aeronave que no ha llegado 30 MINUTOS después de la hora prevista, sin explicación, gatilla la fase INCERFA, junto con la falta de comunicación en el período esperado o la ausencia de confirmación de su posición.","BYS · INCERFA");
+Q("by3","¿Cuándo se declara la fase ALERFA?",["Cuando la aeronave se retrasa 30 minutos","Cuando hay información de problemas de navegación o comunicaciones, combustible insuficiente, o reportes de fallas mecánicas o condiciones peligrosas","Cuando se activa una baliza detectada por COSPAS-SARSAT","Cuando hay testigos de un accidente"],1,"ALERFA es la FASE DE ALERTA: se sospecha que la aeronave está en una situación que podría volverse crítica. Se declara cuando se recibió información que sugiere PROBLEMAS DE NAVEGACIÓN O COMUNICACIONES, cuando se sabe que la aeronave tiene COMBUSTIBLE INSUFICIENTE para llegar a destino, o cuando hay reportes de FALLAS MECÁNICAS o condiciones peligrosas.","BYS · ALERFA");
+Q("by3","En la fase ALERFA, ¿qué acciones se realizan?",["Solo se anota el evento en la bitácora","Se alerta a los servicios SAR y comienza la planificación preliminar de posibles operaciones","Se movilizan todos los recursos disponibles","No se realiza ninguna acción hasta confirmar el accidente"],1,"En ALERFA SE ALERTA A LOS SERVICIOS SAR y comienza la PLANIFICACIÓN PRELIMINAR de posibles operaciones: es la preparación para una posible emergencia real.","BYS · ALERFA");
+Q("by3","¿Cuándo se declara la fase DETRESFA?",["Cuando hay duda sobre la posición de la aeronave","Cuando existe PELIGRO REAL confirmado: impacto confirmado, activación de baliza detectada por COSPAS-SARSAT, o testigos o llamada de auxilio","Cuando la aeronave se retrasa más de una hora","Cuando el combustible empieza a ser justo"],1,"DETRESFA es la FASE DE PELIGRO: se declara ante la CONFIRMACIÓN de que la aeronave, embarcación o persona está en PELIGRO REAL. Casos: IMPACTO CONFIRMADO, ACTIVACIÓN DE UNA BALIZA ELT/EPIRB de 406 MHz detectada por COSPAS-SARSAT, o TESTIGOS de un accidente o llamada de auxilio.","BYS · DETRESFA");
+Q("by3","¿Qué implica operativamente la fase DETRESFA?",["Se mantiene la vigilancia sin movilizar medios","Se activa completamente el sistema SAR: se movilizan todos los recursos y se coordina nacional e internacionalmente","Solo se alerta a la aerolínea involucrada","Se espera 30 minutos antes de actuar"],1,"En DETRESFA SE ACTIVA COMPLETAMENTE EL SISTEMA SAR: se movilizan aeronaves, helicópteros, embarcaciones y equipos terrestres, con COORDINACIÓN NACIONAL E INTERNACIONAL INMEDIATA si es necesario.","BYS · DETRESFA");
+Q("by3","La activación de una baliza de 406 MHz detectada por COSPAS-SARSAT lleva directamente a:",["INCERFA","ALERFA","DETRESFA","No gatilla ninguna fase por sí sola"],2,"La detección de una señal de baliza de 406 MHz por COSPAS-SARSAT es una de las causales directas de DETRESFA, porque confirma peligro real. El sistema permite además acortar los tiempos de búsqueda y confirmar o descartar las fases.","BYS · DETRESFA");
+Q("by3","¿Para qué sirven las fases de emergencia?",["Para determinar responsabilidades legales tras el accidente","Para establecer un lenguaje común internacional, ordenar los niveles de acción según el peligro y usar eficientemente los recursos SAR","Para calcular el costo de la operación de rescate","Para clasificar los tipos de aeronave involucrados"],1,"Las fases ESTABLECEN UN LENGUAJE COMÚN INTERNACIONAL para priorizar emergencias, ORDENAN LOS NIVELES DE ACCIÓN según el grado de peligro y AYUDAN A LOS RCC a usar eficientemente los recursos. Son parte del estándar internacional del Anexo 12 del Convenio de Chicago.","BYS · Fases");
+Q("by3","¿Quién evalúa y declara la fase de emergencia?",["El piloto al mando","El RCC (Centro Coordinador de Salvamento)","El MCC","La aerolínea operadora"],1,"El RCC recibe las alertas desde el MCC y es quien EVALÚA Y DECLARA la fase de emergencia (INCERFA, ALERFA o DETRESFA), para luego activar y coordinar los medios de rescate.","BYS · RCC");
+
+/* ---- M4 · Balizas y frecuencias ---- */
+Q("by4","¿Qué es una baliza ELT y dónde se usa?",["Emergency Locator Transmitter: baliza instalada en aviones y helicópteros","Baliza flotante para embarcaciones","Baliza portátil de uso personal","Un transpondedor de control de tránsito aéreo"],0,"El ELT (EMERGENCY LOCATOR TRANSMITTER) es la baliza de uso AERONÁUTICO, instalada en aviones y helicópteros. Se activa AUTOMÁTICAMENTE al sufrir un impacto o MANUALMENTE, transmite en 406 MHz (detectable por COSPAS-SARSAT) y es obligatoria en la aviación civil en muchos países.","BYS · ELT");
+Q("by4","¿Qué es una baliza EPIRB y en qué operaciones se usa?",["Baliza aeronáutica instalada en la cola del avión","Emergency Position Indicating Radio Beacon: baliza para embarcaciones, que flota y se activa al contacto con el agua","Baliza personal para montañismo","Un radar meteorológico de a bordo"],1,"La EPIRB (EMERGENCY POSITION INDICATING RADIO BEACON) se usa en BARCOS y naves marítimas. FLOTA y se activa AL CONTACTO CON EL AGUA o manualmente. También emite en 406 MHz con señal de identificación y GPS. Es requerida en embarcaciones de pesca, comerciales y de largo alcance.","BYS · EPIRB");
+Q("by4","¿Qué es una baliza PLB y quién puede utilizarla?",["Una baliza solo para uso militar","Personal Locator Beacon: baliza portátil que usan personas en actividades al aire libre como montañismo o expediciones","Una baliza instalada en los toboganes del avión","Una baliza que solo pueden portar los pilotos"],1,"La PLB (PERSONAL LOCATOR BEACON) la usan PERSONAS en actividades al aire libre: montañismo, expediciones, navegación, o trabajadores en zonas remotas. Es PORTÁTIL y se activa MANUALMENTE. Emite en 406 MHz con datos de GPS y NO está asociada a una aeronave o embarcación, sino AL INDIVIDUO.","BYS · PLB");
+Q("by4","¿Cuál es la diferencia principal entre ELT, EPIRB y PLB?",["La frecuencia en que emiten: 406, 121.5 y 243 MHz respectivamente","A qué están asociadas: el ELT a aeronaves, la EPIRB a embarcaciones y la PLB a la persona","Solo el ELT es detectado por COSPAS-SARSAT","El ELT es manual, la EPIRB automática y la PLB no se activa"],1,"Las tres emiten en 406 MHz y son detectadas por COSPAS-SARSAT. La diferencia está en A QUÉ ESTÁN ASOCIADAS y cómo se activan: ELT → AERONAVES (automática por impacto o manual); EPIRB → EMBARCACIONES (flota y se activa al contacto con el agua o manual); PLB → LA PERSONA (portátil, activación manual).","BYS · Balizas");
+Q("by4","¿En qué frecuencia emiten las balizas modernas detectadas por COSPAS-SARSAT?",["121.5 MHz","243 MHz","406 MHz","125.5 MHz"],2,"Los 406 MHz son la frecuencia DIGITAL MODERNA y la ÚNICA monitoreada por COSPAS-SARSAT desde 2009. Transmite datos GPS e identificación del usuario, es obligatoria en las nuevas balizas y requiere REGISTRO OBLIGATORIO del propietario.","BYS · Frecuencias");
+Q("by4","¿Qué ocurrió con la frecuencia de 121.5 MHz en 2009?",["Pasó a ser la frecuencia principal del sistema","Dejó de ser detectada por satélite, aunque sigue sirviendo para que los rescatistas ubiquen la baliza en terreno","Se prohibió su uso en todo el mundo","Se reservó para uso exclusivamente militar"],1,"Los 121.5 MHz son una frecuencia ANALÓGICA ANTIGUA que YA NO ES DETECTADA POR SATÉLITE DESDE 2009. Sigue siendo útil localmente: permite a las aeronaves o rescatistas RASTREAR la baliza en tierra o aire, como un rastreador de precisión final.","BYS · Frecuencias");
+Q("by4","¿Para qué se usa la frecuencia de 243 MHz?",["Es la frecuencia digital principal del sistema","Es la versión militar de 121.5 MHz, también en desuso por satélite desde 2009","Es la frecuencia de las balizas EPIRB","Se usa para comunicaciones con la torre de control"],1,"Los 243 MHz son la VERSIÓN MILITAR de los 121.5 MHz. Al igual que esta, YA NO ES DETECTADA POR SATÉLITE DESDE 2009 y puede ser rastreada localmente por las fuerzas armadas, aunque está en desuso.","BYS · Frecuencias");
+Q("by4","¿Qué ventaja tiene la señal de 406 MHz sobre las antiguas?",["Es más barata de instalar","Es digital, clara y potente, lleva identificación del usuario y posición GPS, y es la única monitoreada por satélite","Alcanza mayor distancia en tierra","Puede activarse sin batería"],1,"Los 406 MHz emiten una señal DIGITAL clara y potente, que puede llevar IDENTIFICACIÓN DEL USUARIO, POSICIÓN GPS y otra información. Es la ÚNICA frecuencia monitoreada por COSPAS-SARSAT desde 2009 y requiere el REGISTRO OBLIGATORIO del propietario de la baliza.","BYS · Frecuencias");
+Q("by4","¿Cómo se complementan hoy los 406 MHz y los 121.5 MHz?",["Ambos son detectados por satélite por igual","406 detecta el accidente y ubica el lugar vía satélite; 121.5 ayuda a los rescatistas a encontrar la baliza con precisión en el terreno","121.5 detecta y 406 rastrea","Ya no se usa ninguna de las dos"],1,"406 MHz → DETECTA el accidente y UBICA el lugar exacto por satélite. 121.5 MHz → ayuda a los rescatistas a ENCONTRAR CON PRECISIÓN la baliza EN EL TERRENO, funcionando como rastreador final. 243 MHz se usa en algunos contextos militares, pero está en desuso.","BYS · Frecuencias");
+Q("by4","¿Cómo puede activarse una baliza ELT?",["Solo manualmente por la tripulación","Automáticamente al sufrir un impacto, o manualmente","Solo automáticamente al contacto con el agua","Solo desde el centro de control en tierra"],1,"El ELT puede activarse AUTOMÁTICAMENTE al sufrir un IMPACTO (por desaceleración) o MANUALMENTE. Esta doble activación es lo que garantiza que la señal se emita incluso si la tripulación queda incapacitada.","BYS · ELT");
+Q("by4","¿Qué significa que una baliza esté «normalizada y legislada»?",["Que fue fabricada en un país miembro de la OACI","Que cumple un estándar técnico internacional y su uso está exigido y regulado por norma, con registro obligatorio del propietario","Que su uso es voluntario pero recomendado","Que solo puede usarse en vuelos internacionales"],1,"NORMALIZADA significa que cumple un ESTÁNDAR TÉCNICO INTERNACIONAL (COSPAS-SARSAT y OACI): frecuencia, formato de señal y codificación idénticos en todo el mundo, para que cualquier satélite y cualquier RCC puedan interpretarla. LEGISLADA significa que su porte y uso están EXIGIDOS Y REGULADOS POR NORMA (Anexo 12 y DAR 12 en Chile), incluido el REGISTRO OBLIGATORIO del propietario de la baliza de 406 MHz.","BYS · Balizas");
+Q("by4","¿Qué consecuencias operativas tiene una activación falsa de una baliza?",["Ninguna, el sistema las descarta automáticamente","Moviliza recursos SAR limitados de forma innecesaria, desvía medios de emergencias reales y hace perder tiempo, que es el factor crítico","Solo genera una multa al propietario","Desactiva la baliza de forma permanente"],1,"Una activación falsa hace que se MOVILICEN RECURSOS SAR LIMITADOS de forma innecesaria (aeronaves, embarcaciones, personal), DESVIANDO medios que podrían necesitarse en una emergencia real y haciendo PERDER TIEMPO, que es el factor crítico del SAR. Por eso el MCC COMPRUEBA LA VERACIDAD de la alarma antes de derivarla al RCC, y por eso el registro del propietario de la baliza es obligatorio: permite contactarlo y descartar la falsa alarma rápidamente.","BYS · Balizas");
+Q("by4","¿Cuánto cuesta el uso del sistema COSPAS-SARSAT en una emergencia?",["Lo paga la aerolínea operadora","Es gratuito y está disponible para todos los países del mundo","Lo paga el Estado donde ocurre el accidente","Depende del tipo de baliza activada"],1,"El uso de los satélites del sistema COSPAS-SARSAT es GRATUITO en caso de emergencia y está disponible para TODOS LOS PAÍSES DEL MUNDO, sin importar su ubicación o nivel de desarrollo. Funciona 24/7 como programa humanitario sin fines de lucro.","BYS · COSPAS-SARSAT");
+
+/* ---- tarjetas ---- */
+C("by1","SAR · qué es y para qué","SEARCH AND RESCUE · Búsqueda y Salvamento. OBJETIVO PRINCIPAL: SALVAR VIDAS HUMANAS. Actúa en accidentes de aeronaves, ditching, extraviados en zonas remotas y desastres naturales.");
+C("by1","Anexo 12 · Convenio de Chicago","Convenio de Chicago 1944. El ANEXO 12 obliga a los 193 Estados miembros de la OACI a establecer servicios SAR, designar autoridades y tener medios adecuados. En Chile se aplica mediante el DAR 12.");
+C("by1","SAR en Chile · quién es quién","Coordina y regula la DGAC a través del RCC Chile. RCC AÉREO: Fuerza Aérea. RCC MARÍTIMO: Armada (DIRECTEMAR). MCC: DGAC. Participan además Bomberos, SAMU, Carabineros y ONEMI/SENAPRED.");
+C("by1","FIR vs Regiones SAR","3 FIR: Antofagasta, Santiago y Punta Arenas. 6 REGIONES SAR: Iquique, Antofagasta, Santiago, Puerto Montt, Punta Arenas e Isla de Pascua. Las FIR las regula la OACI.");
+C("by2","COSPAS-SARSAT · origen","1979 proyecto entre Canadá, EE.UU., Francia y la URSS · 1982 primera señal detectada · 1988 acuerdo formal, programa humanitario sin fines de lucro. +40 países, +50.000 vidas salvadas, 24/7 y gratuito.");
+C("by2","La cadena de la alerta","BALIZA (406 MHz) → SATÉLITES (LEOSAR/GEOSAR/MEOSAR) → LUT (estación terrestre) → MCC (procesa y verifica) → RCC (declara la fase y coordina) → MEDIOS SAR.");
+C("by2","Los tres satélites","LEOSAR: órbita baja ~850 km, localiza sin GPS por efecto Doppler, cubre los polos. GEOSAR: fijo a 36.000 km, detección inmediata pero necesita baliza con GPS. MEOSAR: órbita media 20.000 km, menos de 10 min y menos de 5 km de error.");
+C("by2","MCC vs RCC","MCC (Centro de Control de Misión): recibe, procesa y distribuye la señal satelital · en Chile bajo la DGAC. RCC (Centro Coordinador de Salvamento): DECLARA LA FASE y coordina el rescate en su región.");
+C("by3","Las tres fases de emergencia","INCERFA: duda (sin comunicación o 30 min de atraso sin explicación) → solo vigilancia. ALERFA: sospecha de situación crítica (fallas, combustible insuficiente) → se alerta al SAR y se planifica. DETRESFA: peligro real confirmado → se moviliza todo.");
+C("by3","Qué gatilla cada fase","INCERFA: 30 minutos de atraso sin explicación o sin confirmación de posición. ALERFA: problemas de navegación o comunicaciones, combustible insuficiente, fallas mecánicas. DETRESFA: impacto confirmado, baliza 406 MHz detectada, o testigos/llamada de auxilio.");
+C("by4","Las tres balizas","ELT → AERONAVES, automática por impacto o manual. EPIRB → EMBARCACIONES, flota y se activa con el agua. PLB → PERSONAS, portátil y manual. Las tres emiten en 406 MHz con GPS e identificación.");
+C("by4","Las tres frecuencias","406 MHz: digital, única detectada por satélite desde 2009, lleva GPS e ID, registro obligatorio. 121.5 MHz: analógica, sin satélite desde 2009, sirve de rastreador en terreno. 243 MHz: versión militar de 121.5, en desuso.");
+/* --- Cuestionario BYS · las 30 de desarrollo en formato alternativa --- */
+Q("by1","¿Cuál es el objetivo principal de una operación de Búsqueda y Salvamento?",["Recuperar los restos de la aeronave para la investigación","Salvar vidas humanas","Determinar las causas del accidente","Restablecer la operación normal del aeropuerto"],1,"El objetivo principal del SAR es SALVAR VIDAS HUMANAS. Es un conjunto de servicios y operaciones organizadas para LOCALIZAR, ASISTIR Y RESCATAR a personas en peligro, en accidentes de aeronaves, ditching, personas extraviadas en zonas remotas y desastres naturales. Todo lo demás —satélites, fases, coordinación— existe para servir a ese fin.","Cuestionario oficial · desarrollo 1");
+Q("by1","¿Qué hecho histórico demostró la necesidad de una estructura global de rescate?",["El accidente del vuelo Air France 447","La Segunda Guerra Mundial","La firma del Convenio de Chicago","La creación del sistema COSPAS-SARSAT"],1,"La SEGUNDA GUERRA MUNDIAL demostró la importancia de tener una estructura global de rescate, y el aumento del tráfico aéreo civil de posguerra la hizo indispensable. El SAR nació de la necesidad de localizar aeronaves desaparecidas, asistir a personas en peligro y estandarizar procedimientos entre países, quedando formalizado en el ANEXO 12 del Convenio de Chicago (1944), que obliga a los 193 Estados miembros de la OACI.","Cuestionario oficial · desarrollo 2");
+Q("by2","¿Cuál es la función principal del sistema COSPAS-SARSAT?",["Controlar el tránsito aéreo en rutas oceánicas","Detectar, localizar y comunicar alertas de emergencia emitidas por balizas","Investigar las causas de los accidentes aéreos","Coordinar los medios de rescate en cada región"],1,"COSPAS-SARSAT es un sistema internacional de búsqueda y salvamento que usa SATÉLITES para detectar señales de balizas (ELT, EPIRB y PLB). Su función es DETECTAR, LOCALIZAR Y COMUNICAR las alertas que se transmiten en frecuencias de socorro como 406 MHz. COSPAS es el sistema ruso y SARSAT el estadounidense. Nació en 1979 (Canadá, EE.UU., Francia y URSS), detectó su primera señal en 1982 y se formalizó en 1988. Ojo: quien COORDINA el rescate es el RCC, no el sistema satelital.","Cuestionario oficial · desarrollo 3");
+Q("by2","¿Cuál es el rol del RCC dentro de una operación SAR?",["Procesar las señales captadas por los satélites","Organizar, coordinar y supervisar las operaciones SAR de su región, declarando la fase de emergencia","Fabricar y certificar las balizas de emergencia","Investigar el accidente una vez concluido el rescate"],1,"El RCC (Rescue Coordination Center · Centro Coordinador de Salvamento), según el DAR 12, ORGANIZA, COORDINA Y SUPERVISA las operaciones SAR dentro de una región (SRR). Recibe las alertas del MCC, EVALÚA Y DECLARA la fase de emergencia (INCERFA, ALERFA o DETRESFA), activa y coordina los medios de rescate y coordina con FACH, Armada, Carabineros, SAMU y ONEMI/SENAPRED. En Chile: RCC Aéreo a cargo de la FACH y RCC Marítimo de la Armada.","Cuestionario oficial · desarrollo 4");
+Q("by2","¿Cuál es la función del MCC en el sistema COSPAS-SARSAT?",["Declarar la fase de emergencia y movilizar los medios de rescate","Recibir, procesar y distribuir las señales detectadas por los satélites, derivándolas al RCC","Operar los satélites de órbita media","Autorizar el uso del espacio aéreo durante la emergencia"],1,"El MCC (Mission Control Center · Centro de Control de Misión) RECIBE, PROCESA Y DISTRIBUYE las señales de emergencia detectadas por los satélites. Determina la ubicación probable, COMPRUEBA LA VERACIDAD de la alarma, envía la información al RCC correspondiente y coordina con otros MCC del mundo. En Chile opera bajo la DGAC. Diferencia clave: el MCC procesa y deriva la señal; el RCC declara la fase y coordina el rescate.","Cuestionario oficial · desarrollo 5");
+Q("by3","¿Cuál es la diferencia esencial entre las tres fases de emergencia?",["El tipo de aeronave involucrada en cada caso","El grado de certeza del peligro: duda (INCERFA), sospecha (ALERFA) y peligro real confirmado (DETRESFA)","La cantidad de pasajeros a bordo","El organismo que las declara en cada caso"],1,"Las fases van de menor a mayor gravedad según el GRADO DE CERTEZA del peligro. INCERFA: DUDA sobre la seguridad → solo vigilancia e intentos de contacto. ALERFA: se SOSPECHA que podría volverse crítica → se alerta al SAR y comienza la planificación preliminar. DETRESFA: peligro REAL CONFIRMADO → se activa completamente el sistema SAR con coordinación nacional e internacional. Las tres las declara el RCC y son parte del estándar del Anexo 12.","Cuestionario oficial · desarrollo 6");
+Q("by3","¿Cuál de estas circunstancias corresponde a la fase INCERFA?",["Se recibió una señal de baliza de 406 MHz","La aeronave no llegó 30 minutos después de la hora prevista y no hay explicación","Se sabe que la aeronave tiene combustible insuficiente","Hay testigos que presenciaron el impacto"],1,"INCERFA indica DUDA sobre la seguridad de la aeronave y sus ocupantes. Se declara cuando no se ha recibido comunicación en el período esperado, cuando la aeronave NO HA LLEGADO 30 MINUTOS después de la hora prevista sin explicación, o cuando no hay confirmación de su posición. Solo se hace vigilancia e intentos de contacto: AÚN NO se movilizan medios SAR. El combustible insuficiente corresponde a ALERFA y la baliza o los testigos a DETRESFA.","Cuestionario oficial · desarrollo 7");
+Q("by3","¿Qué acciones se realizan en la fase ALERFA?",["Solo se registra el evento, sin acción alguna","Se alerta a los servicios SAR y comienza la planificación preliminar de posibles operaciones","Se movilizan de inmediato todos los recursos disponibles","Se cierra el espacio aéreo de toda la FIR"],1,"ALERFA se declara cuando hay información de PROBLEMAS DE NAVEGACIÓN O COMUNICACIONES, COMBUSTIBLE INSUFICIENTE para llegar a destino, o reportes de FALLAS MECÁNICAS o condiciones peligrosas. La acción es SE ALERTA A LOS SERVICIOS SAR y comienza la PLANIFICACIÓN PRELIMINAR: preparación para una emergencia real que aún no está confirmada.","Cuestionario oficial · desarrollo 8");
+Q("by3","¿Qué implica la declaración de la fase DETRESFA?",["Se mantiene la vigilancia sin movilizar medios","Se activa completamente el sistema SAR, con coordinación nacional e internacional inmediata","Se espera confirmación adicional durante 30 minutos","Solo se notifica a la aerolínea operadora"],1,"DETRESFA se declara ante la CONFIRMACIÓN de peligro real: impacto confirmado, activación de baliza de 406 MHz detectada por COSPAS-SARSAT, o testigos de un accidente o llamada de auxilio. Implica que SE ACTIVA COMPLETAMENTE EL SISTEMA SAR: se movilizan aeronaves, helicópteros, embarcaciones y equipos terrestres, con coordinación nacional e internacional inmediata.","Cuestionario oficial · desarrollo 9");
+Q("by2","¿Cuál es el orden correcto del procedimiento desde la señal hasta el inicio de la búsqueda?",["Baliza → RCC → MCC → satélites → medios SAR","Baliza → satélites → LUT → MCC → RCC → medios SAR","Baliza → MCC → satélites → LUT → RCC","Satélites → baliza → RCC → MCC → medios SAR"],1,"1) Se activa la BALIZA y emite en 406 MHz con GPS si es moderna. 2) Los SATÉLITES (LEOSAR, GEOSAR, MEOSAR) captan la señal. 3) La retransmiten a las estaciones terrestres o LUT, que la procesan y calculan la posición. 4) El LUT envía el mensaje al MCC, que COMPRUEBA LA VERACIDAD de la alarma. 5) El MCC deriva al RCC según posición y nacionalidad de la baliza. 6) El RCC DECLARA LA FASE y activa los medios SAR.","Cuestionario oficial · desarrollo 10");
+Q("by4","¿Qué es una baliza ELT y cuál es su uso?",["Una baliza flotante para embarcaciones de pesca","La baliza de uso aeronáutico, instalada en aviones y helicópteros","Una baliza portátil para excursionistas","Un transpondedor que identifica la aeronave ante el radar"],1,"El ELT (EMERGENCY LOCATOR TRANSMITTER) es la baliza AERONÁUTICA, instalada en aviones y helicópteros. Se activa AUTOMÁTICAMENTE al sufrir un impacto o MANUALMENTE. Transmite en 406 MHz, detectable por COSPAS-SARSAT, con identificación y posición GPS si es moderna. Es obligatoria en la aviación civil en muchos países. Permite localizar la aeronave aunque la tripulación quede incapacitada, y su detección gatilla directamente la fase DETRESFA.","Cuestionario oficial · desarrollo 11");
+Q("by4","¿Qué utilidad conserva hoy la frecuencia de 121.5 MHz si ya no la detectan los satélites?",["Ninguna, está completamente prohibida","Permite a los rescatistas rastrear la baliza en el terreno para localizarla con precisión","Sigue siendo la frecuencia principal en aviación militar","Se usa para comunicarse con el centro de control"],1,"Un ELT transmite en 406 MHz —digital, la ÚNICA monitoreada por satélite desde 2009, con identificación y posición GPS: DETECTA el accidente y UBICA el lugar— y en 121.5 MHz —analógica, fuera del satélite desde 2009, pero que permite a aeronaves y rescatistas RASTREAR la baliza EN EL TERRENO en la fase final de la búsqueda—. Los 243 MHz son la versión militar de 121.5, también en desuso. Se complementan: 406 lleva al equipo a la zona, 121.5 al punto exacto.","Cuestionario oficial · desarrollo 12");
+Q("by4","¿Dónde se instala normalmente el ELT fijo de una aeronave comercial y por qué?",["En la cabina de mando, para que el piloto lo active con rapidez","En la parte trasera del fuselaje, porque la cola sufre menos daño estructural en un impacto","Bajo el piso de la cabina de pasajeros, protegido por la estructura","En el compartimiento de carga delantero, junto al equipaje"],1,"El ELT fijo se instala en la PARTE TRASERA DEL FUSELAJE, hacia la COLA, con su antena al exterior en esa zona. La razón es la supervivencia del equipo: la sección de cola sufre MENOS DAÑO ESTRUCTURAL en un impacto, porque la energía se disipa en la parte delantera y en las alas, donde además está el combustible. Así la baliza tiene la mayor probabilidad de quedar intacta y poder transmitir. Además la antena queda despejada, sin obstrucciones que bloqueen la señal al satélite, y es accesible para inspección.","Cuestionario oficial · desarrollo 13");
+Q("by4","¿Qué caracteriza a una baliza EPIRB?",["Se instala en la cola de la aeronave y se activa por impacto","Se usa en embarcaciones, flota y se activa al contacto con el agua","Es portátil y la lleva una persona en la mochila","Solo puede activarse desde el puente de mando de la nave"],1,"La EPIRB (EMERGENCY POSITION INDICATING RADIO BEACON) es la baliza MARÍTIMA: se usa en barcos y naves. FLOTA y se activa AL CONTACTO CON EL AGUA o manualmente, de modo que si la embarcación se hunde se libera, flota y transmite sola. Emite en 406 MHz con identificación y GPS. Es requerida en embarcaciones de pesca, comerciales y de largo alcance.","Cuestionario oficial · desarrollo 14");
+Q("by4","¿Quiénes pueden utilizar una baliza PLB?",["Solo las tripulaciones de vuelo","Personas en actividades al aire libre como montañismo o expediciones, y trabajadores en zonas remotas","Únicamente el personal militar","Solo los capitanes de embarcaciones comerciales"],1,"La PLB (PERSONAL LOCATOR BEACON) la portan PERSONAS en actividades al aire libre —montañismo, senderismo, expediciones, navegación— y trabajadores en zonas remotas. Es PORTÁTIL y de activación SOLO MANUAL, y emite en 406 MHz con datos de GPS. Su diferencia esencial: NO está asociada a una aeronave ni a una embarcación, sino AL INDIVIDUO.","Cuestionario oficial · desarrollo 15");
+Q("by4","¿Cuál es la diferencia principal entre ELT, EPIRB y PLB?",["Cada una emite en una frecuencia distinta","A qué están asociadas: el ELT a la aeronave, la EPIRB a la embarcación y la PLB a la persona","Solo el ELT es detectado por COSPAS-SARSAT","Solo la PLB transmite posición GPS"],1,"Las TRES emiten en 406 MHz y las detecta COSPAS-SARSAT por igual. La diferencia está en A QUÉ ESTÁN ASOCIADAS y CÓMO SE ACTIVAN. ELT: a la AERONAVE, automática por impacto o manual, obligatoria en aviación civil. EPIRB: a la EMBARCACIÓN, flota y se activa con el agua o manualmente. PLB: a la PERSONA, portátil y solo manual. En resumen: ELT = aire, EPIRB = mar, PLB = tierra/individuo.","Cuestionario oficial · desarrollo 16");
+Q("by2","¿Qué diferencia a los satélites LEOSAR de los GEOSAR?",["LEOSAR localiza sin GPS por efecto Doppler; GEOSAR detecta al instante pero necesita que la baliza tenga GPS","LEOSAR es militar y GEOSAR civil","GEOSAR está en órbita baja y LEOSAR en órbita alta","Ninguno de los dos puede detectar señales de 406 MHz"],0,"LEOSAR (órbita baja, ~850 km): detecta y LOCALIZA SIN GPS mediante el EFECTO DOPPLER, con cobertura global incluidos los polos. GEOSAR (geoestacionarios, fijos a 36.000 km): dan DETECCIÓN INMEDIATA porque siempre están sobre la misma zona, pero NO LOCALIZAN POR SÍ SOLOS: requieren baliza con GPS. MEOSAR (órbita media, 20.000 km) es la tecnología actual, montada sobre GPS, Galileo y GLONASS: ubica en MENOS DE 10 MINUTOS con precisión MENOR A 5 KM. Los satélites retransmiten a los LUT, que envían al MCC.","Cuestionario oficial · desarrollo 17");
+Q("by1","¿Qué organismo coordina y regula el servicio SAR en Chile?",["La Armada de Chile","La DGAC, a través del Centro Coordinador de Rescate (RCC Chile)","ONEMI y SENAPRED","Bomberos de Chile"],1,"El SAR en Chile es coordinado y regulado por la DGAC, a través del RCC Chile; el MCC nacional también opera bajo la DGAC. Participan además: la FACH (a cargo del RCC Aéreo), la ARMADA (RCC Marítimo, DIRECTEMAR), BOMBEROS, el SAMU y servicios médicos, CARABINEROS y ONEMI/SENAPRED en emergencias mayores. La operación descansa en la cooperación interinstitucional bajo la coordinación del RCC.","Cuestionario oficial · desarrollo 18");
+Q("by1","¿Por qué los servicios SAR se prestan también a aeronaves extranjeras?",["Porque las aerolíneas extranjeras pagan una tasa por el servicio","Porque el objetivo es salvar vidas sin distinción y el Anexo 12 obliga a asistir a toda aeronave en peligro","Porque lo exige la IATA a sus asociados","Solo se prestan si existe un convenio bilateral previo"],1,"El objetivo del SAR es SALVAR VIDAS HUMANAS, sin distinción de nacionalidad ni bandera. El ANEXO 12 obliga a cada Estado a asistir a TODA aeronave en peligro dentro de su región de responsabilidad, y promueve la cooperación regional mediante las Regiones SAR y acuerdos bilaterales y multilaterales. Además, el uso del COSPAS-SARSAT es GRATUITO y está disponible para todos los países del mundo. Es un principio humanitario convertido en obligación normativa.","Cuestionario oficial · desarrollo 19");
+Q("by1","¿Cuándo finalizan las operaciones de búsqueda y salvamento?",["Automáticamente a las 72 horas de iniciada la búsqueda","Cuando se rescató a los sobrevivientes, se determinó que no los hay, o se agotaron razonablemente las probabilidades de encontrar personas con vida","Cuando lo solicita la aerolínea operadora","Cuando se recuperan los registradores de vuelo"],1,"La decisión la toma el RCC. Finalizan cuando SE CUMPLIÓ EL OBJETIVO (sobrevivientes localizados, asistidos y puestos a salvo), cuando SE DETERMINÓ FEHACIENTEMENTE QUE NO HAY SOBREVIVIENTES, o cuando SE AGOTARON RAZONABLEMENTE LAS PROBABILIDADES de encontrar personas con vida: se rastreó toda el área probable y el tiempo excede las posibilidades de supervivencia. También por FALSA ALARMA COMPROBADA. Se suspenden temporalmente si las condiciones ponen en riesgo a los equipos de rescate. El fundamento es humanitario y operativo: los medios son limitados y deben quedar disponibles.","Cuestionario oficial · desarrollo 20");
+Q("by1","¿Por qué es determinante la coordinación entre los organismos que participan en el SAR?",["Porque lo exige el seguro de la aeronave","Porque ninguna institución tiene por sí sola todos los medios, y la descoordinación cuesta tiempo, que es el factor crítico","Porque permite repartir los costos de la operación","Porque cada organismo debe actuar de forma independiente"],1,"Ninguna institución tiene por sí sola todos los medios ni todas las capacidades: la FACH aporta aeronaves y el RCC Aéreo, la Armada los medios marítimos, Bomberos y SAMU la respuesta en tierra y la atención médica, Carabineros el despliegue territorial y ONEMI/SENAPRED la gestión de emergencias mayores. La coordinación, radicada en el RCC, evita duplicar esfuerzos, impide que queden áreas sin cubrir, asigna a cada medio la tarea para la que es más apto y asegura mando único. Como el TIEMPO es crítico, cualquier descoordinación se traduce en horas perdidas.","Cuestionario oficial · desarrollo 21");
+Q("by1","¿Cuál es el rol de la Fuerza Aérea de Chile en el sistema SAR nacional?",["Fabricar y certificar las balizas de emergencia","Está a cargo del RCC Aéreo: declara la fase de emergencia y coordina los medios de rescate aeronáuticos","Procesar las señales satelitales del COSPAS-SARSAT","Investigar técnicamente los accidentes de aviación"],1,"La FACH está a cargo del RCC AÉREO, el Centro Coordinador de Salvamento para emergencias aeronáuticas. Recibe las alertas del MCC de la DGAC, EVALÚA Y DECLARA la fase de emergencia (INCERFA, ALERFA o DETRESFA) y ACTIVA Y COORDINA los medios de búsqueda y rescate de su región. Aporta medios propios —aeronaves, helicópteros, personal especializado y comunicaciones— y coordina con la Armada (RCC Marítimo), Carabineros, Bomberos, SAMU y ONEMI/SENAPRED. Junto con la DGAC coordina las FIR del país.","Cuestionario oficial · desarrollo 22");
+Q("by4","¿Qué significa que una baliza esté «normalizada y legislada»?",["Que fue fabricada bajo licencia de COSPAS-SARSAT","Que cumple un estándar técnico internacional común y además su porte y uso están exigidos por norma","Que su uso es recomendado pero voluntario","Que solo puede utilizarse en vuelos internacionales"],1,"NORMALIZADA: cumple un ESTÁNDAR TÉCNICO INTERNACIONAL definido por COSPAS-SARSAT y la OACI —misma frecuencia de 406 MHz, mismo formato de señal digital y misma codificación en todo el mundo—, de modo que cualquier satélite la capte y cualquier MCC o RCC la interprete. LEGISLADA: su porte, instalación y uso están EXIGIDOS Y REGULADOS POR NORMA —Anexo 12 a nivel internacional y DAR 12 en Chile—, incluido el REGISTRO OBLIGATORIO del propietario, que permite contactarlo y descartar falsas alarmas. En síntesis: normalizada = que se entienda en todo el mundo; legislada = que exista y esté a bordo.","Cuestionario oficial · desarrollo 23");
+Q("by4","¿Bajo qué condición se activa automáticamente una baliza ELT?",["Al superar los 10.000 pies de altitud","Ante un impacto, por un sensor inercial que detecta la desaceleración brusca","Al perder contacto con el control de tránsito aéreo","Cuando el piloto apaga los motores"],1,"El ELT se activa automáticamente ante un IMPACTO, mediante un SENSOR INERCIAL DE DESACELERACIÓN (sensor «G») que detecta una desaceleración brusca sobre el umbral establecido, típicamente en el eje longitudinal. No requiere acción de la tripulación, y ese es el punto: garantiza la señal aunque los tripulantes queden incapacitados o inconscientes. Los de tipo marítimo pueden además activarse al contacto con el agua. Siempre conserva la activación MANUAL, por interruptor o control remoto en cabina de mando. Activado, transmite en 406 MHz y su detección gatilla DETRESFA.","Cuestionario oficial · desarrollo 24");
+Q("by4","¿Por qué es tan importante la señal de 406 MHz en el SAR moderno?",["Porque es la más económica de implementar","Porque es la única monitoreada por satélite desde 2009 y transmite identificación del usuario y posición GPS","Porque tiene mayor alcance en tierra que las demás","Porque no requiere registro del propietario"],1,"Los 406 MHz son la columna vertebral del sistema: señal DIGITAL clara y potente, y la ÚNICA MONITOREADA POR COSPAS-SARSAT DESDE 2009. Su importancia está en lo que transporta: IDENTIFICACIÓN del usuario —permite saber de quién se trata y contactar al titular registrado— y POSICIÓN GPS si la baliza es moderna, lo que reduce drásticamente el área de búsqueda. Con MEOSAR ubica en MENOS DE 10 MINUTOS con precisión MENOR A 5 KM. Es obligatoria en balizas nuevas, exige registro del propietario y su detección gatilla DETRESFA.","Cuestionario oficial · desarrollo 25");
+Q("by2","¿Cómo se determina el área de responsabilidad de un RCC?",["La define libremente cada Estado según sus medios disponibles","Es su Región de Búsqueda y Salvamento (SRR), fijada por acuerdo regional de navegación aérea de la OACI y normalmente coincidente con las FIR","Corresponde siempre a la división política del país","La asigna el sistema COSPAS-SARSAT según la baliza detectada"],1,"El área de responsabilidad del RCC es su REGIÓN DE BÚSQUEDA Y SALVAMENTO (SRR): territorio, espacio aéreo y aguas bajo su coordinación. Se determina por ACUERDO REGIONAL DE NAVEGACIÓN AÉREA aprobado por la OACI en el marco del Anexo 12, y normalmente se hace COINCIDIR CON LAS FIR, para que la responsabilidad SAR y la de los servicios de tránsito aéreo tengan los mismos límites. Las regiones deben ser contiguas y sin vacíos. En Chile las Regiones SAR son SEIS (Iquique, Antofagasta, Santiago, Puerto Montt, Punta Arenas e Isla de Pascua) y las FIR son TRES (Antofagasta, Santiago y Punta Arenas).","Cuestionario oficial · desarrollo 26");
+Q("by1","¿Por qué el factor tiempo es crítico en una operación SAR?",["Porque el costo de la operación aumenta cada hora","Porque la supervivencia decrece rápidamente y el área probable de búsqueda se expande con las horas","Porque las balizas dejan de emitir a las 6 horas","Porque los organismos participantes tienen turnos limitados"],1,"La SUPERVIVENCIA DE LAS VÍCTIMAS DECRECE RÁPIDAMENTE: los heridos graves requieren atención en las primeras horas, la hipotermia en agua fría o montaña mata en poco tiempo y sin agua se sobrevive apenas unos días. Además, cuanto más tarda la respuesta MÁS SE EXPANDE EL ÁREA PROBABLE DE BÚSQUEDA, porque los sobrevivientes se desplazan y una balsa deriva con la corriente y el viento. Todo el sistema está diseñado para ganar minutos: las fases permiten anticiparse antes de tener un accidente confirmado, el MEOSAR ubica en menos de 10 minutos y el mando único evita demoras.","Cuestionario oficial · desarrollo 27");
+Q("by4","¿Cuál es la consecuencia operativa más grave de una activación falsa de baliza?",["El deterioro prematuro de la batería de la baliza","Que los medios SAR movilizados quedan no disponibles para una emergencia real simultánea","La pérdida de la señal de 406 MHz en la zona","La suspensión del servicio SAR en esa región"],1,"Una activación falsa MOVILIZA RECURSOS SAR LIMITADOS innecesariamente —aeronaves, helicópteros, embarcaciones, brigadas y personal—, con su costo y desgaste. Lo más grave es que esos medios QUEDAN NO DISPONIBLES para una emergencia real simultánea, además de exponer a los equipos de rescate a riesgos innecesarios y hacer perder tiempo en verificaciones. Repetidas, generan desconfianza y restan prioridad a alertas legítimas. Por eso el MCC COMPRUEBA LA VERACIDAD antes de derivar al RCC, y el REGISTRO OBLIGATORIO del propietario permite confirmar o descartar sin movilizar medios.","Cuestionario oficial · desarrollo 28");
+Q("by1","¿Por qué el sistema SAR no se limita solo a aeronaves civiles?",["Porque las aeronaves militares no tienen balizas propias","Porque su objetivo es salvar vidas en tierra, mar o aire, y para eso existen el ELT, la EPIRB y la PLB","Porque lo impone el Convenio de Chicago solo en tiempos de guerra","Porque las embarcaciones dependen del mismo RCC aéreo"],1,"Porque su objetivo es SALVAR VIDAS HUMANAS, y las personas en peligro no siempre están en un avión civil. El sistema cubre los tres medios con balizas distintas: ELT para AERONAVES, EPIRB para EMBARCACIONES y PLB para PERSONAS en tierra, todas en 406 MHz y detectadas por igual. Atiende accidentes de aeronaves, ditching, extraviados en zonas remotas y desastres naturales. Su estructura es mixta —participan instituciones civiles y militares— y el uso del COSPAS-SARSAT es gratuito y disponible para todos, sin distinción.","Cuestionario oficial · desarrollo 29");
+Q("by1","¿Cómo se relaciona el SAR con la seguridad operacional?",["Son sistemas independientes sin relación entre sí","El SAR es la última barrera: actúa cuando todas las defensas previas fallaron y el accidente ya ocurrió","El SAR reemplaza a la prevención de accidentes","La seguridad operacional depende del RCC"],1,"El objetivo final del SAR es SALVAR VIDAS: localizar, asistir y rescatar y llevar a las personas a un lugar seguro. Su relación con la seguridad operacional es que constituye la ÚLTIMA BARRERA DEL SISTEMA: cuando el diseño, el mantenimiento, los procedimientos, el entrenamiento y la prevención ya fallaron y el accidente ocurrió, el SAR es lo único que queda entre el evento y la pérdida de vidas. Por eso está normado con igual rigor (Anexo 12 y DAR 12). Además retroalimenta al sistema: localizar los restos y registradores permite investigar y generar lecciones, como ocurrió con el AIR FRANCE 447 (2009, 228 fallecidos), que cambió el entrenamiento de pilotos y la tecnología de los aviones.","Cuestionario oficial · desarrollo 30");
+
+/* --- Cuestionario BYS · las 10 de alternativas (31-40) --- */
+Q("by3","¿Qué fase se declara cuando existe duda sobre la seguridad de una aeronave?",["ALERFA","INCERFA","DETRESFA","SAR"],1,"INCERFA es la FASE DE INCERTIDUMBRE: indica DUDA sobre la seguridad de la aeronave y sus ocupantes. Se declara si no hay comunicación en el período esperado, si la aeronave no llegó 30 minutos después de la hora prevista sin explicación, o si no hay confirmación de su posición. Solo se hace vigilancia e intentos de contacto.","Cuestionario oficial · pregunta 31");
+Q("by1","¿Qué organismo coordina las operaciones SAR en Chile?",["DGAC","ONEMI","RCC – Fuerza Aérea de Chile","Armada de Chile"],2,"Las operaciones SAR aeronáuticas las coordina el RCC a cargo de la FUERZA AÉREA DE CHILE. El servicio en su conjunto es regulado por la DGAC —bajo la cual opera además el MCC nacional—, y el RCC Marítimo está a cargo de la Armada (DIRECTEMAR). Participan también Bomberos, SAMU, Carabineros y ONEMI/SENAPRED.","Cuestionario oficial · pregunta 32");
+Q("by4","¿Qué baliza es de uso aeronáutico?",["EPIRB","PLB","ELT","GPS"],2,"El ELT (Emergency Locator Transmitter) es la baliza AERONÁUTICA, instalada en aviones y helicópteros, con activación automática por impacto o manual. La EPIRB es para embarcaciones y la PLB para personas. El GPS no es una baliza, sino el sistema de posicionamiento que algunas balizas incorporan.","Cuestionario oficial · pregunta 33");
+Q("by4","¿Qué frecuencia utilizan las balizas modernas COSPAS-SARSAT?",["121.5 MHz","243 MHz","406 MHz","125.5 MHz"],2,"Los 406 MHz son la frecuencia digital moderna y la ÚNICA monitoreada por COSPAS-SARSAT desde 2009. Transmite identificación del usuario y posición GPS, es obligatoria en las balizas nuevas y exige registro del propietario. Los 121.5 MHz y 243 MHz ya no son detectados por satélite desde 2009.","Cuestionario oficial · pregunta 34");
+Q("by2","¿Qué significa la sigla RCC?",["Centro de Control de Misiones","Centro Coordinador de Salvamento","Red de Coordinación Civil","Terminal de Usuario Local"],1,"RCC es el RESCUE COORDINATION CENTER · CENTRO COORDINADOR DE SALVAMENTO: organiza, coordina y supervisa las operaciones SAR de su región, y es quien DECLARA la fase de emergencia. Ojo con los distractores: el Centro de Control de Misión es el MCC y el Terminal de Usuario Local es el LUT.","Cuestionario oficial · pregunta 35");
+Q("by2","El sistema COSPAS-SARSAT utiliza satélites para detectar señales de emergencia.",["Verdadero","Falso"],0,"VERDADERO. COSPAS-SARSAT es un sistema internacional de búsqueda y salvamento que usa SATÉLITES —LEOSAR en órbita baja, GEOSAR geoestacionarios y MEOSAR en órbita media— para detectar las señales de emergencia emitidas por balizas ELT, EPIRB y PLB en 406 MHz.","Cuestionario oficial · pregunta 36");
+Q("by4","¿Qué baliza puede portar una persona durante actividades de senderismo?",["ELT","EPIRB","PLB","MCC"],2,"La PLB (Personal Locator Beacon) es portátil, de activación manual y está asociada AL INDIVIDUO, no a una aeronave ni a una embarcación. La usan montañistas, excursionistas, expedicionarios y trabajadores en zonas remotas. Ojo: el MCC no es una baliza, es el Centro de Control de Misión.","Cuestionario oficial · pregunta 37");
+Q("by3","¿Qué fase se declara cuando existe peligro real para la aeronave y sus ocupantes?",["INCERFA","ALERFA","DETRESFA","SAR"],2,"DETRESFA es la FASE DE PELIGRO: se declara ante la CONFIRMACIÓN de peligro real —impacto confirmado, baliza de 406 MHz detectada por COSPAS-SARSAT, o testigos o llamada de auxilio—. Implica activar completamente el sistema SAR, movilizando todos los recursos con coordinación nacional e internacional inmediata.","Cuestionario oficial · pregunta 38");
+Q("by2","¿Qué organismo procesa las señales satelitales y las envía al RCC correspondiente?",["DGAC","RCC","MCC","FACH"],2,"El MCC (Mission Control Center · Centro de Control de Misión) RECIBE, PROCESA Y DISTRIBUYE las señales detectadas por los satélites: determina la ubicación probable, comprueba la veracidad de la alarma y la envía al RCC correspondiente. En Chile el MCC opera bajo la DGAC.","Cuestionario oficial · pregunta 39");
+Q("by4","Las balizas ELT pueden activarse de forma automática y manual.",["Verdadero","Falso"],0,"VERDADERO. El ELT se activa AUTOMÁTICAMENTE ante un impacto, mediante un sensor inercial que detecta la desaceleración brusca, y también MANUALMENTE por interruptor o control remoto en cabina de mando. La activación automática es la que garantiza la señal aunque la tripulación quede incapacitada.","Cuestionario oficial · pregunta 40");
+
 const MAPAS={};
 function M(r,ramas){MAPAS[r]=ramas;}
 /* ================= MAPAS CONCEPTUALES POR RAMO ================= */
@@ -2502,6 +2706,52 @@ M("sup",[
  ]]
 ]);
 
+M("bys",[
+ ["by1",[
+  ["Qué es el SAR","Search and Rescue · Búsqueda y Salvamento. OBJETIVO PRINCIPAL: SALVAR VIDAS HUMANAS."],
+  ["Cuándo actúa","Accidentes de aeronaves · ditching · personas extraviadas en zonas remotas · desastres naturales."],
+  ["Anexo 12","Del Convenio de Chicago (1944). Obliga a los 193 Estados de la OACI a tener servicio SAR, autoridades designadas y medios adecuados."],
+  ["Por qué nació","Necesidad de localizar aeronaves desaparecidas y estandarizar procedimientos. La Segunda Guerra Mundial mostró la falta de una estructura global."],
+  ["DAR 12","Reglamento Aeronáutico de Chile Parte 12, basado en el Anexo 12. Regula el SAR chileno y define las fases de emergencia."],
+  ["Quién es quién en Chile","DGAC coordina y regula (y opera el MCC) · RCC Aéreo: FACH · RCC Marítimo: Armada (DIRECTEMAR) · apoyan Bomberos, SAMU, Carabineros y ONEMI/SENAPRED."],
+  ["FIR","Región de Información de Vuelo, reguladas por la OACI. Chile tiene 3: Antofagasta, Santiago y Punta Arenas. Cada FIR activa su RCC."],
+  ["Regiones SAR","Chile tiene 6: Iquique, Antofagasta, Santiago, Puerto Montt, Punta Arenas e Isla de Pascua."],
+  ["Deber del piloto","Ante señales de socorro: brindar apoyo según su seguridad y notificar al RCC o al ATC de la DGAC, informando tipo de aeronave, ubicación, hora, número de personas y su condición."]
+ ]],
+ ["by2",[
+  ["COSPAS-SARSAT","Sistema internacional que usa satélites para detectar las señales de balizas ELT, EPIRB y PLB. Detecta, localiza y comunica las alertas."],
+  ["Origen","1979 proyecto de Canadá, EE.UU., Francia y la URSS · 1982 primera señal · 1988 acuerdo formal. COSPAS es ruso, SARSAT estadounidense."],
+  ["Hoy","+40 países · +50.000 vidas salvadas · funciona 24/7 · gratuito para el usuario en peligro."],
+  ["LEOSAR","Órbita baja ~850 km. Localiza SIN GPS por efecto Doppler. Cubre todo el globo, incluidos los polos."],
+  ["GEOSAR","Geoestacionarios, fijos a 36.000 km. Detección inmediata, pero NO localizan por sí solos: necesitan baliza con GPS."],
+  ["MEOSAR","Órbita media 20.000 km, sobre GPS, Galileo y GLONASS. Ubica en menos de 10 minutos con menos de 5 km de error."],
+  ["LUT","Estación terrestre que recibe la señal del satélite, la procesa y envía la posición al MCC."],
+  ["MCC","Centro de Control de Misión: recibe, procesa y distribuye la señal, comprueba su veracidad y la deriva al RCC. En Chile opera bajo la DGAC."],
+  ["RCC","Centro Coordinador de Salvamento: DECLARA la fase de emergencia y activa y coordina los medios de rescate de su región (SRR)."],
+  ["La cadena","Baliza → satélites → LUT → MCC → RCC → medios SAR."]
+ ]],
+ ["by3",[
+  ["Para qué sirven las fases","Lenguaje común internacional, ordenan el nivel de acción según el peligro y permiten usar bien los recursos. Las declara el RCC."],
+  ["INCERFA","Fase de INCERTIDUMBRE: DUDA sobre la seguridad. Sin comunicación en el período esperado, 30 minutos de atraso sin explicación o sin confirmación de posición."],
+  ["Acción en INCERFA","Vigilancia e intentos de contacto. AÚN NO se movilizan medios SAR."],
+  ["ALERFA","Fase de ALERTA: se sospecha que puede volverse crítica. Problemas de navegación o comunicaciones, combustible insuficiente, fallas mecánicas."],
+  ["Acción en ALERFA","Se alerta a los servicios SAR y comienza la planificación preliminar."],
+  ["DETRESFA","Fase de PELIGRO: peligro real confirmado. Impacto confirmado, baliza de 406 MHz detectada, o testigos o llamada de auxilio."],
+  ["Acción en DETRESFA","Se activa completamente el sistema SAR, con coordinación nacional e internacional inmediata."]
+ ]],
+ ["by4",[
+  ["ELT","Emergency Locator Transmitter · AERONAVES. Automática por impacto (sensor de desaceleración) o manual. Obligatoria en aviación civil."],
+  ["EPIRB","Emergency Position Indicating Radio Beacon · EMBARCACIONES. Flota y se activa al contacto con el agua o manualmente."],
+  ["PLB","Personal Locator Beacon · PERSONAS. Portátil y solo manual. Asociada al individuo, no a una nave."],
+  ["406 MHz","Digital, la ÚNICA monitoreada por satélite desde 2009. Lleva identificación del usuario y posición GPS. Registro del propietario obligatorio."],
+  ["121.5 MHz","Analógica antigua, sin satélite desde 2009. Sirve a los rescatistas para rastrear la baliza en el terreno."],
+  ["243 MHz","Versión militar de 121.5, también fuera del satélite y en desuso."],
+  ["Cómo se complementan","406 detecta el accidente y ubica la zona vía satélite · 121.5 guía al equipo hasta el punto exacto."],
+  ["Normalizada y legislada","Normalizada: mismo estándar técnico mundial (COSPAS-SARSAT y OACI). Legislada: su porte y uso son exigidos por norma (Anexo 12 y DAR 12) con registro obligatorio."],
+  ["Falsa activación","Moviliza medios limitados en vano y los deja no disponibles para una emergencia real. Por eso el MCC verifica la alarma y el registro permite descartarla."]
+ ]]
+]);
+
 /* ---------- ESTADO ---------- */
 const KEY="oyr-pia-v2";
 let S={stats:{},best:0,exams:{},flights:[],daily:{last:null,streak:0,best:0},ach:{}};
@@ -2566,7 +2816,7 @@ const ACH=[
   {id:"primera",icon:"🛫",n:"Primer despegue",d:"Responde tu primera pregunta",f:()=>seen(null)>=1},
   {id:"zona",icon:"✅",n:"Módulo dominado",d:"Lleva un módulo al 80%",f:()=>RAMOS.some(r=>r.mods.some(m=>mastery(m.id).pct>=80))},
   {id:"ramo",icon:"🎖",n:"Ramo aprobado",d:"Un ramo al 80% con su examen aprobado",f:()=>RAMOS.some(r=>ramoAprobado(r.id))},
-  {id:"cabina",icon:"🗺",n:"Curso completo",d:"Los 7 ramos aprobados",f:()=>RAMOS.every(r=>ramoAprobado(r.id))},
+  {id:"cabina",icon:"🗺",n:"Curso completo",d:"Los "+RAMOS.length+" ramos aprobados",f:()=>RAMOS.every(r=>ramoAprobado(r.id))},
   {id:"punteria",icon:"🎯",n:"Puntería",d:"Racha de 10 seguidas en la ruleta",f:()=>S.best>=10},
   {id:"aprobada",icon:"🎓",n:"Aprobada",d:"Un examen con 80% o más",f:()=>RAMOS.some(r=>examsOf(r.id).some(e=>e.pct>=80))},
   {id:"excelencia",icon:"🌟",n:"Excelencia",d:"Un examen con 95% o más",f:()=>RAMOS.some(r=>examsOf(r.id).some(e=>e.pct>=95))},
@@ -2601,6 +2851,8 @@ function animCount(el){
 /* ---------- etiqueta NUEVO: se apaga sola ---------- */
 /* Se muestra mientras la novedad sea reciente Y ella no la haya abierto todavía. */
 const NOVEDADES={
+  bys:"2026-08-08",
+  inter:"2026-08-08",
   cuest:"2026-08-06",
   geo:"2026-07-27", abc:"2026-07-27", sup:"2026-07-27",
   bus:"2026-07-26", mapa:"2026-07-26", a320:"2026-07-26", pau:"2026-07-26", prevac:"2026-07-26"
@@ -2645,7 +2897,7 @@ function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 const view=document.getElementById("view");
 let session={streak:0,points:0};
 let examT=null, curRamo=null;
-function go(fn,...args){if(examT){clearInterval(examT);examT=null;}view.innerHTML="";fn(...args);window.scrollTo({top:0});}
+function go(fn,...args){if(examT){clearInterval(examT);examT=null;}if(typeof pararInter==="function"){pararInter();callarEs();}view.innerHTML="";fn(...args);window.scrollTo({top:0});}
 
 /* ================= HOME · SELECCIÓN DE RAMO ================= */
 function Home(){
@@ -2745,6 +2997,7 @@ function RamoHome(rid){
   [...(CUESTIONARIOS[rid]?[["CUE","📋","Cuestionario oficial",`Las ${CUESTIONARIOS[rid].desarrollo.length} preguntas de desarrollo del cuestionario del curso, con respuesta modelo. Ensáyalas en voz alta o practicalas en alternativas.`,"Lo que viene en la prueba",()=>go(Cuestionario,rid),"cuest"]]:[]),
    ["RUL","🎡","Ruleta",`Partida de 2 minutos: gira, responde contra el reloj y suma puntos. O modo libre, sin apuro.`,"Competitivo",()=>go(Wheel,rid)],
    ["EST","📚","Estudio por módulo","Recorre un módulo completo a tu ritmo, con explicación en cada pregunta.","Sin presión",()=>go(ModPick,rid)],
+   ["ORA","🎙","Interrogatorio oral",`Un examinador te pregunta de corrido y contra el reloj${CUESTIONARIOS[rid]?", mezclando desarrollo y alternativas":""}. Termina con acta y nota de 1,0 a 7,0.`,"Simulacro oral",()=>go(Interrogatorio,rid),"inter"],
    ["EXM","🎓","Examen","20 preguntas del ramo completo, o examen de un módulo suelto. Con nota y revisión.","Simulacro",()=>go(ExamStart,rid)],
    ["MAP","🗺","Mapa conceptual",`Todo ${r.n} en una pantalla: los ${r.mods.length} módulos y sus conceptos clave conectados.`,"Vista de conjunto",()=>go(Mapa,rid),"mapa"],
    ["TAR","🗂","Tarjetas de repaso","Flashcards con lo esencial del ramo: definiciones, números y fraseologías.","Memoria",()=>go(Flash,rid)],
@@ -2859,6 +3112,104 @@ const DESARROLLO_PUNTOS={sup:[
 /*29*/["Es obligación de la tripulación tras la evacuación: mantenerlos JUNTOS y CONTARLOS","Permite saber si falta alguien y organizar su búsqueda a tiempo","Entregar una cifra exacta al equipo de rescate","Detectar heridos que necesitan atención prioritaria","Asignar tareas y roles: kit, señales, refugio, cuidado del agua","Mantener la cohesión, evitando la dispersión y la baja moral","En el mar se hace al abordar la balsa: presentación, conteo y anotación en la BITÁCORA"],
 /*30*/["En la emergencia PREVISTA hay tiempo: TESTI, preparación de cabina e instrucción a los ABP","Aviso «PRÓXIMOS AL AMARAJE» a 2.000 pies y «BRACE FOR IMPACT» a 500 pies","«PROTÉJASE… BRACE, BRACE» a viva voz hasta que se detenga","Detenido: chequear condiciones exteriores y «PÓNGASE EL CHALECO SALVAVIDAS / PUT LIFE VEST ON»","Abrir la puerta, DESCONECTAR el tobogán (FOR DITCHING ONLY) y verificar salida habilitada","«SUELTEN CINTURONES, DEJEN TODO / RELEASE SEAT BELTS, LEAVE EVERYTHING»","«SALGAN POR ACÁ, INFLEN EL CHALECO SALVAVIDAS, SUBAN A LA BALSA»","«USTED Y USTED, AYUDEN EN LA BALSA» a los dos primeros","Verificar que no quede nadie en su zona antes de salir","Ya en la balsa, dirige las acciones inmediatas y asume el liderazgo"]
 ]};
+
+/* ====== CUESTIONARIO OFICIAL DE BÚSQUEDA Y SALVAMENTO (BYS) ====== */
+CUESTIONARIOS.bys={n:"Cuestionario de Búsqueda y Salvamento",fuente:"ALAS para Latinoamérica",
+ desarrollo:[
+ ["Explique cuál es el objetivo principal de una operación de Búsqueda y Salvamento (SAR).",
+  "El objetivo principal del SAR (Search and Rescue · Búsqueda y Salvamento) es SALVAR VIDAS HUMANAS. Es un conjunto de servicios y operaciones organizadas para LOCALIZAR, ASISTIR Y RESCATAR a personas que estén en peligro, especialmente en accidentes de aeronaves, ditching (amaraje de emergencia), personas extraviadas o atrapadas en zonas remotas, y situaciones de desastre natural u otras emergencias. Todo lo demás —la tecnología satelital, las fases de emergencia, la coordinación entre instituciones— existe para servir a ese único fin."],
+ ["Describa el origen histórico del concepto SAR y su importancia en la aviación moderna.",
+  "El SAR nació de la necesidad mundial de contar con un sistema coordinado y eficiente para localizar aeronaves desaparecidas, brindar asistencia a personas en peligro y estandarizar los procedimientos entre países. La SEGUNDA GUERRA MUNDIAL demostró la importancia de tener una estructura global de rescate, y el fuerte aumento del tráfico aéreo civil de posguerra la hizo indispensable. Quedó formalizado en el ANEXO 12 del Convenio de Chicago (1944), que obliga a los 193 Estados miembros de la OACI a establecer servicios SAR en su territorio. Su importancia hoy: da un estándar común internacional, permite operaciones conjuntas entre países y garantiza que cualquier aeronave en peligro reciba asistencia sin importar su nacionalidad."],
+ ["Explique qué es el sistema COSPAS–SARSAT y cuál es su función principal.",
+  "Es un sistema INTERNACIONAL de búsqueda y salvamento que utiliza SATÉLITES para detectar las señales de emergencia emitidas por balizas (ELT, EPIRB y PLB). Su FUNCIÓN PRINCIPAL es DETECTAR, LOCALIZAR Y COMUNICAR las alertas de emergencia provenientes de balizas que transmiten en frecuencias internacionales de socorro, como los 406 MHz, permitiendo una respuesta rápida de los equipos SAR. COSPAS es el sistema ruso («Sistema Espacial para la Búsqueda de Buques en Peligro») y SARSAT el estadounidense (Search and Rescue Satellite-Aided Tracking). Nació en 1979 como cooperación entre Canadá, EE.UU., Francia y la URSS; detectó su primera señal en 1982 y se formalizó en 1988 como programa humanitario sin fines de lucro. Hoy tiene más de 40 países miembros, ha salvado más de 50.000 vidas, funciona 24/7 y es gratuito."],
+ ["Describa el rol del Centro Coordinador de Salvamento (RCC) dentro de una operación SAR.",
+  "El RCC (Rescue Coordination Center · Centro Coordinador de Salvamento), según el DAR 12, es la dependencia responsable de ORGANIZAR, COORDINAR Y SUPERVISAR las operaciones SAR dentro de una región determinada (Región de Búsqueda y Salvamento o SRR). Sus funciones: recibe las alertas desde el MCC; EVALÚA Y DECLARA la fase de emergencia (INCERFA, ALERFA o DETRESFA); activa y coordina los medios de rescate —aeronaves, embarcaciones, brigadas terrestres—; y coordina con las demás instituciones: FACH, Armada, Carabineros, SAMU, ONEMI/SENAPRED. En Chile hay varios RCC según el tipo de emergencia y zona: el RCC AÉREO a cargo de la Fuerza Aérea y el RCC MARÍTIMO a cargo de la Armada (DIRECTEMAR), ambos coordinando con el MCC de la DGAC."],
+ ["Explique la función del Centro Coordinador de Misión (MCC) en el sistema COSPAS–SARSAT.",
+  "El MCC (Mission Control Center · Centro de Control de Misión), según el DAR 12, es la instalación encargada de RECIBIR, PROCESAR Y DISTRIBUIR las señales de emergencia detectadas por los satélites del sistema COSPAS-SARSAT. Sus funciones: recibe las señales de balizas en 406 MHz captadas por los satélites y retransmitidas por las estaciones terrestres (LUT); PROCESA los datos y determina la UBICACIÓN PROBABLE de la emergencia; COMPRUEBA LA VERACIDAD de la alarma; ENVÍA la información al RCC correspondiente según el lugar y la nacionalidad de la baliza; y coordina con otros MCC del mundo en emergencias internacionales. En Chile el MCC nacional opera bajo la DGAC. La diferencia clave con el RCC: el MCC procesa y deriva la señal; el RCC declara la fase y coordina el rescate."],
+ ["Describa las diferencias entre las fases INCERFA, ALERFA y DETRESFA.",
+  "Son las tres fases de emergencia del protocolo internacional SAR, de menor a mayor gravedad, y las declara el RCC. INCERFA (fase de INCERTIDUMBRE): existe DUDA sobre la seguridad de la aeronave y sus ocupantes; se declara si no hay comunicación en el período esperado, si la aeronave no llegó 30 minutos después de la hora prevista sin explicación o si no hay confirmación de su posición; la acción es solo VIGILANCIA E INTENTOS DE CONTACTO, sin movilizar medios. ALERFA (fase de ALERTA): se SOSPECHA que la situación podría volverse crítica —problemas de navegación o comunicaciones, combustible insuficiente, fallas mecánicas o condiciones peligrosas—; se ALERTA a los servicios SAR y comienza la PLANIFICACIÓN PRELIMINAR. DETRESFA (fase de PELIGRO): hay CONFIRMACIÓN de peligro real —impacto confirmado, baliza de 406 MHz detectada por COSPAS-SARSAT, testigos o llamada de auxilio—; se ACTIVA COMPLETAMENTE EL SISTEMA SAR, movilizando todos los recursos con coordinación nacional e internacional inmediata."],
+ ["Explique en qué circunstancias se declara la fase INCERFA.",
+  "INCERFA es la fase de INCERTIDUMBRE e indica DUDA sobre la seguridad de una aeronave y sus ocupantes. Se declara cuando NO SE HA RECIBIDO NINGUNA COMUNICACIÓN dentro del período esperado; cuando la aeronave NO HA LLEGADO 30 MINUTOS DESPUÉS de la hora prevista sin explicación; o cuando NO HAY CONFIRMACIÓN de su posición. La acción en esta fase es de verificación básica: se inicia una VIGILANCIA e INTENTOS DE CONTACTO, pero AÚN NO SE MOVILIZAN los medios SAR."],
+ ["Describa cuándo se declara la fase ALERFA y qué acciones se realizan.",
+  "ALERFA es la fase de ALERTA: se sospecha que la aeronave está en una situación que podría volverse crítica. Se declara cuando se recibió información que sugiere PROBLEMAS DE NAVEGACIÓN O COMUNICACIONES; cuando se sabe que la aeronave tiene COMBUSTIBLE INSUFICIENTE para llegar a destino; o cuando se reciben reportes de FALLAS MECÁNICAS o condiciones peligrosas. Las acciones: SE ALERTA A LOS SERVICIOS SAR y comienza la PLANIFICACIÓN PRELIMINAR de las posibles operaciones, es decir, la preparación para una emergencia real que todavía no está confirmada."],
+ ["Explique cuándo se declara la fase DETRESFA y qué implica para las operaciones de rescate.",
+  "DETRESFA es la fase de PELIGRO y se declara ante la CONFIRMACIÓN de que la aeronave, embarcación o persona está en peligro real: impacto confirmado; ACTIVACIÓN DE UNA BALIZA ELT/EPIRB de 406 MHz detectada por COSPAS-SARSAT; o testigos de un accidente o llamada de auxilio. Implica que SE ACTIVA COMPLETAMENTE EL SISTEMA SAR: se movilizan aeronaves, helicópteros, embarcaciones y equipos terrestres, y se coordina de forma NACIONAL E INTERNACIONAL INMEDIATA si es necesario. Es la fase en que se emplean todos los recursos disponibles, porque ya no hay duda de que hay vidas en riesgo."],
+ ["Describa el procedimiento general que se sigue desde la recepción de una señal de emergencia hasta el inicio de la búsqueda.",
+  "1) Se produce el siniestro y se ACTIVA LA BALIZA (ELT, EPIRB o PLB), de forma manual o automática. 2) La baliza EMITE SU SEÑAL en 406 MHz, con coordenadas GPS e identificación si es moderna. 3) Los SATÉLITES COSPAS-SARSAT (LEOSAR, GEOSAR y MEOSAR) captan la señal y la retransmiten a las estaciones terrestres o LUT. 4) Los LUT PROCESAN la señal y envían al MCC un mensaje que incluye la POSICIÓN del siniestro. 5) El MCC COMPRUEBA LA VERACIDAD de la alarma y, según la posición y nacionalidad de la baliza, reenvía el mensaje a otros MCC o al RCC correspondiente. 6) El RCC DECLARA LA FASE (la detección de baliza lleva a DETRESFA) y ACTIVA Y COORDINA los medios SAR: aeronaves, embarcaciones, helicópteros y fuerzas armadas, que acuden al lugar."],
+ ["Explique qué es una baliza ELT y cuál es su uso en aviación.",
+  "El ELT (Emergency Locator Transmitter) es la baliza de uso AERONÁUTICO: está instalada en aviones y helicópteros. Se activa AUTOMÁTICAMENTE al sufrir un impacto —por la desaceleración brusca— o MANUALMENTE por la tripulación. Transmite en 406 MHz, frecuencia detectable por COSPAS-SARSAT, con identificación y posición GPS si es moderna. Es OBLIGATORIA en la aviación civil en muchos países. Su función es que la aeronave siniestrada sea localizada aunque la tripulación quede incapacitada o no pueda comunicarse, y su detección es una de las causales directas de la fase DETRESFA."],
+ ["Describa las frecuencias que transmite una baliza ELT y su importancia para el rescate.",
+  "406 MHz: es la frecuencia DIGITAL MODERNA, la ÚNICA monitoreada por COSPAS-SARSAT desde 2009. Emite una señal clara y potente que lleva IDENTIFICACIÓN DEL USUARIO y POSICIÓN GPS, y requiere el registro obligatorio del propietario; es la que DETECTA el accidente y UBICA el lugar exacto vía satélite. 121.5 MHz: frecuencia ANALÓGICA ANTIGUA, ya NO detectada por satélite desde 2009, pero sigue siendo útil porque permite a las aeronaves y rescatistas RASTREAR la baliza en el terreno en la fase final de la búsqueda. 243 MHz: la VERSIÓN MILITAR de 121.5, también fuera del satélite desde 2009 y en desuso, rastreable localmente por las fuerzas armadas. La importancia está en la complementariedad: los 406 MHz llevan al equipo de rescate hasta la zona, y los 121.5 MHz lo guían hasta el punto exacto."],
+ ["Explique dónde se instala normalmente una baliza ELT fija en una aeronave comercial y por qué.",
+  "El ELT fijo se instala en la PARTE TRASERA DEL FUSELAJE, hacia la cola de la aeronave, y su antena queda en el exterior del fuselaje en esa misma zona. La razón es de supervivencia del equipo: la sección de cola es la que suele sufrir MENOS DAÑO ESTRUCTURAL en un impacto —la energía se disipa principalmente en la parte delantera y en las alas, donde además está el combustible—, de modo que la baliza tiene la mayor probabilidad de quedar intacta, alimentada y capaz de transmitir después del accidente. Además esa ubicación deja la antena despejada, sin obstrucciones metálicas que bloqueen la señal hacia el satélite, y es accesible para su inspección y mantenimiento."],
+ ["Describa qué es una baliza EPIRB y en qué tipo de operaciones se utiliza.",
+  "La EPIRB (Emergency Position Indicating Radio Beacon) es la baliza de uso MARÍTIMO: se utiliza en barcos y naves marítimas. Su característica distintiva es que FLOTA y se activa AL CONTACTO CON EL AGUA, o bien manualmente; así, si la embarcación se hunde, la baliza se libera, flota y comienza a transmitir sola. Emite también en 406 MHz con señal de identificación y posición GPS. Es REQUERIDA en embarcaciones de pesca, comerciales y de largo alcance."],
+ ["Explique qué es una baliza PLB y quiénes pueden utilizarla.",
+  "La PLB (Personal Locator Beacon) es la baliza PERSONAL: la portan PERSONAS en actividades al aire libre —montañismo, senderismo, expediciones, navegación— y trabajadores en zonas remotas. Es PORTÁTIL y de activación MANUAL únicamente. Emite en 406 MHz con datos de GPS. Su diferencia esencial con las otras dos es que NO ESTÁ ASOCIADA A UNA AERONAVE NI A UNA EMBARCACIÓN, SINO AL INDIVIDUO que la lleva consigo."],
+ ["Describa las diferencias principales entre ELT, EPIRB y PLB.",
+  "Las TRES emiten en 406 MHz y son detectadas por COSPAS-SARSAT; la diferencia está en A QUÉ ESTÁN ASOCIADAS y CÓMO SE ACTIVAN. ELT: asociada a la AERONAVE, instalada en aviones y helicópteros, se activa AUTOMÁTICAMENTE por impacto o manualmente, obligatoria en aviación civil. EPIRB: asociada a la EMBARCACIÓN, FLOTA y se activa AL CONTACTO CON EL AGUA o manualmente, requerida en naves de pesca, comerciales y de largo alcance. PLB: asociada a la PERSONA, portátil y de activación SOLO MANUAL, para actividades al aire libre y trabajo en zonas remotas. En resumen: ELT = aire, EPIRB = mar, PLB = tierra/individuo."],
+ ["Explique cómo el sistema COSPAS–SARSAT utiliza satélites para detectar señales de emergencia.",
+  "Usa tres tipos de satélites complementarios. LEOSAR (órbita baja, ~850 km): detectan la señal y LOCALIZAN SIN NECESIDAD DE GPS, calculando la posición por EFECTO DOPPLER —el corrimiento de frecuencia que produce el movimiento del satélite respecto de la baliza—; tienen cobertura global, incluidos los polos. GEOSAR (geoestacionarios, fijos a 36.000 km): dan DETECCIÓN INMEDIATA porque siempre están sobre la misma zona, pero NO PUEDEN LOCALIZAR POR SÍ SOLOS: requieren que la baliza transmita su propia posición GPS. MEOSAR (órbita media, 20.000 km): es la tecnología actual, montada sobre las constelaciones GPS, GALILEO y GLONASS; combina alta precisión y rapidez, ubicando a una persona en MENOS DE 10 MINUTOS con precisión MENOR A 5 KM. Los satélites retransmiten la señal a las estaciones terrestres (LUT), que la procesan y la envían al MCC."],
+ ["Describa qué organismos participan normalmente en una operación SAR en Chile.",
+  "El servicio es COORDINADO Y REGULADO por la DIRECCIÓN GENERAL DE AERONÁUTICA CIVIL (DGAC), a través del Centro Coordinador de Rescate (RCC Chile); el MCC nacional también opera bajo la DGAC. Participan además: la FUERZA AÉREA DE CHILE (FACH), a cargo del RCC Aéreo; la ARMADA DE CHILE (DIRECTEMAR), a cargo del RCC Marítimo; BOMBEROS; el SAMU y los servicios médicos de emergencia; CARABINEROS DE CHILE; y ONEMI/SENAPRED para emergencias mayores. La operación descansa en la COOPERACIÓN INTERINSTITUCIONAL: cada organismo aporta medios y capacidades distintas bajo la coordinación del RCC."],
+ ["Explique por qué los servicios SAR están disponibles para aeronaves nacionales y extranjeras.",
+  "Porque el objetivo del SAR es SALVAR VIDAS HUMANAS, y ese fin no distingue nacionalidad, bandera ni tipo de operación. El ANEXO 12 del Convenio de Chicago obliga a cada Estado miembro a prestar asistencia a TODA aeronave en peligro dentro de su región de responsabilidad, y promueve la COOPERACIÓN REGIONAL entre Estados vecinos mediante las Regiones SAR y acuerdos bilaterales y multilaterales. A esto se suma que el uso del sistema COSPAS-SARSAT es GRATUITO en caso de emergencia y está disponible para todos los países del mundo, sin importar su ubicación ni su nivel de desarrollo. Es, en el fondo, un principio humanitario convertido en obligación normativa."],
+ ["Describa cuándo y por qué finalizan las operaciones de búsqueda y salvamento.",
+  "La decisión de suspender o dar por terminada la operación la toma el RCC, que es quien la organiza, coordina y supervisa. Las operaciones finalizan cuando SE HA CUMPLIDO EL OBJETIVO: todos los sobrevivientes fueron localizados, asistidos y rescatados y trasladados a un lugar seguro. También finalizan cuando SE HA DETERMINADO FEHACIENTEMENTE QUE NO HAY SOBREVIVIENTES, o cuando SE HAN AGOTADO RAZONABLEMENTE LAS PROBABILIDADES de encontrar personas con vida: se rastreó toda el área probable, se descartaron las hipótesis de posición y el tiempo transcurrido excede las posibilidades de supervivencia según las condiciones del lugar. Otra causal es la FALSA ALARMA COMPROBADA: si el MCC o el RCC verifican que la señal fue una activación falsa, la operación se cancela. Se suspende también, de forma temporal, cuando las condiciones ponen en riesgo a los propios equipos de rescate, reanudándose apenas sea seguro. El fundamento es doble: humanitario, porque no se abandona la búsqueda mientras haya una posibilidad real de salvar a alguien; y operativo, porque los medios SAR son limitados y deben quedar disponibles para otras emergencias."],
+ ["Explique la importancia de la coordinación entre los distintos organismos que participan en una operación SAR.",
+  "Porque ninguna institución tiene por sí sola todos los medios ni todas las capacidades: la FACH aporta aeronaves y el RCC Aéreo, la Armada los medios marítimos, Bomberos y SAMU la respuesta en tierra y la atención médica, Carabineros el despliegue territorial, y ONEMI/SENAPRED la gestión de emergencias mayores. La coordinación —radicada en el RCC— evita la duplicación de esfuerzos, impide que queden áreas sin cubrir, permite asignar a cada medio la tarea para la que es más apto y asegura un mando único con información centralizada. Como el FACTOR TIEMPO es crítico, cualquier descoordinación se traduce directamente en horas perdidas y en menos probabilidades de encontrar sobrevivientes con vida. Por eso el Anexo 12 exige a los Estados designar autoridades responsables y promueve además la cooperación regional e internacional entre países vecinos."],
+ ["Describa el rol de la Fuerza Aérea de Chile dentro del sistema SAR nacional.",
+  "La Fuerza Aérea de Chile está a cargo del RCC AÉREO, es decir, del Centro Coordinador de Salvamento para las emergencias aeronáuticas. En ese rol recibe las alertas provenientes del MCC de la DGAC, evalúa y declara la fase de emergencia que corresponda (INCERFA, ALERFA o DETRESFA), y activa y coordina los medios de búsqueda y rescate en su región. Aporta además sus propios medios operativos —aeronaves, helicópteros, personal especializado y comunicaciones— y coordina con la Armada (que tiene a su cargo el RCC Marítimo), Carabineros, Bomberos, SAMU y ONEMI/SENAPRED. Junto con la DGAC coordina también las FIR del país."],
+ ["Explique qué significa que una baliza esté «normalizada y legislada».",
+  "NORMALIZADA significa que cumple un ESTÁNDAR TÉCNICO INTERNACIONAL común, definido por COSPAS-SARSAT y la OACI: la misma frecuencia (406 MHz), el mismo formato de señal digital y la misma codificación de identificación en todo el mundo. Gracias a eso cualquier satélite del sistema puede captarla y cualquier MCC o RCC puede interpretarla, sin importar dónde se fabricó ni dónde se activó. LEGISLADA significa que su porte, instalación y uso están EXIGIDOS Y REGULADOS POR NORMA: el Anexo 12 del Convenio de Chicago a nivel internacional y el DAR 12 en Chile, además de la exigencia de REGISTRO OBLIGATORIO del propietario de toda baliza de 406 MHz. Ese registro es el que permite identificar al titular y contactarlo rápidamente para confirmar la emergencia o descartar una falsa alarma. En conjunto: normalizada asegura que la señal SE ENTIENDA en cualquier parte del mundo, y legislada asegura que la baliza EXISTA y esté a bordo."],
+ ["Describa las condiciones bajo las cuales una baliza ELT puede activarse de forma automática.",
+  "El ELT se activa AUTOMÁTICAMENTE ante un IMPACTO, mediante un sensor inercial de desaceleración (sensor «G») que detecta una desaceleración brusca superior al umbral establecido, típicamente en el eje longitudinal de la aeronave, como la que se produce en un accidente o aterrizaje de emergencia. No requiere ninguna acción de la tripulación, que es precisamente el punto: garantiza que la señal se emita aunque los tripulantes queden incapacitados, inconscientes o sin posibilidad de comunicarse. Los ELT de despliegue automático de tipo marítimo pueden además activarse al contacto con el agua. En paralelo, el ELT siempre conserva la activación MANUAL, mediante su interruptor o el control remoto en cabina de mando. Una vez activado, transmite en 406 MHz y su detección por COSPAS-SARSAT gatilla directamente la fase DETRESFA."],
+ ["Explique la importancia de la señal de 406 MHz en los sistemas modernos de búsqueda y salvamento.",
+  "Los 406 MHz son hoy la COLUMNA VERTEBRAL del sistema. Es una señal DIGITAL, clara y potente, y es la ÚNICA FRECUENCIA MONITOREADA POR COSPAS-SARSAT DESDE 2009. Su importancia está en lo que transporta: IDENTIFICACIÓN DEL USUARIO —permite saber de qué aeronave, embarcación o persona se trata y contactar al titular registrado— y POSICIÓN GPS si la baliza es moderna, lo que reduce drásticamente el área de búsqueda. Con la tecnología MEOSAR permite ubicar a una persona en MENOS DE 10 MINUTOS con precisión MENOR A 5 KM. Además, es obligatoria en las balizas nuevas y exige el registro del propietario, lo que ayuda a descartar falsas alarmas sin movilizar medios. Su detección es causal directa de la fase DETRESFA."],
+ ["Describa el área de responsabilidad del RCC y cómo se determina.",
+  "El área de responsabilidad del RCC es su REGIÓN DE BÚSQUEDA Y SALVAMENTO (SRR · Search and Rescue Region): la porción de territorio, espacio aéreo y aguas dentro de la cual ese centro organiza, coordina y supervisa las operaciones SAR. Se determina por ACUERDO REGIONAL DE NAVEGACIÓN AÉREA aprobado por la OACI, en el marco del Anexo 12, y normalmente se hace coincidir con las REGIONES DE INFORMACIÓN DE VUELO (FIR) para que la responsabilidad SAR y la responsabilidad de los servicios de tránsito aéreo tengan los mismos límites. El criterio es de cobertura: las regiones deben ser contiguas y sin vacíos, de modo que todo punto del planeta quede bajo la responsabilidad de algún RCC. En Chile las Regiones de Búsqueda y Salvamento operativas son seis: IQUIQUE, ANTOFAGASTA, SANTIAGO, PUERTO MONTT, PUNTA ARENAS e ISLA DE PASCUA; y las FIR son tres: Antofagasta, Santiago y Punta Arenas."],
+ ["Explique la importancia del factor tiempo en las operaciones SAR.",
+  "El tiempo es el factor crítico porque la SUPERVIVENCIA DE LAS VÍCTIMAS DECRECE RÁPIDAMENTE con las horas: los heridos graves requieren atención en las primeras horas; la hipotermia en agua fría o en montaña puede matar en muy poco tiempo; y sin agua se sobrevive apenas unos días. Además, cuanto más tarda la respuesta, MÁS SE EXPANDE EL ÁREA PROBABLE DE BÚSQUEDA —los sobrevivientes se desplazan, una balsa deriva con la corriente y el viento— y más recursos y tiempo cuesta cubrirla. Por eso todo el sistema está diseñado para ganar minutos: las fases de emergencia permiten anticiparse antes incluso de que haya un accidente confirmado; el MEOSAR ubica en menos de 10 minutos con menos de 5 km de error; y la coordinación centralizada en el RCC evita demoras por duplicación o vacíos. En SAR, el tiempo perdido no se recupera."],
+ ["Describa las consecuencias operativas de una activación falsa de una baliza de emergencia.",
+  "Una activación falsa MOVILIZA RECURSOS SAR LIMITADOS de forma innecesaria: aeronaves, helicópteros, embarcaciones, brigadas terrestres y personal especializado, con el costo operativo y el desgaste que eso implica. Lo más grave es que esos medios QUEDAN NO DISPONIBLES para una emergencia real que ocurra simultáneamente, y expone además a los propios equipos de rescate a riesgos innecesarios. También PROVOCA PÉRDIDA DE TIEMPO en verificaciones y, si las falsas alarmas se repiten, genera un efecto de desconfianza que puede restar prioridad a alertas legítimas. Por eso el sistema tiene salvaguardas: el MCC COMPRUEBA LA VERACIDAD de la alarma antes de derivarla al RCC, y el REGISTRO OBLIGATORIO del propietario de la baliza de 406 MHz permite contactarlo de inmediato para confirmar o descartar la emergencia sin movilizar medios."],
+ ["Explique por qué el sistema SAR no se limita solo a aeronaves civiles.",
+  "Porque su objetivo es SALVAR VIDAS HUMANAS, y las personas en peligro no siempre están en un avión civil. El propio sistema está diseñado para cubrir los tres medios: el ELT para AERONAVES, la EPIRB para EMBARCACIONES y la PLB para PERSONAS en tierra —montañistas, expedicionarios, trabajadores en zonas remotas—, todas emitiendo en 406 MHz y detectadas por igual por COSPAS-SARSAT. Del mismo modo, las situaciones que atiende el SAR incluyen accidentes de aeronaves, ditching, personas extraviadas o atrapadas en zonas remotas y desastres naturales. Y su estructura es mixta: participan instituciones civiles y militares —FACH, Armada, Bomberos, SAMU, Carabineros, ONEMI/SENAPRED—, lo que confirma que el sistema es transversal. El uso del COSPAS-SARSAT es gratuito y disponible para todos, sin distinción."],
+ ["Describa el objetivo final de una operación SAR y su relación con la seguridad operacional.",
+  "El objetivo final es SALVAR VIDAS HUMANAS: localizar, asistir y rescatar a las personas en peligro y llevarlas a un lugar seguro con la atención que requieran. Su relación con la seguridad operacional es que el SAR constituye la ÚLTIMA BARRERA DEL SISTEMA: cuando todas las defensas previas —diseño, mantenimiento, procedimientos, entrenamiento, prevención de accidentes— han fallado y el accidente ya ocurrió, el SAR es lo único que queda entre el evento y la pérdida de vidas. Por eso está normado con el mismo rigor que el resto: el Anexo 12 del Convenio de Chicago y, en Chile, el DAR 12. Además retroalimenta al sistema, porque la localización rápida de los restos y de los registradores permite investigar el accidente y generar las lecciones que evitan el siguiente —como ocurrió con el vuelo AIR FRANCE 447 (1 de junio de 2009, Río de Janeiro–París, 228 fallecidos), donde el congelamiento de los sensores Pitot y la desorientación de los pilotos derivaron en cambios en el entrenamiento y en la tecnología de los aviones. La seguridad operacional busca que el accidente no ocurra; el SAR asegura que, si ocurre, no cueste vidas."]
+ ]};
+
+DESARROLLO_PUNTOS.bys=[
+/*1*/["SAR = Search and Rescue · Búsqueda y Salvamento","El objetivo principal es SALVAR VIDAS HUMANAS","Conjunto de servicios y operaciones organizadas para localizar, asistir y rescatar","Actúa en accidentes de aeronaves y ditching","También en personas extraviadas en zonas remotas y desastres naturales"],
+/*2*/["Nació de la necesidad mundial de localizar aeronaves desaparecidas y asistir a personas en peligro","Buscaba estandarizar los procedimientos SAR entre países","La Segunda Guerra Mundial demostró la necesidad de una estructura global de rescate","El aumento del tráfico aéreo civil de posguerra lo hizo indispensable","Quedó formalizado en el Anexo 12 del Convenio de Chicago (1944)","Hoy da un estándar común y permite operaciones conjuntas entre Estados"],
+/*3*/["Sistema INTERNACIONAL de búsqueda y salvamento que usa SATÉLITES","Detecta señales de emergencia de balizas ELT, EPIRB y PLB","Función: detectar, localizar y comunicar las alertas en 406 MHz","COSPAS es el sistema ruso y SARSAT el estadounidense (Search and Rescue Satellite-Aided Tracking)","1979 proyecto (Canadá, EE.UU., Francia y URSS) · 1982 primera señal · 1988 acuerdo formal","Programa humanitario sin fines de lucro: +40 países, +50.000 vidas, 24/7 y gratuito"],
+/*4*/["RCC = Rescue Coordination Center · Centro Coordinador de Salvamento","Organiza, coordina y supervisa las operaciones SAR de una región (SRR)","Recibe las alertas desde el MCC","EVALÚA Y DECLARA la fase de emergencia: INCERFA, ALERFA o DETRESFA","Activa y coordina los medios: aeronaves, embarcaciones y brigadas terrestres","Coordina con FACH, Armada, Carabineros, SAMU y ONEMI/SENAPRED","En Chile: RCC Aéreo a cargo de la FACH y RCC Marítimo de la Armada (DIRECTEMAR)"],
+/*5*/["MCC = Mission Control Center · Centro de Control de Misión","Recibe, procesa y distribuye las señales detectadas por los satélites","Recibe las señales de balizas en 406 MHz vía las estaciones terrestres (LUT)","Determina la ubicación probable de la emergencia y comprueba la veracidad de la alarma","Envía la información al RCC correspondiente según el lugar del incidente","Coordina con otros MCC del mundo en emergencias internacionales","En Chile el MCC opera bajo la DGAC"],
+/*6*/["Son las tres fases del protocolo internacional SAR, y las declara el RCC","INCERFA = incertidumbre: DUDA sobre la seguridad · solo vigilancia e intentos de contacto","ALERFA = alerta: se SOSPECHA que puede volverse crítica · se alerta al SAR y se planifica","DETRESFA = peligro: peligro REAL confirmado · se moviliza todo el sistema SAR","Van de menor a mayor gravedad y ordenan el nivel de respuesta","Establecen un lenguaje común internacional (Anexo 12)"],
+/*7*/["Indica DUDA sobre la seguridad de la aeronave y sus ocupantes","No se ha recibido comunicación dentro del período esperado","La aeronave no ha llegado 30 MINUTOS después de la hora prevista sin explicación","No hay confirmación de su posición","Acción: vigilancia e intentos de contacto, verificación básica","AÚN NO se movilizan los medios SAR"],
+/*8*/["Se sospecha una situación que podría volverse crítica","Información que sugiere problemas de navegación o comunicaciones","Combustible insuficiente para llegar a destino","Reportes de fallas mecánicas o condiciones peligrosas","Acción: se ALERTA a los servicios SAR","Comienza la planificación preliminar de posibles operaciones"],
+/*9*/["Hay CONFIRMACIÓN de peligro real para la aeronave y sus ocupantes","Impacto confirmado","Activación de baliza ELT/EPIRB de 406 MHz detectada por COSPAS-SARSAT","Testigos de un accidente o llamada de auxilio","Se activa COMPLETAMENTE el sistema SAR","Se movilizan aeronaves, helicópteros, embarcaciones y equipos terrestres","Coordinación nacional e internacional inmediata"],
+/*10*/["1) Se activa la baliza (ELT, EPIRB o PLB), manual o automáticamente","2) Emite señal en 406 MHz, con GPS e identificación si es moderna","3) Los satélites LEOSAR, GEOSAR y MEOSAR captan la señal","4) La retransmiten a las estaciones terrestres (LUT), que la procesan y calculan la posición","5) El LUT envía el mensaje al MCC, que comprueba la veracidad de la alarma","6) El MCC deriva al RCC correspondiente según posición y nacionalidad de la baliza","7) El RCC declara la fase y activa los medios SAR"],
+/*11*/["ELT = Emergency Locator Transmitter","Es la baliza de uso AERONÁUTICO: aviones y helicópteros","Se activa AUTOMÁTICAMENTE por impacto o MANUALMENTE","Transmite en 406 MHz, detectable por COSPAS-SARSAT","Obligatoria en la aviación civil en muchos países","Permite localizar la aeronave aunque la tripulación quede incapacitada","Su detección es causal directa de DETRESFA"],
+/*12*/["406 MHz: digital moderna, única monitoreada por satélite desde 2009","406 MHz lleva identificación del usuario y posición GPS; detecta y ubica el lugar","121.5 MHz: analógica antigua, ya no detectada por satélite desde 2009","121.5 MHz sirve a los rescatistas para rastrear la baliza en el terreno","243 MHz: versión militar de 121.5, también fuera del satélite y en desuso","Se complementan: 406 lleva al equipo a la zona y 121.5 al punto exacto"],
+/*13*/["Se instala en la PARTE TRASERA del fuselaje, hacia la COLA","La sección de cola es la que sufre MENOS DAÑO ESTRUCTURAL en un impacto","La energía del impacto se disipa en la parte delantera y en las alas, donde está el combustible","Así la baliza tiene más probabilidad de quedar intacta y poder transmitir","La antena queda despejada al exterior, sin obstrucciones que bloqueen la señal al satélite","Ubicación accesible para inspección y mantenimiento"],
+/*14*/["EPIRB = Emergency Position Indicating Radio Beacon","Es la baliza de uso MARÍTIMO: barcos y naves","FLOTA y se activa AL CONTACTO CON EL AGUA, o manualmente","Si la nave se hunde, se libera, flota y transmite sola","Emite en 406 MHz con identificación y GPS","Requerida en embarcaciones de pesca, comerciales y de largo alcance"],
+/*15*/["PLB = Personal Locator Beacon","La portan PERSONAS: montañismo, senderismo, expediciones, navegación","También trabajadores en zonas remotas","Es PORTÁTIL y de activación SOLO MANUAL","Emite en 406 MHz con datos de GPS","No está asociada a una aeronave ni embarcación, sino AL INDIVIDUO"],
+/*16*/["Las tres emiten en 406 MHz y las detecta COSPAS-SARSAT","La diferencia está en a qué están asociadas y cómo se activan","ELT: a la AERONAVE · automática por impacto o manual · obligatoria en aviación civil","EPIRB: a la EMBARCACIÓN · flota y se activa con el agua o manual","PLB: a la PERSONA · portátil y solo manual","En resumen: ELT = aire, EPIRB = mar, PLB = tierra/individuo"],
+/*17*/["LEOSAR: órbita baja ~850 km · localiza SIN GPS por EFECTO DOPPLER · cubre los polos","GEOSAR: fijos a 36.000 km · detección inmediata pero NO localizan por sí solos","GEOSAR requiere que la baliza transmita su propia posición GPS","MEOSAR: órbita media 20.000 km · alta precisión y rapidez","MEOSAR usa las constelaciones GPS, Galileo y GLONASS","MEOSAR ubica en menos de 10 minutos con precisión menor a 5 km","Los satélites retransmiten a las estaciones terrestres (LUT), que envían al MCC"],
+/*18*/["La DGAC coordina y regula el SAR, a través del RCC Chile; el MCC también opera bajo la DGAC","Fuerza Aérea de Chile (FACH): a cargo del RCC Aéreo","Armada de Chile (DIRECTEMAR): a cargo del RCC Marítimo","Bomberos","SAMU y servicios médicos de emergencia","Carabineros de Chile","ONEMI y SENAPRED para emergencias mayores","La operación descansa en la cooperación interinstitucional bajo coordinación del RCC"],
+/*19*/["Porque el objetivo es salvar vidas humanas, sin distinción de nacionalidad ni bandera","El Anexo 12 obliga a asistir a toda aeronave en peligro en la región de responsabilidad","Se promueve la cooperación regional mediante Regiones SAR","Existen acuerdos bilaterales y multilaterales entre Estados vecinos","El uso del COSPAS-SARSAT es gratuito y para todos los países del mundo","Es un principio humanitario convertido en obligación normativa"],
+/*20*/["La decisión la toma el RCC, que organiza, coordina y supervisa la operación","Cuando se cumplió el objetivo: sobrevivientes localizados, asistidos y puestos a salvo","Cuando se determinó fehacientemente que no hay sobrevivientes","Cuando se agotaron razonablemente las probabilidades de encontrar personas con vida","Se rastreó toda el área probable y el tiempo excede las posibilidades de supervivencia","Por falsa alarma comprobada: el MCC o el RCC verifican que la señal no era real","Se suspende temporalmente si las condiciones ponen en riesgo a los equipos de rescate","Fundamento: humanitario (no abandonar mientras haya posibilidad) y operativo (los medios son limitados)"],
+/*21*/["Ninguna institución tiene por sí sola todos los medios ni todas las capacidades","FACH aporta aeronaves y el RCC Aéreo; la Armada los medios marítimos","Bomberos y SAMU la respuesta en tierra y la atención médica; Carabineros el despliegue territorial","Evita duplicar esfuerzos y que queden áreas sin cubrir","Permite asignar a cada medio la tarea para la que es más apto","Asegura mando único con información centralizada en el RCC","Como el tiempo es crítico, la descoordinación cuesta horas y vidas","El Anexo 12 exige designar autoridades responsables y promueve la cooperación internacional"],
+/*22*/["Está a cargo del RCC AÉREO, el centro coordinador para emergencias aeronáuticas","Recibe las alertas provenientes del MCC de la DGAC","Evalúa y declara la fase de emergencia (INCERFA, ALERFA o DETRESFA)","Activa y coordina los medios de búsqueda y rescate de su región","Aporta medios propios: aeronaves, helicópteros, personal especializado y comunicaciones","Coordina con la Armada (RCC Marítimo), Carabineros, Bomberos, SAMU y ONEMI/SENAPRED","Junto con la DGAC coordina las FIR del país"],
+/*23*/["NORMALIZADA: cumple un estándar técnico internacional (COSPAS-SARSAT y OACI)","Misma frecuencia 406 MHz, mismo formato de señal digital y misma codificación en todo el mundo","Así cualquier satélite la capta y cualquier MCC o RCC la interpreta","LEGISLADA: su porte y uso están exigidos y regulados por norma","Anexo 12 del Convenio de Chicago a nivel internacional y DAR 12 en Chile","Incluye el registro obligatorio del propietario de la baliza de 406 MHz","El registro permite contactar al titular y descartar falsas alarmas","En síntesis: normalizada = que se entienda en todo el mundo; legislada = que exista y esté a bordo"],
+/*24*/["Se activa automáticamente ante un IMPACTO","Mediante un sensor inercial de desaceleración (sensor «G»)","Detecta una desaceleración brusca sobre el umbral, en el eje longitudinal","No requiere acción de la tripulación","Garantiza la señal aunque los tripulantes queden incapacitados o inconscientes","Los de tipo marítimo pueden además activarse al contacto con el agua","Siempre conserva la activación MANUAL, por interruptor o control remoto en cabina de mando","Activado, transmite en 406 MHz y su detección gatilla DETRESFA"],
+/*25*/["Es la señal digital moderna y la ÚNICA monitoreada por COSPAS-SARSAT desde 2009","Emite una señal clara y potente","Transmite la IDENTIFICACIÓN del usuario, permitiendo saber de quién se trata","Transmite la POSICIÓN GPS si la baliza es moderna, reduciendo el área de búsqueda","Con MEOSAR permite ubicar en menos de 10 minutos y con menos de 5 km de error","Es obligatoria en las balizas nuevas y exige registro del propietario","El registro ayuda a descartar falsas alarmas sin movilizar medios","Su detección es causal directa de la fase DETRESFA"],
+/*26*/["Su área es la Región de Búsqueda y Salvamento (SRR · Search and Rescue Region)","Comprende territorio, espacio aéreo y aguas bajo su coordinación","Se determina por acuerdo regional de navegación aérea aprobado por la OACI, en el marco del Anexo 12","Normalmente se hace coincidir con las Regiones de Información de Vuelo (FIR)","Así la responsabilidad SAR y la de los servicios de tránsito aéreo tienen los mismos límites","Las regiones deben ser contiguas y sin vacíos: todo punto queda bajo algún RCC","En Chile las Regiones SAR son seis: Iquique, Antofagasta, Santiago, Puerto Montt, Punta Arenas e Isla de Pascua","Las FIR de Chile son tres: Antofagasta, Santiago y Punta Arenas"],
+/*27*/["La supervivencia de las víctimas decrece rápidamente con las horas","Los heridos graves requieren atención en las primeras horas","La hipotermia en agua fría o en montaña mata en muy poco tiempo","Sin agua se sobrevive apenas unos días","Cuanto más tarda la respuesta, más se expande el área probable de búsqueda","Los sobrevivientes se desplazan y una balsa deriva con la corriente y el viento","Todo el sistema está diseñado para ganar minutos: fases anticipadas, MEOSAR y mando único","MEOSAR ubica en menos de 10 minutos con menos de 5 km de error"],
+/*28*/["Moviliza recursos SAR limitados de forma innecesaria: aeronaves, embarcaciones y personal","Implica costo operativo y desgaste de los medios","Esos medios quedan NO DISPONIBLES para una emergencia real simultánea","Expone a los equipos de rescate a riesgos innecesarios","Provoca pérdida de tiempo en verificaciones","Si se repiten, generan desconfianza y restan prioridad a alertas legítimas","El MCC comprueba la veracidad de la alarma antes de derivarla al RCC","El registro obligatorio del propietario permite confirmar o descartar sin movilizar medios"],
+/*29*/["Porque el objetivo es salvar vidas humanas, y no todas están en un avión civil","El sistema cubre los tres medios con balizas distintas","ELT para aeronaves, EPIRB para embarcaciones y PLB para personas en tierra","Las tres emiten en 406 MHz y las detecta COSPAS-SARSAT por igual","Atiende accidentes de aeronaves, ditching, extraviados en zonas remotas y desastres naturales","Su estructura es mixta: participan instituciones civiles y militares","El uso del COSPAS-SARSAT es gratuito y disponible para todos, sin distinción"],
+/*30*/["El objetivo final es SALVAR VIDAS HUMANAS","Localizar, asistir y rescatar a las personas en peligro y llevarlas a un lugar seguro","El SAR es la ÚLTIMA BARRERA del sistema de seguridad operacional","Actúa cuando todas las defensas previas ya fallaron y el accidente ocurrió","Por eso está normado con el mismo rigor: Anexo 12 y DAR 12 en Chile","Retroalimenta al sistema: localizar restos y registradores permite investigar el accidente","Ejemplo: Air France 447 (1 de junio de 2009, Río–París, 228 fallecidos)","Sensores Pitot congelados y desorientación de los pilotos; cambió el entrenamiento y la tecnología","La seguridad operacional busca que el accidente no ocurra; el SAR, que no cueste vidas"]
+];
 
 function devScores(rid){S.dev=S.dev||{};return S.dev[rid]=S.dev[rid]||{};}
 function devFlojas(rid){
@@ -3045,6 +3396,271 @@ function Cuestionario(rid){
   });
   el.appendChild(btnReset);
   view.appendChild(el);
+}
+
+/* ============ INTERROGATORIO · simulacro de examen oral ============ */
+const SEG_DESARROLLO=75, SEG_ALTERNATIVA=25;
+let interT=null, vozEs=null;
+
+function cargarVozEs(){
+  if(vozEs||typeof speechSynthesis==="undefined")return;
+  const vs=speechSynthesis.getVoices();
+  if(!vs.length)return;
+  vozEs=vs.find(v=>/es[-_]CL/i.test(v.lang))||vs.find(v=>/es[-_](419|MX|AR|US|ES)/i.test(v.lang))
+       ||vs.find(v=>/^es/i.test(v.lang))||null;
+}
+function decirEs(txt){
+  if(typeof speechSynthesis==="undefined"||!S.vozInt)return false;
+  try{
+    cargarVozEs();speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt);
+    if(vozEs){u.voice=vozEs;u.lang=vozEs.lang;}else{u.lang="es-CL";}
+    u.rate=.97;speechSynthesis.speak(u);return true;
+  }catch(e){return false;}
+}
+function callarEs(){try{if(typeof speechSynthesis!=="undefined")speechSynthesis.cancel();}catch(e){}}
+function pararInter(){if(interT){clearInterval(interT);interT=null;}}
+
+/* nota chilena 1,0 a 7,0 con la exigencia del ramo */
+function notaChilena(pct,ap){
+  const n=pct<ap ? 1+3*(pct/ap) : 4+3*((pct-ap)/(100-ap));
+  return Math.max(1,Math.min(7,Math.round(n*10)/10)).toFixed(1);
+}
+function interStats(rid){S.inter=S.inter||{};return S.inter[rid]=S.inter[rid]||{best:0,veces:0};}
+
+/* el examinador reacciona según lo que respondió */
+const REACC={
+  alta:["Correcto.","Bien. Sigamos.","Eso es. Continuemos.","Conforme, tripulante.","Muy bien. Siguiente."],
+  media:["Incompleto, pero va encaminada.","Le faltó parte de la respuesta.","A medias. Ponga atención al detalle.","Se dejó cosas afuera. Siga."],
+  baja:["No. Repase ese punto.","Insuficiente.","Eso no es lo que se le preguntó.","Negativo. Anótelo para reforzar."]
+};
+function reaccion(pct){
+  const g=pct>=75?"alta":pct>=40?"media":"baja";
+  return REACC[g][Math.floor(Math.random()*REACC[g].length)];
+}
+
+/* arma la tanda: mezcla desarrollo y alternativas del ramo */
+function armarInterrogatorio(rid,n){
+  const c=CUESTIONARIOS[rid], pool=[];
+  if(c){
+    const nd=Math.min(c.desarrollo.length,Math.max(1,Math.round(n*0.55)));
+    shuffle(rangoN(c.desarrollo.length)).slice(0,nd).forEach(i=>pool.push({t:"d",i}));
+  }
+  shuffle(qsOf(rid)).slice(0,n-pool.length).forEach(q=>pool.push({t:"q",q}));
+  return shuffle(pool);
+}
+
+/* ---------- pantalla de inicio ---------- */
+function Interrogatorio(rid){
+  pararInter();callarEs();
+  const r=RAMO_BY_ID[rid], c=CUESTIONARIOS[rid], st=interStats(rid);
+  if(S.vozInt===undefined){S.vozInt=true;save();}
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`<button class="backbtn">← ${esc(r.n)}</button>
+    <div class="int-hero" style="--rc:${r.col}">
+      <div class="int-avatar">🎙</div>
+      <div class="eyebrow">Simulacro de examen oral</div>
+      <h2>Interrogatorio de ${esc(r.n)}</h2>
+      <p class="sub">Un examinador te va a preguntar de corrido, con el reloj corriendo y sin dejarte volver atrás.
+      ${c?`Mezcla <b>preguntas de desarrollo</b> —que respondes en voz alta y luego autoevalúas por sus puntos clave— con <b>alternativas contra el reloj</b>.`
+         :`Son preguntas de alternativa contra el reloj, de todos los módulos del ramo.`}
+      Al final recibes un <b>acta con nota de 1,0 a 7,0</b>, con exigencia ${r.ap}%.</p>
+    </div>
+    <div class="stats-strip" style="margin-top:14px">
+      <div class="stat"><b>${st.best?st.best.toFixed(1):"—"}</b><span>Mejor nota</span></div>
+      <div class="stat"><b>${st.veces}</b><span>Interrogatorios</span></div>
+      <div class="stat"><b>${r.ap}%</b><span>Exigencia</span></div>
+    </div>
+    <button class="int-voz">${S.vozInt?"🔊 El examinador lee en voz alta":"🔇 Examinador en silencio"}</button>
+    <div class="modes" style="margin-top:14px"></div>`;
+  el.querySelector(".backbtn").addEventListener("click",()=>go(RamoHome,rid));
+  const bv=el.querySelector(".int-voz");
+  bv.addEventListener("click",()=>{
+    S.vozInt=!S.vozInt;save();callarEs();
+    bv.textContent=S.vozInt?"🔊 El examinador lee en voz alta":"🔇 Examinador en silencio";
+    if(S.vozInt)decirEs("Buenas tardes, tripulante. Comencemos cuando usted quiera.");
+  });
+  const modes=el.querySelector(".modes");
+  [["🎙","Entrevista corta","6 preguntas. Un control rápido para ver cómo estás parada.","6 preguntas",6],
+   ["📝","Interrogatorio","12 preguntas. El formato de una evaluación oral real.","12 preguntas",12],
+   ["🔥","A fondo","20 preguntas sin tregua. Si sales bien de esta, sales bien de cualquiera.","20 preguntas",20]
+  ].forEach(([ic,t,d,tag,n])=>{
+    const b=document.createElement("button");b.className="pass";
+    b.innerHTML=`<span class="pass-main"><h3>${ic} ${t}</h3><p>${esc(d)}</p><span class="tagline">${tag}</span></span>
+      <span class="pass-stub"><span class="big">${ic}</span><span>INT</span><span>${rid.toUpperCase()}</span></span>`;
+    b.addEventListener("click",()=>{
+      const tanda=armarInterrogatorio(rid,n);
+      if(!tanda.length){toast("Este ramo aún no tiene preguntas");return;}
+      interPaso(rid,tanda,0,[]);
+    });
+    modes.appendChild(b);
+  });
+  view.appendChild(el);
+}
+
+/* ---------- cabecera común de cada pregunta ---------- */
+function interHead(rid,n,total,segs){
+  const r=RAMO_BY_ID[rid];
+  return `<button class="backbtn">← Abandonar el interrogatorio</button>
+    <div class="int-bar-top">
+      <div class="int-who"><span class="int-avatar sm">🎙</span>
+        <span><b>Examinador</b><i>${esc(r.n)} · pregunta ${n} de ${total}</i></span></div>
+      <div class="int-clock" data-left="${segs}">${segs}s</div>
+    </div>
+    <div class="ens-bar"><i style="width:${Math.round((n-1)/total*100)}%"></i></div>`;
+}
+/* arranca la cuenta regresiva de un paso */
+function interReloj(el,segs,alVencer){
+  pararInter();
+  const c=el.querySelector(".int-clock");
+  let left=segs;
+  interT=setInterval(()=>{
+    left--;
+    if(c){c.textContent=left+"s";c.classList.toggle("urgente",left<=10);}
+    if(left<=0){pararInter();alVencer();}
+  },1000);
+}
+
+/* ---------- una pregunta del interrogatorio ---------- */
+function interPaso(rid,tanda,n,res){
+  pararInter();callarEs();
+  if(n>=tanda.length){go(InterActa,{rid,res});return;}
+  const it=tanda[n];
+  view.innerHTML="";window.scrollTo({top:0});
+  const el=document.createElement("div");el.className="screen";
+  const cerrar=()=>{pararInter();callarEs();go(RamoHome,rid);};
+
+  if(it.t==="d"){
+    /* ---- pregunta de desarrollo: responde hablando y se autoevalúa ---- */
+    const d=CUESTIONARIOS[rid].desarrollo[it.i], pts=DESARROLLO_PUNTOS[rid][it.i];
+    el.innerHTML=interHead(rid,n+1,tanda.length,SEG_DESARROLLO)+
+      `<div class="int-q"><span class="int-tag">Desarrollo</span><p>${esc(d[0])}</p></div>
+       <div class="int-f1">
+         <p class="sub">Respóndala en voz alta, completa. Cuando termine —o cuando se acabe el tiempo— verá los puntos clave para marcar cuáles dijo.</p>
+         <button class="ens-go">Terminé de responder →</button>
+       </div>
+       <div class="int-f2" hidden>
+         <p class="sub">Marque los puntos que <b>sí</b> alcanzó a decir:</p>
+         <div class="ens-pts"></div>
+         <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(d[1])}</p></div>
+         <div class="int-react" hidden></div>
+         <button class="ens-next">Siguiente pregunta →</button>
+       </div>`;
+    el.querySelector(".backbtn").addEventListener("click",cerrar);
+    const cont=el.querySelector(".ens-pts"), marcados=new Set();
+    pts.forEach((p,k)=>{
+      const b=document.createElement("button");b.className="ens-pt";b.type="button";
+      b.innerHTML=`<span class="ens-box">✓</span><span>${esc(p)}</span>`;
+      b.addEventListener("click",()=>{
+        if(marcados.has(k)){marcados.delete(k);b.classList.remove("on");}
+        else{marcados.add(k);b.classList.add("on");}
+        el.querySelector(".ens-next").textContent=`Siguiente pregunta → (${marcados.size}/${pts.length})`;
+      });
+      cont.appendChild(b);
+    });
+    const revelar=()=>{
+      pararInter();callarEs();
+      el.querySelector(".int-f1").hidden=true;
+      el.querySelector(".int-f2").hidden=false;
+      const cl=el.querySelector(".int-clock");if(cl)cl.hidden=true;
+      window.scrollTo({top:0});
+    };
+    el.querySelector(".ens-go").addEventListener("click",revelar);
+    el.querySelector(".ens-next").addEventListener("click",()=>{
+      const pct=Math.round(marcados.size/pts.length*100);
+      const sc=devScores(rid);sc[it.i]=Math.max(sc[it.i]||0,pct);save();
+      const rc=reaccion(pct);
+      res.push({tipo:"d",i:it.i,preg:d[0],pct,dichos:marcados.size,total:pts.length,rc});
+      decirEs(rc);
+      interPaso(rid,tanda,n+1,res);
+    });
+    view.appendChild(el);
+    decirEs(d[0]);
+    interReloj(el,SEG_DESARROLLO,revelar);
+
+  }else{
+    /* ---- alternativa contra el reloj ---- */
+    const q=it.q, order=shuffle(rangoN(q.o.length));
+    el.innerHTML=interHead(rid,n+1,tanda.length,SEG_ALTERNATIVA)+
+      `<div class="int-q"><span class="int-tag alt">Alternativa</span><p>${esc(q.q)}</p></div>
+       <div class="opts"></div>
+       <div class="int-after"></div>`;
+    el.querySelector(".backbtn").addEventListener("click",cerrar);
+    const opts=el.querySelector(".opts"), letras=["A","B","C","D"];
+    let contestada=false;
+    const cerrarPregunta=(elegida)=>{
+      if(contestada)return;contestada=true;
+      pararInter();callarEs();
+      const ok=elegida===q.a;
+      [...opts.children].forEach((btn,j)=>{
+        btn.disabled=true;
+        if(order[j]===q.a)btn.classList.add("correct");
+        else if(order[j]===elegida&&!ok)btn.classList.add("wrong");
+        else btn.classList.add("dim");
+      });
+      record(q,ok);
+      const rc=elegida===null?"Se acabó el tiempo. En una oral, dudar también cuesta.":reaccion(ok?100:0);
+      res.push({tipo:"q",preg:q.q,pct:ok?100:0,ok,vencido:elegida===null,rc});
+      const after=el.querySelector(".int-after");
+      after.innerHTML=`<div class="int-react">🎙 ${esc(rc)}</div>
+        <div class="why">${esc(q.w)}<span class="src">Fuente: ${esc(q.s)} · ALAS</span></div>
+        <button class="ens-next">${n+1<tanda.length?"Siguiente pregunta →":"Ver el acta ✈"}</button>`;
+      after.querySelector(".ens-next").addEventListener("click",()=>{decirEs(rc);interPaso(rid,tanda,n+1,res);});
+      window.scrollTo({top:0});
+    };
+    order.forEach((oi,k)=>{
+      const b=document.createElement("button");b.className="opt";
+      b.innerHTML=`<span class="key">${letras[k]}</span><span>${esc(q.o[oi])}</span>`;
+      b.addEventListener("click",()=>cerrarPregunta(oi));
+      opts.appendChild(b);
+    });
+    view.appendChild(el);
+    decirEs(q.q);
+    interReloj(el,SEG_ALTERNATIVA,()=>cerrarPregunta(null));
+  }
+}
+
+/* ---------- acta de evaluación ---------- */
+function InterActa(r){
+  pararInter();callarEs();
+  const ramo=RAMO_BY_ID[r.rid];
+  const pct=Math.round(r.res.reduce((a,b)=>a+b.pct,0)/r.res.length);
+  const nota=notaChilena(pct,ramo.ap), aprob=parseFloat(nota)>=4;
+  const st=interStats(r.rid);
+  st.veces++;st.best=Math.max(st.best,parseFloat(nota));save();
+  const nd=r.res.filter(x=>x.tipo==="d").length, na=r.res.length-nd;
+  const el=document.createElement("div");el.className="screen";
+  el.innerHTML=`
+    <div class="acta ${aprob?"ok":"bad"}">
+      <div class="acta-top"><span>ALAS PARA LATINOAMÉRICA</span><span>${esc(ramo.n)}</span></div>
+      <div class="eyebrow">Acta de evaluación oral</div>
+      <div class="acta-nota">${nota}</div>
+      <div class="acta-sello">${aprob?"APROBADA":"POR REFORZAR"}</div>
+      <p class="sub">Rendimiento ${pct}% sobre una exigencia de ${ramo.ap}% ·
+        ${r.res.length} preguntas${nd?` (${nd} de desarrollo y ${na} de alternativa)`:""}.</p>
+      <p class="sub">${aprob
+        ?"Respondió con solvencia. Repase abajo lo que quedó flojo y llega tranquila a la prueba."
+        :"Todavía no. Mire abajo qué se le escapó: eso es exactamente lo que tiene que ensayar."}</p>
+    </div>
+    <div class="ens-res"></div>
+    <div class="flash-nav">
+      <button id="again">Otro interrogatorio</button>
+      <button class="primary" id="menu">Volver al ramo</button>
+    </div>`;
+  const lista=el.querySelector(".ens-res");
+  r.res.forEach((x,k)=>{
+    const nivel=x.pct>=75?"ok":x.pct>=40?"mid":"bad";
+    const row=document.createElement("div");row.className="ens-row "+nivel;
+    const marca=x.tipo==="d"?`${x.dichos}/${x.total}`:(x.vencido?"s/t":x.ok?"✔":"✘");
+    row.innerHTML=`<span class="cq-n">${k+1}</span>
+      <span class="ens-rt">${esc(x.preg)}<i class="int-rc">${esc(x.rc)}</i></span>
+      <span class="ens-pct">${marca}</span>`;
+    lista.appendChild(row);
+  });
+  el.querySelector("#again").addEventListener("click",()=>go(Interrogatorio,r.rid));
+  el.querySelector("#menu").addEventListener("click",()=>go(RamoHome,r.rid));
+  view.appendChild(el);
+  if(aprob)confetti();
 }
 
 /* ================= RULETA · PARTIDA DE 2 MINUTOS ================= */
