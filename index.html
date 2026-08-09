@@ -340,6 +340,19 @@ button:focus-visible,.card-btn:focus-visible{outline:3px solid var(--accent);out
 }
 .flash-nav button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:#fff}
 
+/* ============ de dónde sale la respuesta ============ */
+.nota-fuente{
+  display:block;margin-top:11px;padding:11px 12px;border-radius:11px;
+  background:var(--glass-strong);border:1px solid var(--glass-border);border-left:3px solid var(--muted);
+  font:400 13px/1.55 system-ui,sans-serif;color:var(--muted);
+}
+.nota-fuente b{
+  display:block;margin-bottom:4px;color:var(--ink);
+  font:800 10.5px ui-monospace,Consolas,monospace;letter-spacing:.09em;text-transform:uppercase;
+}
+.nota-fuente.fuera,.nota-fuente.lamina{border-left-color:var(--warn,#E8850C)}
+.nota-fuente.fuera b,.nota-fuente.lamina b{color:var(--warn,#E8850C)}
+
 /* ============ interrogatorio oral ============ */
 .int-hero{
   background:var(--glass);border:1.5px solid var(--glass-border);border-left:4px solid var(--rc,var(--accent));
@@ -2619,7 +2632,7 @@ Q("su4","¿Qué caso histórico ilustra la resiliencia humana en supervivencia?"
 Q("su4","En el ejercicio de simulación en agua, ¿cuál es el orden de las prioridades a bordo de la balsa?",["Agua, alimento y luego protección","PROTECCIÓN → LOCALIZACIÓN → AGUA/ALIMENTOS","Localización primero siempre","Alimento, agua y refugio"],1,"Las acciones inmediatas en la balsa siguen el orden de prioridades: PROTECCIÓN → LOCALIZACIÓN → AGUA/ALIMENTOS. En la práctica: cortar mooring line, presentarse y contar, recuperar el kit, desplegar ancla, rescatar pasajeros a la deriva con la heaving line, activar ELT, inflar mástil, distribuir elementos del kit y colocar el toldo.","Supervivencia M4");
 Q("su4","¿Con qué se rescata a los pasajeros que quedan a la deriva?",["Con el ancla","Con la heaving line (cuerda de rescate)","Con el balde de achique","Nadando hasta ellos"],1,"Para rescatar pasajeros a la deriva (conscientes e inconscientes) se usa la HEAVING LINE (cuerda de rescate). Forma parte de las acciones inmediatas en la balsa junto con cortar la mooring line, desplegar el ancla y activar el ELT.","Supervivencia M4");
 /* --- Cuestionario oficial de Supervivencia · preguntas de alternativas (31-40) --- */
-Q("su3","¿En cuánto tiempo aproximado se infla una balsa adicional?",["5 segundos","15 segundos","30 segundos","1 minuto"],0,"El inflado es AUTOMÁTICO y demora aproximadamente 5 SEGUNDOS. Si no se infla sola, se usa el inflado manual tirando la manilla roja PULL TO INFLATE, y durante la supervivencia se mantiene la presión con el INFLADOR del kit.","Cuestionario oficial · pregunta 31");
+Q("su3","¿En cuánto tiempo aproximado se infla una balsa adicional?",["5 segundos","15 segundos","30 segundos","1 minuto"],2,"El inflado es AUTOMÁTICO y demora aproximadamente 30 SEGUNDOS, que es el estándar de una balsa salvavidas independiente. Si no se infla sola, se usa el inflado manual, y durante la supervivencia se mantiene la presión con el INFLADOR del kit. NO LO CONFUNDAS con el TOBOGÁN del A320, que se infla en 5 SEGUNDOS y se infla a mano con la manilla roja PULL TO INFLATE: son equipos distintos.","Cuestionario oficial · pregunta 31");
 Q("su2","Señal convencional codificada que indica «Necesitamos ayuda»:",["V","↑","X","O"],0,"En el código internacional OACI tierra/aire: V = NECESITAMOS AYUDA · X = necesitamos ayuda MÉDICA · ↑ = procedemos en esta dirección · N = no/negativo · Y = sí/afirmativo. Se construyen con medios naturales de más de 3 metros, cavando el signo y amontonando el material a los costados para dar sombra y contraste.","Cuestionario oficial · pregunta 32");
 Q("su4","¿Dónde se encuentran las tabletas potabilizadoras?",["En el FAK","En el NPU","En el kit de supervivencia","En el manual de la balsa"],2,"Las tabletas potabilizadoras (y las desalinizadoras) van en el KIT DE SUPERVIVENCIA. Se agregan al agua, se agita y se deja REPOSAR MEDIA HORA antes de beber. Alternativa: 3 gotas de yodo por litro, 6 si el agua está muy sucia.","Cuestionario oficial · pregunta 33");
 Q("su4","¿Cuál de los siguientes es un elemento de LOCALIZACIÓN del kit?",["La esponja","Las bengalas","El inflador","El balde de achique"],1,"Localización: toldo, barras fosforescentes, BENGALAS, espejo de señales, linternas, marcador de agua y silbato. Esponja, inflador y balde de achique son elementos de PROTECCIÓN.","Cuestionario oficial · pregunta 34");
@@ -2640,7 +2653,7 @@ Q("su4","¿Cuáles son las dos funciones del balde de achique en la balsa?",["Sa
 Q("su2","¿Cuánta agua corresponde por día y por persona del segundo al sexto día?",["250 cm³","500 cm³","1 litro","1,5 litros"],1,"Del 2° al 6° día corresponden unos 500 cm³ por día y por persona, después de esperar 24 horas para la primera ración. Se bebe preferentemente al anochecer y al amanecer, de preferencia antes de dormir. NUNCA agua salada, orina ni el líquido lechoso de las plantas. Hay que evitar transpirar y, con calor, llevar la nuca cubierta y mojada. Se sobrevive 8 a 10 días sin agua (10 días a 10 °C, 7 a 32 °C y solo 2 a 48 °C).","Cuestionario oficial · desarrollo 8");
 Q("su3","¿Cuáles son las acciones inmediatas en una supervivencia en TIERRA?",["Alejarse ~100 m del avión según el viento, activar el ELT, improvisar refugio y atender a los heridos","Buscar agua, encender fuego, comer y esperar","Caminar hacia el poblado más cercano llevando el kit","Contar sobrevivientes, repartir el alimento y dormir hasta el amanecer"],0,"1) ALEJARSE DEL AVIÓN unos 100 metros considerando la dirección del viento (riesgo de fuego y combustible). 2) ACTIVAR EL ELT. 3) IMPROVISAR UN REFUGIO. 4) ATENDER A LOS HERIDOS y tranquilizar. Pasado el peligro de fuego: permanecer cerca del área del accidente (el avión es la referencia del rescate), rescatar equipo, soltar los toboganes y usarlos como refugio, y recuperar el kit de supervivencia.","Cuestionario oficial · desarrollo 9");
 Q("su3","¿Cuáles son las características principales de una balsa adicional?",["Rígida, de color naranja, con motor auxiliar","Inflable, REVERSIBLE y de color AMARILLO, con dos tubos de flotación y dos sistemas de inflado","Inflable, de color rojo, con un solo tubo de flotación","Rígida, amarilla, con toldo fijo no desmontable"],1,"Se incorpora en aviones equipados con toboganes que operan rutas extendidas sobre agua. Consta de 4 subsistemas: una balsa inflable REVERSIBLE de color AMARILLO; dos tubos de flotación y dos sistemas de inflado; un kit de supervivencia y accesorios; y una funda o contenedor con manillas para su traslado. Lleva toldo sujeto con 8 varillas y mástil central metálico extensible. En el A320 se llevan 4 balsas adicionales en overhead bins, de 46-69 personas cada una.","Cuestionario oficial · desarrollo 10");
-Q("su3","¿Cómo es el proceso de inflado de una balsa adicional?",["Manual desde el inicio, con el inflador del kit, y demora unos 3 minutos","AUTOMÁTICO en unos 5 segundos; si falla, manual con la manilla roja PULL TO INFLATE","Automático en 30 segundos, sin respaldo manual","Se infla sola al contacto con el agua, en 1 minuto"],1,"El inflado es AUTOMÁTICO y demora aproximadamente 5 SEGUNDOS: al liberar el dispositivo, este cae y abre la válvula de inflado, llenando los dos tubos de flotación mediante sus dos sistemas de inflado. Si no se infla automáticamente, se infla MANUALMENTE tirando la manilla roja PULL TO INFLATE. Para mantener la presión durante la supervivencia se usa el INFLADOR manual del kit, que sirve para los tubos y para el mástil.","Cuestionario oficial · desarrollo 11");
+Q("su3","¿Cómo es el proceso de inflado de una balsa adicional?",["Manual desde el inicio, con el inflador del kit, y demora unos 3 minutos","AUTOMÁTICO en unos 30 segundos, con respaldo de inflado manual si falla","Automático en 5 segundos, igual que el tobogán del A320","Se infla sola al contacto con el agua, en 1 minuto"],1,"El inflado es AUTOMÁTICO y demora aproximadamente 30 SEGUNDOS: al liberar el dispositivo, este cae y abre la válvula de inflado, llenando los dos tubos de flotación mediante sus dos sistemas de inflado. Si no se infla automáticamente, existe el respaldo de inflado MANUAL. Para mantener la presión durante la supervivencia se usa el INFLADOR manual del kit, que sirve para los tubos y para el mástil. Cuidado con confundirla con el TOBOGÁN del A320, que se infla en 5 SEGUNDOS con su manilla roja PULL TO INFLATE.","Cuestionario oficial · desarrollo 11");
 Q("su3","¿En qué consiste el chequeo prevuelo de la balsa adicional?",["Inflarla parcialmente para verificar que no tenga fugas","Verificar que esté a bordo en su ubicación asignada, asegurada, accesible y con su kit, informando toda discrepancia al Capitán","Contar los elementos del kit uno por uno y firmar el acta","Solo verificar que el sello del contenedor no esté roto"],1,"Se verifica que esté A BORDO en su ubicación asignada (overhead bin designado según el plano de equipos de emergencia), ASEGURADA y ACCESIBLE, con su contenedor o funda completo e íntegro junto a su kit de supervivencia. Como todo equipo de emergencia, el chequeo busca asegurar CANTIDAD, UBICACIÓN Y OPERATIVIDAD, y cualquier discrepancia se informa al Capitán, quien determina las acciones a seguir.","Cuestionario oficial · desarrollo 12");
 Q("su4","Sobre el kit de supervivencia, ¿qué es correcto respecto de su contenido?",["Es idéntico en todos los aviones por norma OACI","VARÍA SEGÚN EL FABRICANTE y se organiza según las prioridades: localización, protección, agua y alimento","Contiene solo elementos de localización","Lo define cada tripulante antes del vuelo"],1,"El kit es el equipo asociado a las balsas y su contenido VARÍA SEGÚN EL FABRICANTE. Se organiza según las prioridades: LOCALIZACIÓN (toldo, barras fosforescentes, bengalas, espejo de señales, linternas, marcador de agua y silbato); PROTECCIÓN (balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manual de la balsa, manual de supervivencia y parches tipo mariposa); AGUA para primeros auxilios y ALIMENTO (caramelos). Su finalidad es cubrir los medios de sustento de vida y permitir señales pirotécnicas de auxilio.","Cuestionario oficial · desarrollo 13");
 Q("su4","¿Qué proporción de las raciones de emergencia se consume y qué se hace con el resto?",["Se consume la mitad y se guarda la mitad","Se consumen 2/3 y se guarda el resto","Se consume todo el primer día para no perderlo","Se consume 1/3 y se guardan 2/3"],1,"Se raciona según la cantidad de personas y la situación, consumiendo 2/3 de las raciones de emergencia y guardando el resto, porque no se sabe cuánto tardará el rescate. Además, a MENOR GASTO DE ENERGÍA menos alimento se necesita, así que conviene reducir el trabajo físico. Si hay agua suficiente se hacen dos comidas diarias, y si hay alimentos naturales disponibles se priorizan, reservando las raciones del kit. Se puede vivir semanas sin alimento, pero no sin agua.","Cuestionario oficial · desarrollo 14");
@@ -3037,7 +3050,7 @@ const CUESTIONARIOS={
  ["Describa las características principales de una balsa adicional.",
   "Se incorpora en aviones equipados con toboganes que operan rutas extendidas sobre agua. Consta de 4 subsistemas: 1) una balsa inflable, REVERSIBLE, de color AMARILLO; 2) dos tubos de flotación y dos sistemas de inflado; 3) un kit de supervivencia y accesorios; 4) una funda o contenedor con manillas para su traslado. Lleva toldo sujeto con 8 varillas y mástil central metálico extensible. En el A320 se llevan 4 balsas adicionales en overhead bins, de capacidad 46-69 personas cada una."],
  ["Explique el proceso de inflado de una balsa adicional y el tiempo aproximado que demora.",
-  "El inflado es AUTOMÁTICO y demora aproximadamente 5 SEGUNDOS: al liberar el dispositivo, este cae y abre la válvula de inflado, llenando los dos tubos de flotación mediante sus dos sistemas de inflado. Si no se infla automáticamente, se infla MANUALMENTE tirando la manilla roja PULL TO INFLATE. Para mantener la presión durante la supervivencia se usa el INFLADOR manual del kit, que sirve tanto para los tubos de flotación como para el mástil."],
+  "El inflado es AUTOMÁTICO y demora aproximadamente 30 SEGUNDOS, que es el estándar de una balsa salvavidas independiente: al liberar el dispositivo, este cae y abre la válvula de inflado, llenando los dos tubos de flotación mediante sus dos sistemas de inflado. Si no se infla automáticamente, existe el respaldo de inflado MANUAL. Para mantener la presión durante la supervivencia se usa el INFLADOR manual del kit, que sirve tanto para los tubos de flotación como para el mástil. No la confundas con el TOBOGÁN del A320, que se infla en 5 SEGUNDOS tirando la manilla roja PULL TO INFLATE: son equipos distintos."],
  ["Indique en qué consiste el chequeo prevuelo de la balsa adicional.",
   "Verificar que esté A BORDO en su ubicación asignada (overhead bin designado según el plano de equipos de emergencia), ASEGURADA y ACCESIBLE, con su contenedor o funda completo e íntegro junto a su kit de supervivencia asociado. Como todo equipo de emergencia, el chequeo busca asegurar CANTIDAD, UBICACIÓN Y OPERATIVIDAD, y cualquier discrepancia se informa al Capitán, quien determina las acciones a seguir."],
  ["Describa los elementos que componen el kit de supervivencia y su finalidad general.",
@@ -3091,7 +3104,7 @@ const DESARROLLO_PUNTOS={sup:[
 /*8*/["NUNCA beber agua salada, orina ni el líquido lechoso de las plantas","Esperar 24 HORAS antes de la primera ración","500 cm³ por día y por persona del 2° al 6° día","Beber al anochecer y al amanecer, de preferencia antes de dormir","Evitar transpirar; con calor, nuca cubierta y mojada, sin exponerse al sol","Las aves al amanecer/anochecer conducen a las aguadas y los rastros de animales a los abrevaderos"],
 /*9*/["ALEJARSE DEL AVIÓN unos 100 metros, según la dirección del viento","ACTIVAR EL ELT","IMPROVISAR UN REFUGIO","ATENDER A LOS HERIDOS y tranquilizar","Pasado el peligro de fuego: permanecer cerca del área del accidente","Rescatar equipo, soltar los toboganes como refugio y recuperar el kit de supervivencia"],
 /*10*/["Va en aviones con toboganes que operan rutas extendidas sobre agua","Balsa inflable, REVERSIBLE y de color AMARILLO","Dos tubos de flotación y dos sistemas de inflado","Kit de supervivencia y accesorios","Funda o contenedor con manillas para su traslado","Toldo con 8 varillas y mástil central metálico extensible"],
-/*11*/["El inflado es AUTOMÁTICO","Demora aproximadamente 5 SEGUNDOS","El dispositivo cae y abre la válvula, llenando los dos tubos de flotación","Si falla, inflado MANUAL con la manilla roja PULL TO INFLATE","El INFLADOR del kit mantiene la presión de tubos y mástil"],
+/*11*/["El inflado es AUTOMÁTICO","Demora aproximadamente 30 SEGUNDOS","El dispositivo cae y abre la válvula, llenando los dos tubos de flotación","Si falla, existe el respaldo de inflado MANUAL","El INFLADOR del kit mantiene la presión de tubos y mástil","No confundir con el TOBOGÁN del A320, que se infla en 5 segundos"],
 /*12*/["Verificar que esté A BORDO en su ubicación asignada (overhead bin del plano de equipos)","Que esté ASEGURADA y ACCESIBLE","Contenedor o funda íntegro, con su kit de supervivencia asociado","El chequeo busca CANTIDAD, UBICACIÓN Y OPERATIVIDAD","Toda discrepancia se informa al Capitán, que determina las acciones"],
 /*13*/["Es el equipo asociado a las balsas y su contenido VARÍA SEGÚN EL FABRICANTE","Se organiza según las prioridades de supervivencia","LOCALIZACIÓN: toldo, barras fosforescentes, bengalas, espejo, linternas, marcador de agua y silbato","PROTECCIÓN: balde de achique, cortaplumas, esponja, inflador, kit farmacéutico, manuales y parche mariposa","AGUA para primeros auxilios y ALIMENTO (caramelos)","Finalidad: medios de sustento de vida y señales pirotécnicas de auxilio"],
 /*14*/["No se sabe cuánto tardará el rescate y las raciones son limitadas","Racionar según la cantidad de personas y la situación","Consumir 2/3 de las raciones de emergencia y guardar el resto","A MENOR GASTO DE ENERGÍA, menos alimento se necesita: reducir el trabajo físico","Con agua suficiente, dos comidas diarias","Priorizar los alimentos naturales disponibles y reservar las raciones del kit"],
@@ -3211,6 +3224,48 @@ DESARROLLO_PUNTOS.bys=[
 /*30*/["El objetivo final es SALVAR VIDAS HUMANAS","Localizar, asistir y rescatar a las personas en peligro y llevarlas a un lugar seguro","El SAR es la ÚLTIMA BARRERA del sistema de seguridad operacional","Actúa cuando todas las defensas previas ya fallaron y el accidente ocurrió","Por eso está normado con el mismo rigor: Anexo 12 y DAR 12 en Chile","Retroalimenta al sistema: localizar restos y registradores permite investigar el accidente","Ejemplo: Air France 447 (1 de junio de 2009, Río–París, 228 fallecidos)","Sensores Pitot congelados y desorientación de los pilotos; cambió el entrenamiento y la tecnología","La seguridad operacional busca que el accidente no ocurra; el SAR, que no cueste vidas"]
 ];
 
+/* ====== DE DÓNDE SALE CADA RESPUESTA ======
+   Los cuestionarios traen preguntas cuya respuesta no está —o no está completa—
+   en el PPT del ramo. Se marcan para que se sepa qué es materia textual del
+   curso y qué se completó por fuera. Clave: ramo → número de pregunta (1-30 de
+   desarrollo, 31-40 de alternativas). */
+const NIVEL_NOTA={
+  fuera:{et:"No está en tu PPT",ic:"⊕"},
+  lamina:{et:"Está en una lámina del PPT",ic:"🖼"},
+  amplia:{et:"Ampliado",ic:"＋"}
+};
+const NOTAS_CUEST={
+ sup:{
+  11:["lamina","El PPT de Supervivencia M3 no dice el tiempo de inflado en su texto: las láminas «Uso Balsa Adicional» (págs. 13 a 19) son imágenes. Lo que sí está escrito es que la balsa es inflable, reversible, amarilla, con dos tubos de flotación y dos sistemas de inflado, del fabricante Eastern Aero Marine. Pusimos 30 segundos porque es el estándar de una balsa salvavidas independiente. OJO: no lo confundas con el TOBOGÁN del A320, que sí está documentado y se infla en 5 segundos. Confírmalo con tu instructor."],
+  12:["amplia","El PPT no detalla un chequeo prevuelo propio de la balsa adicional. La respuesta aplica el criterio general de chequeo de equipos de emergencia que sí ves en el curso —cantidad, ubicación y operatividad, discrepancia al Capitán— a este equipo en particular."],
+  21:["lamina","La tabla del código OACI tierra/aire está en las láminas del PPT («según ciertas reglas las que se adjuntan en láminas»), que son imágenes. El significado de la flecha lo pusimos según el código internacional OACI. Del texto del PPT sí es tuyo: señales de más de 3 metros, de 6 m de largo por 4 de ancho, cavadas como trincheras con el material a los costados, hechas con piedras, troncos, ramas, tierra o nieve."],
+  31:["lamina","Mismo caso que la pregunta 11: el tiempo de inflado no aparece en el texto del PPT, está en las láminas de imagen. Confirma este dato con tu instructor antes de la prueba."],
+  32:["lamina","La tabla del código tierra/aire está en las láminas del PPT. La respuesta sigue el código internacional OACI: V = necesitamos ayuda · X = ayuda médica · ↑ = procedemos en esta dirección."]
+ },
+ bys:{
+  13:["fuera","El PPT de BYS no dice dónde va instalado el ELT fijo. La respuesta es criterio aeronáutico estándar. De tu material sí es: que el ELT es la baliza de aeronaves, que se activa automáticamente por impacto o manualmente, y que transmite en 406 MHz."],
+  20:["fuera","El PPT no trata el término de las operaciones SAR. La respuesta se construyó desde el rol del RCC —que organiza, coordina y supervisa— y desde el principio de que los medios son limitados. Si tu instructor dio un criterio propio, ese manda."],
+  21:["amplia","El PPT lista los organismos que participan y menciona la cooperación regional, pero no desarrolla POR QUÉ la coordinación es determinante. Ese razonamiento lo agregamos apoyándonos en los organismos que sí aparecen en tu material."],
+  23:["amplia","La expresión «normalizada y legislada» no aparece con esas palabras en el PPT. El contenido sí: los 406 MHz como estándar único desde 2009, el registro obligatorio del propietario y el Anexo 12 / DAR 12 como marco. La explicación de qué significa cada término es nuestra."],
+  24:["amplia","El PPT dice que el ELT «se activa automáticamente al sufrir un impacto o manualmente». El detalle del sensor inercial de desaceleración y del control remoto en cabina de mando lo agregamos por fuera."],
+  26:["amplia","El PPT define el RCC como responsable de «una región determinada (SRR)» y lista las seis regiones SAR de Chile y las tres FIR. Que la SRR se fije por acuerdo regional de navegación aérea de la OACI y que se haga coincidir con las FIR lo agregamos nosotros."],
+  27:["amplia","El PPT no dedica una lámina al factor tiempo. La respuesta se apoya en datos que sí están en tu material —MEOSAR ubica en menos de 10 minutos con menos de 5 km de error— más el razonamiento de por qué el tiempo manda."],
+  28:["amplia","El PPT no trata las falsas activaciones. La respuesta se apoya en dos cosas que sí están: que el MCC comprueba la veracidad de la alarma antes de derivarla, y que el registro del propietario de la baliza es obligatorio."],
+  30:["amplia","El objetivo del SAR y el caso Air France 447 sí están en tu PPT. El marco de «última barrera de la seguridad operacional» es nuestro, para conectar este ramo con lo que ya viste en PREVAC."]
+ }
+};
+function notaDesarrollo(rid,i){const m=NOTAS_CUEST[rid];return m&&m[i+1]||null;}
+function notaQ(q){
+  const m=NOTAS_CUEST[RAMO_OF_MOD[q.c]];if(!m)return null;
+  const g=/Cuestionario oficial · (?:pregunta|desarrollo) (\d+)/.exec(q.s||"");
+  return g?m[Number(g[1])]||null:null;
+}
+function notaHTML(n){
+  if(!n)return"";
+  const v=NIVEL_NOTA[n[0]]||NIVEL_NOTA.amplia;
+  return `<div class="nota-fuente ${n[0]}"><b>${v.ic} ${v.et}</b>${esc(n[1])}</div>`;
+}
+
 function devScores(rid){S.dev=S.dev||{};return S.dev[rid]=S.dev[rid]||{};}
 function devFlojas(rid){
   const sc=devScores(rid), n=CUESTIONARIOS[rid].desarrollo.length, out=[];
@@ -3276,7 +3331,7 @@ function ensayoPaso(rid,idxs,n,res){
       <p class="sub">Marca los puntos que <b>sí</b> dijiste. Los que dejes sin marcar son justo los que tienes que reforzar.</p>
       <div class="ens-pts"></div>
       <div class="ens-mine" hidden><div class="eyebrow">Lo que escribiste</div><p></p></div>
-      <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(modelo)}</p></div>
+      <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(modelo)}</p>${notaHTML(notaDesarrollo(rid,i))}</div>
       <button class="ens-next">Siguiente →</button>
     </div>`;
   el.querySelector(".backbtn").addEventListener("click",()=>go(Cuestionario,rid));
@@ -3384,7 +3439,7 @@ function Cuestionario(rid){
     const b=document.createElement("div");b.className="cuest-item"+(vis[i]?" hecha":"");
     b.innerHTML=`<button class="cuest-q"><span class="cq-n">${i+1}</span>
         <span class="cq-t">${esc(p)}</span><i>▸</i></button>
-      <div class="cuest-r"><div class="cr-in">${esc(resp)}</div>
+      <div class="cuest-r"><div class="cr-in">${esc(resp)}${notaHTML(notaDesarrollo(rid,i))}</div>
         <button class="cuest-check">${vis[i]?"✓ Repasada":"Marcar como repasada"}</button></div>`;
     b.querySelector(".cuest-q").addEventListener("click",()=>b.classList.toggle("open"));
     b.querySelector(".cuest-check").addEventListener("click",()=>{
@@ -3542,7 +3597,7 @@ function interPaso(rid,tanda,n,res){
        <div class="int-f2" hidden>
          <p class="sub">Marque los puntos que <b>sí</b> alcanzó a decir:</p>
          <div class="ens-pts"></div>
-         <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(d[1])}</p></div>
+         <div class="ens-modelo"><div class="eyebrow">Respuesta completa</div><p>${esc(d[1])}</p>${notaHTML(notaDesarrollo(rid,it.i))}</div>
          <div class="int-react" hidden></div>
          <button class="ens-next">Siguiente pregunta →</button>
        </div>`;
@@ -3603,7 +3658,7 @@ function interPaso(rid,tanda,n,res){
       res.push({tipo:"q",preg:q.q,pct:ok?100:0,ok,vencido:elegida===null,rc});
       const after=el.querySelector(".int-after");
       after.innerHTML=`<div class="int-react">🎙 ${esc(rc)}</div>
-        <div class="why">${esc(q.w)}<span class="src">Fuente: ${esc(q.s)} · ALAS</span></div>
+        <div class="why">${esc(q.w)}${notaHTML(notaQ(q))}<span class="src">Fuente: ${esc(q.s)} · ALAS</span></div>
         <button class="ens-next">${n+1<tanda.length?"Siguiente pregunta →":"Ver el acta ✈"}</button>`;
       after.querySelector(".ens-next").addEventListener("click",()=>{decirEs(rc);interPaso(rid,tanda,n+1,res);});
       window.scrollTo({top:0});
@@ -3972,7 +4027,7 @@ function Question(ctx){
       const cheers=["¡Eso, tripulante! 🛫","¡Perfecto! ✨","¡Cabina libre! ✅","¡Directo al mando! 👩‍✈️","¡Correctísimo! 🎯"];
       const ouch=["Casi… mira el porqué 👇","No era esa, pero ahora no se te olvida:","A revisar el detalle:","Tranquila, esta cae de nuevo:"];
       const head=ok?cheers[Math.floor(Math.random()*cheers.length)]:ouch[Math.floor(Math.random()*ouch.length)];
-      const extra=ctx.mode==="exam"?"":`<div class="why">${esc(q.w)}<span class="src">Fuente: ${esc(q.s)} · ALAS</span></div>`;
+      const extra=ctx.mode==="exam"?"":`<div class="why">${esc(q.w)}${notaHTML(notaQ(q))}<span class="src">Fuente: ${esc(q.s)} · ALAS</span></div>`;
       after.innerHTML=`<div class="verdict ${ok?"ok":"bad"}">${ok?"✔":"✘"} ${head}</div>${extra}
         <button class="next-btn">${ctx.mode==="exam"?(ctx.n<ctx.total?"Siguiente pregunta →":"Ver resultado ✈"):"Continuar →"}</button>`;
       after.querySelector(".next-btn").addEventListener("click",()=>ctx.onNext(q,oi,ok));
